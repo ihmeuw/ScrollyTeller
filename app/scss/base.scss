@@ -1,0 +1,99 @@
+#view {
+  background-color: $background-color;
+}
+
+
+
+h1 {
+  color: #30231d;
+  font-family: $title-font-family;
+  font-size: 66px;
+  font-weight: 800;
+  line-height: 78px;
+  letter-spacing: -4px;
+  margin-bottom: 72px;
+}
+
+h1:after {
+  background: $base-font-color;
+  content: '';
+  display: block;
+  height: 12px;
+  margin: 43px 0;
+  width: 80px;
+}
+
+h2 {
+  font-size: 30px;
+  font-family: $general-font-family;
+  letter-spacing: -1px;
+  color: $primary-color;
+  text-transform: uppercase;
+  margin: 10px 0 24px;
+  text-align: center;
+  line-height: 50px;
+}
+
+p {
+  color: $secondary-color;
+  font-family: $general-font-family;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 30px;
+  margin-bottom: 36px;
+  max-width: 500px;
+}
+
+a {
+  color: $primary-color;
+}
+
+a:hover {
+  color: $secondary-color;
+  text-decoration: blink;
+}
+
+//Axis Set Up
+
+.axis {
+
+  text {
+    fill: $secondary-color;
+    stroke: none;
+    font-family: $title-font-family;
+  }
+
+  .tick {
+    fill: none;
+    stroke: $secondary-color;
+  }
+
+  path {
+    fill: none;
+    stroke: $secondary-color;
+  }
+
+}
+
+.y-title, .x-title {
+  @extend h1;
+  color: $secondary-color;
+  font-size: 1.5em;
+  font-weight: 200;
+  line-height: 20px;
+  letter-spacing: -1px;
+  margin-bottom: 72px;
+}
+
+.title {
+  @extend h1;
+}
+
+
+.line {
+  fill: none;
+  stroke: $secondary-color;
+  stroke-width: 4px;
+}
+
+
