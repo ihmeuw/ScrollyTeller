@@ -2,10 +2,8 @@
   background-color: $background-color;
 }
 
-
-
 h1 {
-  color: #30231d;
+  color: $base-font-color;
   font-family: $title-font-family;
   font-size: 66px;
   font-weight: 800;
@@ -58,21 +56,39 @@ a:hover {
 .axis {
 
   text {
-    fill: $secondary-color;
+    fill: $base-font-color;
     stroke: none;
     font-family: $title-font-family;
   }
 
   .tick {
     fill: none;
-    stroke: $secondary-color;
+    stroke: $base-font-color;
   }
 
   path {
     fill: none;
-    stroke: $secondary-color;
+    stroke: $base-font-color;
   }
 
+}
+
+.inner-axis {
+  text {
+    fill: none;
+    stroke: none;
+  }
+
+  .tick {
+    fill: none;
+    stroke: $secondary-color;
+    stroke-opacity: .1;
+  }
+
+  path {
+    fill: none;
+    stroke: none;
+  }
 }
 
 .y-title, .x-title {

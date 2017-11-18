@@ -14,7 +14,7 @@ export default class SampleChart {
 
   render() {
     const margin = {
-        top: 20, right: 20, bottom: 30, left: 50,
+        top: 20, right: 20, bottom: 50, left: 100,
       },
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
@@ -25,15 +25,15 @@ export default class SampleChart {
     const xTitleGroup = (selection) => {
       return selection.attr(
         'transform',
-        `translate(${(((width + margin.left) - margin.right) / 2)}, 
-        ${(height - 20)})`,
+        `translate(${(((width + margin.right) - margin.left) / 2)}, 
+        ${(height + 50)})`,
       );
     };
 
     const yTitleGroup = (selection) => {
       return selection.attr(
         'transform',
-        `translate(15,${(((height + margin.top) - margin.bottom) / 2)}) 
+        `translate(-50,${((height + (margin.top + margin.bottom)) / 2)}) 
         rotate(-90)`,
       );
     };
@@ -94,10 +94,20 @@ export default class SampleChart {
         .attr('class', 'axis')
         .call(d3.axisBottom(x));
 
+      // Add the X Axis
+      this.svg.append('g')
+        .attr('class', 'inner-axis')
+        .call(d3.axisLeft(y).tickSizeInner(-width));
+
       // Add the Y Axis
       this.svg.append('g')
         .attr('class', 'axis')
         .call(d3.axisLeft(y));
+
+      this.svg.append('g')
+        .attr('transform', `translate(0,${height})`)
+        .attr('class', 'inner-axis')
+        .call(d3.axisBottom(x).tickSizeInner(-height));
     });
   }
 }
