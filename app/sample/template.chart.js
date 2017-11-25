@@ -1,26 +1,30 @@
 import { event as d3Event } from 'd3';
 
 import * as d3 from 'd3';
+import { merge } from 'lodash';
 
-export default class SampleChart {
+import Chart from './chart';
+
+export default class SampleChart extends Chart {
   /**
    * @constructor
    * @param {Object} properties - Configuration properties
    * @access public
    */
   constructor(properties) {
-    this.properties = properties;
+    super(merge({}, properties));
   }
 
-  render() {
+  render(data) {
+    if (data) this.data = data;
     const margin = {
         top: 20, right: 20, bottom: 50, left: 100,
       },
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 
-    const x = d3.scaleTime().range([0, width]);
-    const y = d3.scaleLinear().range([height, 0]);
+    this.x = d3.scaleTime().range([0, width]);
+    this.y = d3.scaleLinear().range([height, 0]);
 
     const xTitleGroup = (selection) => {
       return selection.attr(
@@ -38,9 +42,9 @@ export default class SampleChart {
       );
     };
 
-    const valueline = d3.line()
-      .x((d) => { return x(d.date); })
-      .y((d) => { return y(d.close); });
+    this.valueline = d3.line()
+      .x((d) => { return this.x(d.date); })
+      .y((d) => { return this.y(d.close); });
 
     this.svg = d3.select(this.properties.container)
       .append('svg')
@@ -52,7 +56,6 @@ export default class SampleChart {
         `translate(${margin.left},${margin.top})`,
       );
 
-    const parseTime = d3.timeParse('%y');
 
     this.yTitleGroup = this.svg.append('g')
       .attr('class', 'y-title-group title-group')
@@ -70,44 +73,72 @@ export default class SampleChart {
       .attr('class', 'x-title')
       .text('Years');
 
-    d3.csv('app/sample/sample-data.csv', (error, data) => {
-      if (error) throw error;
+    this.x.domain(d3.extent(this.data, (d) => {
+      return d.date;
+    }));
+    this.y.domain([0, d3.max(this.data, (d) => { return d.close; })]);
 
-      data.forEach((d) => {
-        d.date = parseTime(d.date);
-        d.close = +d.close;
-      });
+    this.path = this.svg.append('path')
+      .data([this.data])
+      .attr('class', 'line')
+      .attr('d', this.valueline);
 
-      x.domain(d3.extent(data, (d) => {
-        return d.date;
-      }));
-      y.domain([0, d3.max(data, (d) => { return d.close; })]);
+    // Add the X Axis
+    this.xAxisOuter = this.svg.append('g')
+      .attr('transform', `translate(0,${height})`)
+      .attr('class', 'axis')
+      .call(d3.axisBottom(this.x));
 
-      this.svg.append('path')
-        .data([data])
-        .attr('class', 'line')
-        .attr('d', valueline);
+    this.xAxisInner = this.svg.append('g')
+      .attr('class', 'inner-axis')
+      .call(d3.axisLeft(this.y).tickSizeInner(-width));
 
-      // Add the X Axis
-      this.svg.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .attr('class', 'axis')
-        .call(d3.axisBottom(x));
+    // Add the Y Axis
+    this.yAxisInner = this.svg.append('g')
+      .attr('class', 'axis')
+      .call(d3.axisLeft(this.y));
 
-      // Add the X Axis
-      this.svg.append('g')
-        .attr('class', 'inner-axis')
-        .call(d3.axisLeft(y).tickSizeInner(-width));
+    this.yAxisOuter = this.svg.append('g')
+      .attr('transform', `translate(0,${height})`)
+      .attr('class', 'inner-axis')
+      .call(d3.axisBottom(this.x).tickSizeInner(-height));
+  }
 
-      // Add the Y Axis
-      this.svg.append('g')
-        .attr('class', 'axis')
-        .call(d3.axisLeft(y));
+  update(data) {
+    if (data) this.data = data;
+    const animate = true;
+    const margin = {
+        top: 20, right: 20, bottom: 50, left: 100,
+      },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
 
-      this.svg.append('g')
-        .attr('transform', `translate(0,${height})`)
-        .attr('class', 'inner-axis')
-        .call(d3.axisBottom(x).tickSizeInner(-height));
-    });
+    this.x.domain(d3.extent(this.data, (d) => {
+      return d.date;
+    }));
+    this.y.domain([0, d3.max(this.data, (d) => { return d.close; })]);
+
+    this.path.data([this.data]);
+
+    this._transition(this.path, { animate })
+      .attr('class', 'line')
+      .attr('d', this.valueline);
+
+    this._transition(this.xAxisOuter, { animate })
+      .attr('transform', `translate(0,${height})`)
+      .call(d3.axisBottom(this.x));
+    //
+    this._transition(this.xAxisInner, { animate })
+      .call(d3.axisLeft(this.y).tickSizeInner(-width));
+
+
+    this._transition(this.yAxisInner, { animate })
+      .attr('class', 'axis')
+      .call(d3.axisLeft(this.y));
+
+    this._transition(this.yAxisOuter, { animate })
+      .attr('transform', `translate(0,${height})`)
+      .attr('class', 'inner-axis')
+      .call(d3.axisBottom(this.x).tickSizeInner(-height));
   }
 }

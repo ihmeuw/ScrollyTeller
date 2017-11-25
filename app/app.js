@@ -1,22 +1,17 @@
 /* global VizHub, document, window, global window */
 
-import $ from 'jquery';
-// import d3 from 'd3';
-
 import ThemeTemplate from './theme/theme';
 import './scss/style.scss';
+import $ from 'jquery';
 
 
-class App {
+export default class App {
   constructor() {
-    console.log('At least its loading at all');
-
     this.view = new ThemeTemplate(this);
   }
 }
 
 
 $(document).ready(() => {
-  const app = new App();
+  new App();
 });
-

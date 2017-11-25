@@ -1,0 +1,69 @@
+body {
+  width: 100%;
+  background-color: white;
+  margin: 4px;
+}
+
+
+#container {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+}
+
+#sections {
+  width: 340px;
+  margin-left: 30px;
+  display: inline-block;
+  float: left;
+}
+
+#graph {
+  width: 960px;
+  margin-left: 80px;
+  display: inline-block;
+  float: right;
+  position: fixed;
+  top: 150px;
+  background-color: #ddd;
+  height: 600px;
+}
+
+#graph.graph-scroll-fixed {
+  position: fixed;
+}
+
+#graph.graph-scroll-below{
+  position: absolute;
+  bottom: 0;
+}
+
+.step {
+  margin-bottom: 300px;
+}
+
+#sections > div {
+  opacity: .3;
+  margin-bottom: 120px;
+}
+
+#sections div.graph-scroll-active {
+  opacity: 1;
+}
+
+
+@media (max-width: 925px) {
+  #graph{
+    width: 100%;
+    transform: translate(-50%, 0);
+    margin-left: 50%;
+  }
+
+  #sections{
+    position: relative;
+    margin: 0 auto;
+    padding-top: 400px;
+  }
+}
+
+
