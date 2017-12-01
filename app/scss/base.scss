@@ -108,8 +108,15 @@ a:hover {
 
 .line {
   fill: none;
+  stroke: blue;
+  stroke-width: 2px;
+}
+
+.dashed {
+  fill: none;
   stroke: $secondary-color;
   stroke-width: 4px;
+  stroke-dasharray: 4 4;
 }
 
 

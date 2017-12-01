@@ -5,61 +5,66 @@ body {
 }
 
 
-#container {
+#container, #container_progress {
   position: relative;
   overflow: auto;
   width: 100%;
 }
 
-#sections {
+#sections, #sections_progress {
   width: 340px;
   margin-left: 30px;
   display: inline-block;
   float: left;
 }
 
-#graph {
+#graph, #graph_progress {
   width: 960px;
   margin-left: 80px;
   display: inline-block;
-  float: right;
-  position: fixed;
-  top: 150px;
   background-color: #ddd;
-  height: 600px;
+  height: 700px;
+}
+#graph_progress {
+  background-color: red;
 }
 
-#graph.graph-scroll-fixed {
+#graph_progress.graph-scroll-fixed, #graph.graph-scroll-fixed{
   position: fixed;
+  margin-left: 80px;
+  display: inline-block;
+  top: 5px;
 }
 
-#graph.graph-scroll-below{
+#graph_progress.graph-scroll-below, #graph.graph-scroll-below{
   position: absolute;
   bottom: 0;
+  margin-left: 80px;
+  display: inline-block;
 }
 
 .step {
   margin-bottom: 300px;
 }
 
-#sections > div {
+#sections > div, #sections_progress > div {
   opacity: .3;
   margin-bottom: 120px;
 }
 
-#sections div.graph-scroll-active {
+#sections div.graph-scroll-active, #sections_progress div.graph-scroll-active {
   opacity: 1;
 }
 
 
 @media (max-width: 925px) {
-  #graph{
+  #graph, #graph_progress {
     width: 100%;
     transform: translate(-50%, 0);
     margin-left: 50%;
   }
 
-  #sections{
+  #sections, #sections_progress {
     position: relative;
     margin: 0 auto;
     padding-top: 400px;

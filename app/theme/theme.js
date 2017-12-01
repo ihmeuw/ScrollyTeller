@@ -1,10 +1,9 @@
-import $ from 'jquery';
-import * as item from 'graph-scroll';
 import * as d3 from 'd3';
 import { union } from 'lodash';
 
 
 import SampleChart from '../sample/template.chart';
+import ProgressChart from '../sample/progress.chart';
 
 export default class ThemeTemplate {
   constructor() {
@@ -42,6 +41,37 @@ export default class ThemeTemplate {
           <div id="graph"></div>
       </div> 
       <div class="step"></div>
+      <div class="step"></div>
+      <div class="step"></div>
+      <div id="container_progress">
+          <div id="sections_progress">
+            <div id="one_progress">
+              <h2>How did this happen?</h2>
+              <p>In the late 1990s healthcare providers began to prescribe prescription opioid pain relievers at greater rates</p>
+              <a href="https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis">What can I do to help?</a>
+            </div>
+            <div class="step"></div>
+            <div id="two_progress">
+              <h2>How did this happen?</h2>
+              <p>In the late 1990s healthcare providers began to prescribe prescription opioid pain relievers at greater rates</p>
+              <a href="https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis">What can I do to help?</a>
+            </div>
+                <div class="step"></div>
+            <div id="three_progress">
+              <h2>How did this happen?</h2>
+              <p>In the late 1990s healthcare providers began to prescribe prescription opioid pain relievers at greater rates</p>
+              <a href="https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis">What can I do to help?</a>
+            </div>
+           <div class="step"></div>
+            <div id="four_progress">
+              <h2>How did this happen?</h2>
+              <p>In the late 1990s healthcare providers began to prescribe prescription opioid pain relievers at greater rates</p>
+              <a href="https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis">What can I do to help?</a>
+            </div>
+            <div class="step"></div>
+          </div>
+          <div id="graph_progress"></div>
+      </div> 
     `);
     this.data = {
       one: [],
@@ -50,12 +80,13 @@ export default class ThemeTemplate {
       four: [],
     };
 
-    this.dataPrepAndRenderInitialGraph();
-
     this.chart = new SampleChart({
       container: '#graph',
     });
-    item.graphScroll()
+
+    this.dataPrepAndRenderInitialGraph();
+
+    graphScroll()
       .container(d3.select('#container'))
       .graph(d3.selectAll('#graph'))
       .sections(d3.selectAll('#sections > div'))
@@ -64,7 +95,27 @@ export default class ThemeTemplate {
         if (i == 0) this.update(this.data.one);
         if (i == 2) this.update(this.data.three);
         if (i == 4) this.update(this.data.two);
-        if (i == 7) this.update(this.data.one);
+        if (i == 6) this.update(this.data.four);
+      });
+
+    this.progress = new ProgressChart({
+      container: '#graph_progress',
+    });
+
+
+    graphScroll()
+      .container(d3.select('#container_progress'))
+      .graph(d3.selectAll('#graph_progress'))
+      .sections(d3.selectAll('#sections_progress > div'))
+      .on('active', (i) => {
+        console.log(`${i}th section active progress`);
+      })
+      .on('scroll', (i, d) => {
+        console.log(d, i);
+        if (i == 2) {
+          this.progress.update();
+        }
+        // this.progress.path.attr('stroke-dashoffset', `${this.progress.path.node().getTotalLength() - this.progress.pathScale(d)}px`);
       });
   }
 
@@ -111,6 +162,7 @@ export default class ThemeTemplate {
 
   render(data) {
     this.chart.render(data);
+    this.progress.render(data);
   }
 
   update(data) {

@@ -11,18 +11,11 @@ export default class SampleChart extends Chart {
    */
   constructor(properties) {
     super(merge({}, properties));
-  }
-
-  render(data) {
-    if (data) this.data = data;
     const margin = {
         top: 20, right: 20, bottom: 50, left: 100,
       },
       width = 960 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
-
-    this.x = d3.scaleTime().range([0, width]);
-    this.y = d3.scaleLinear().range([height, 0]);
 
     const xTitleGroup = (selection) => {
       return selection.attr(
@@ -40,10 +33,6 @@ export default class SampleChart extends Chart {
       );
     };
 
-    this.valueline = d3.line()
-      .x((d) => { return this.x(d.date); })
-      .y((d) => { return this.y(d.close); });
-
     this.svg = d3.select(this.properties.container)
       .append('svg')
       .attr('width', width + margin.left + margin.right)
@@ -53,7 +42,6 @@ export default class SampleChart extends Chart {
         'transform',
         `translate(${margin.left},${margin.top})`,
       );
-
 
     this.yTitleGroup = this.svg.append('g')
       .attr('class', 'y-title-group title-group')
@@ -71,15 +59,40 @@ export default class SampleChart extends Chart {
       .attr('class', 'x-title')
       .text('Years');
 
+    this.path = this.svg.append('path')
+      .attr('class', 'line');
+
+    this.pathScale = d3.scaleLinear()
+      .domain([0, 1]);
+  }
+
+  render(data) {
+    if (data) this.data = data;
+    const margin = {
+        top: 20, right: 20, bottom: 50, left: 100,
+      },
+      width = 960 - margin.left - margin.right,
+      height = 500 - margin.top - margin.bottom;
+
+    this.x = d3.scaleTime().range([0, width]);
+    this.y = d3.scaleLinear().range([height, 0]);
+
+
+    this.valueline = d3.line()
+      .x((d) => { return this.x(d.date); })
+      .y((d) => { return this.y(d.close); });
+
+
     this.x.domain(d3.extent(this.data, (d) => {
       return d.date;
     }));
     this.y.domain([0, d3.max(this.data, (d) => { return d.close; })]);
 
-    this.path = this.svg.append('path')
+    this.dashed = this.svg.append('path')
       .data([this.data])
-      .attr('class', 'line')
+      .attr('class', 'dashed')
       .attr('d', this.valueline);
+
 
     // Add the X Axis
     this.xAxisOuter = this.svg.append('g')
@@ -102,41 +115,23 @@ export default class SampleChart extends Chart {
       .call(d3.axisBottom(this.x).tickSizeInner(-height));
   }
 
-  update(data) {
-    if (data) this.data = data;
-    const animate = true;
-    const margin = {
-        top: 20, right: 20, bottom: 50, left: 100,
-      },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+  update() {
+    this.pathScale
+      .domain([0, 1])
+      .range([0, this.totalLength])
+      .clamp(true);
 
-    this.x.domain(d3.extent(this.data, (d) => {
-      return d.date;
-    }));
-    this.y.domain([0, d3.max(this.data, (d) => { return d.close; })]);
-
-    this.path.data([this.data]);
-
-    this._transition(this.path, { animate })
-      .attr('class', 'line')
+    this.path
+      .data([this.data])
       .attr('d', this.valueline);
 
-    this._transition(this.xAxisOuter, { animate })
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(this.x));
-    //
-    this._transition(this.xAxisInner, { animate })
-      .call(d3.axisLeft(this.y).tickSizeInner(-width));
+    this.totalLength = this.path.node().getTotalLength();
 
-
-    this._transition(this.yAxisInner, { animate })
-      .attr('class', 'axis')
-      .call(d3.axisLeft(this.y));
-
-    this._transition(this.yAxisOuter, { animate })
-      .attr('transform', `translate(0,${height})`)
-      .attr('class', 'inner-axis')
-      .call(d3.axisBottom(this.x).tickSizeInner(-height));
+    this.path
+      .attr('stroke-dasharray', `${this.totalLength} ${this.totalLength}`)
+      .attr('stroke-dashoffset', this.totalLength)
+      .transition()
+      .duration(5000)
+      .attr('stroke-dashoffset', 0);
   }
 }
