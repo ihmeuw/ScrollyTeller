@@ -74,3 +74,8 @@ git branch -a
 git remote prune origin
 ```
 > * You should now have gotten rid of the old branches entirely
+
+### Creating a new section using ScrollyTeller
+##### ScrollyTeller is a JavaScript library that dynamically builds the HTML/CSS for the ***narration*** part of a scrolling based data story from a .csv file, and provides functionality for linking named 'triggers' to actions dispatched when each narration comes into view.
+
+#### To create a new section, see the [ScrollyTeller README](./app/ScrollyTeller/README.md)
