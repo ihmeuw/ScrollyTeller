@@ -1,0 +1,56 @@
+
+.graph_default
+{
+  opacity: 0; // start hidden
+  margin-right: $graph-margin-right;
+  margin-left: $graph-margin-left;
+  width: $graph-width;
+  top: $graph-top;
+  height: $graph-height;
+  overflow: hidden;
+  position: sticky;
+  float: right;
+}
+
+.graph_default.graph-scroll-below
+{
+  opacity: 0;
+  margin-right: $graph-margin-right;
+  margin-left: $graph-margin-left;
+  top: 0px;
+  width: $graph-width;
+  height: $graph-height;
+  overflow: hidden;
+  position: absolute;
+  display: inline-flex;
+  background-color: #d8dadd;
+}
+
+.graph_default.graph-scroll-fixed
+{
+  margin-right: $graph-margin-right;
+  margin-left: $graph-margin-left;
+  width: $graph-width;
+  overflow: hidden;
+  top: $graph-top;
+  position: sticky;
+  background-color: #d8dadd;
+}
+
+@media (max-width: 925px) {
+  .graph_default,
+  .graph_default.graph-scroll-below,
+  .graph_default.graph-scroll-fixed
+  {
+    width: 100%;
+  }
+
+  /* by default, put the graph at the bottom of the page for small screens */
+  .graph_default.graph-scroll-below,
+  .graph_default.graph-scroll-fixed
+  {
+    top: $graph-height - $graph-top;
+  }
+}
+
+
