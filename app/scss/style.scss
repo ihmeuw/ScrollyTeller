@@ -1,5 +1,18 @@
 @import 'reset.scss';
-@import 'variables.scss';
-@import 'base.scss';
-@import 'layout.scss';
-@import 'module.scss';
+
+/* all variables */
+@import 'story-variables';
+@import 'scrolly-variables.scss';
+
+/* standard css for this story, to be adhered to for consistency */
+@import 'story-base';
+@import 'story-layout';
+@import 'story-graph';
+
+/* required by ScrollyTeller */
+@import 'scrolly-narration';
+@import 'scrolly-graph';
+
+/* example of overriding the default scrolly-graph css when specifying your own CSS
+ * (ScrollyTeller.useDefaultGraphCSS = false) */
+@import 'scrolly-graph-example';
