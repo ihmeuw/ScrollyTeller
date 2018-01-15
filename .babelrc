@@ -11,6 +11,7 @@
   "plugins": [
     "add-module-exports",
     "transform-object-rest-spread",
+    "transform-async-to-generator",
   ],
   "ignore": [
     "node_modules/",

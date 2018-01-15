@@ -8,7 +8,7 @@ const env = environment.valueOf('env');
 export default new Config().merge({
   bail: true,
   entry: {
-    bundle: './app/app.js'
+    bundle: ['babel-polyfill', './app/app.js'],
   },
   output: {
     path: `${baseDir}/dist`,
