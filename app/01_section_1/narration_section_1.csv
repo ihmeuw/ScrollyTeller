@@ -1,0 +1,7 @@
+narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,trigger
+0,40,30,The opioid crisis,(scroll down),,,unhide
+1,40,30,1990,In the year 1990,,,
+2,40,30,3000,Opiod overdoses killed 3000 Americans.,,,
+3,40,30,8 per day,That's approximately 8 people per day,,,
+4,40,30,1 Year,"Between 1990 and 1991, the number of opioid overdoses increased to 3600.",,,
+5,40,100,3600,And killed more people than the 911 terrorist attacks that would occur 10 years later.,https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis,What can I do to help?,hide
