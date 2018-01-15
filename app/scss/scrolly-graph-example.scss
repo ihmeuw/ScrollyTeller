@@ -1,0 +1,28 @@
+@import 'scrolly-graph';
+
+.graph_section_example // add user specified css for an "example" section
+{
+  @extend .graph_default;
+}
+
+.graph_section_example.graph-scroll-below // add user specified css for an "example" section
+{
+  @extend .graph_default.graph-scroll-below;
+}
+
+.graph_section_example.graph-scroll-fixed // add user specified css for an "example" section
+{
+  @extend .graph_default.graph-scroll-fixed;
+}
+
+/* example of overriding default height on a user specified graph with specifer "example" */
+.graph_section_example,
+.graph_section_example.graph-scroll-fixed,
+.graph_section_example.graph-scroll-below
+{
+  height: 550px;
+}
+
+@media (max-width: 925px) {
+  // TODO: mobile!
+}
