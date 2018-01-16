@@ -95,8 +95,8 @@ export default class SectionExample extends ScrollyTeller {
     this.chart.render(this.data.sampledata);
   }
 
-  onActivateNarration(index, activeDomElement) {
-    const trigger = activeDomElement.getAttribute('trigger');
+  onActivateNarration(index, activeNarrationBlock) {
+    const trigger = activeNarrationBlock.getAttribute('trigger');
     /** trigger can be named as the data object "sampledata", "updatedata', etc. in the csv file
      * and stored as this.data.sampledata
      * The following lines attempt to retrieve the appropriate data based on the trigger
@@ -107,9 +107,9 @@ export default class SectionExample extends ScrollyTeller {
     }
   }
 
-  onScroll(index, progress, activeDomElement) {
+  onScroll(index, progress, activeNarrationBlock) {
     /** use trigger specified in the narration csv file to trigger actions */
-    switch (activeDomElement.getAttribute('trigger')) {
+    switch (activeNarrationBlock.getAttribute('trigger')) {
       case 'unhide':
         /** set opacity based on progress to fade graph in */
         d3.select(`#${this.graphId()}`).style('opacity', progress - 0.1);

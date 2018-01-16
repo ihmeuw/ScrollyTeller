@@ -19,7 +19,7 @@ export default class ScrollyTeller {
     this.narrationCSVFilePath = narrationCSVFilePath;
     this.showSpacers = showSpacers;
     this.useDefaultGraphCSS = useDefaultGraphCSS;
-    this.graphScroll = null; /** constructed via _buildGraphContainer() */
+    this.graphScroll = null; /** constructed via _buildGraphScrollContainer() */
 
     /** _buildAsync() takes the narration.csv and builds the following in the following order:
      * In parallel:
@@ -57,13 +57,13 @@ export default class ScrollyTeller {
 
   /** Triggered when a narration section hits the top of the page and becomes active
    *  Override this method in sub-classes to handle navigation triggers, and use the
-   *   properties on the activeDOMElement to handle which data to trigger your graph changes
+   *   properties on the activeNarrationBlock to handle which data to trigger your graph changes
    *  @param index - index of the narration group in this.graphScroll.sections()
-   *  @param activeDOMElement - the currently active narration DOM element */
-  onActivateNarration(index, activeDOMElement) {
-    const activeTriggerName = activeDOMElement.getAttribute('trigger');
-    const myNarrationClass = activeDOMElement.className;
-    const myNarrationId = activeDOMElement.id;
+   *  @param activeNarrationBlock - the currently active narration DOM element */
+  onActivateNarration(index, activeNarrationBlock) {
+    const activeTriggerName = activeNarrationBlock.getAttribute('trigger');
+    const myNarrationClass = activeNarrationBlock.className;
+    const myNarrationId = activeNarrationBlock.id;
 
     /** you can also access other 'sections' or narration blocks via this.graphScroll.sections() */
     const previousIndex = index - 1 < 0 ? 0 : index;
@@ -72,12 +72,12 @@ export default class ScrollyTeller {
 
   /** Triggered upon scrolling
    *  Override this method in sub-classes to handle scroll events and use the
-   *   properties on the activeDOMElement to handle which data to trigger your graph changes
+   *   properties on the activeNarrationBlock to handle which data to trigger your graph changes
    *  @param index - index of the narration group in graphScroll().sections()
    *  @param progress - a number between 0-1, 0 when the active narration block has just hit the top
    *        of the page, 1 when the whole block has been scrolled through
-   *  @param activeDOMElement - the currently active narration DOM element */
-  onScroll(index, progress, activeDomElement) {
+   *  @param activeNarrationBlock - the currently active narration DOM element */
+  onScroll(index, progress, activeNarrationBlock) {
   }
 
   /** Returns the section id associated with this section based on the sectionIdentifier */
@@ -114,14 +114,14 @@ export default class ScrollyTeller {
       this._buildSectionWithNarration(this.narrationFilePath, this.sectionIdentifier),
     ])
       .then(() => {
-        this._buildGraphContainer();
+        this._buildGraphScrollContainer();
       })
       .then(() => {
         this.buildChart();
       });
   }
 
-  _buildGraphContainer() {
+  _buildGraphScrollContainer() {
     this.graphScroll = graphScroll()
       .container(select(`#${this.sectionId()}`))
       .graph(selectAll(`#${this.graphId()}`))

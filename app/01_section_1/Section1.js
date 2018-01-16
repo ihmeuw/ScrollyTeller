@@ -49,12 +49,12 @@ export default class Section1 extends ScrollyTeller {
   buildChart() {
   }
 
-  onActivateNarration(index, activeDomElement) {
+  onActivateNarration(index, activeNarrationBlock) {
   }
 
-  onScroll(index, progress, activeDomElement) {
+  onScroll(index, progress, activeNarrationBlock) {
     /** use trigger specified in the narration csv file to trigger actions */
-    switch (activeDomElement.getAttribute('trigger')) {
+    switch (activeNarrationBlock.getAttribute('trigger')) {
       case 'unhide':
         /** set graph opacity based on progress to fade graph in */
         select(`#${this.graphId()}`).style('opacity', progress - 0.05);

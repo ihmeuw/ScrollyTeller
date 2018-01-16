@@ -122,13 +122,13 @@ export default class App {
 ```javascript
   /** Triggered when a narration section hits the top of the page and becomes active
    *  Override this method in sub-classes to handle navigation triggers, and use the
-   *   properties on the activeDOMElement to handle which data to trigger your graph changes
+   *   properties on the activeNarrationBlock to handle which data to trigger your graph changes
    *  @param index - index of the narration group in this.graphScroll.sections()
-   *  @param activeDOMElement - the currently active narration DOM element */
-  onActivateNarration(index, activeDOMElement) {
-    const activeTriggerName = activeDOMElement.getAttribute('trigger');
-    const myNarrationClass = activeDOMElement.className;
-    const myNarrationId = activeDOMElement.id;
+   *  @param activeNarrationBlock - the currently active narration DOM element */
+  onActivateNarration(index, activeNarrationBlock) {
+    const activeTriggerName = activeNarrationBlock.getAttribute('trigger');
+    const myNarrationClass = activeNarrationBlock.className;
+    const myNarrationId = activeNarrationBlock.id;
 
     /** you can also access other 'sections' or narration blocks via this.graphScroll.sections() */
     const previousIndex = index - 1 < 0 ? 0 : index;
@@ -139,14 +139,14 @@ export default class App {
 ```javascript
   /** Triggered upon scrolling
    *  Override this method in sub-classes to handle scroll events and use the
-   *   properties on the activeDOMElement to handle which data to trigger your graph changes
+   *   properties on the activeNarrationBlock to handle which data to trigger your graph changes
    *  @param index - index of the narration group in graphScroll().sections()
    *  @param progress - a number between 0-1, 0 when the active narration block has just hit the top
    *        of the page, 1 when the whole block has been scrolled through
-   *  @param activeDOMElement - the currently active narration DOM element */
-  onScroll(index, progress, activeDomElement) {
+   *  @param activeNarrationBlock - the currently active narration DOM element */
+  onScroll(index, progress, activeNarrationBlock) {
     /** use trigger specified in the narration csv file to trigger actions */
-    switch (activeDomElement.getAttribute('trigger')) {
+    switch (activeNarrationBlock.getAttribute('trigger')) {
       case 'unhide':
         /** set graph opacity based on progress to fade graph in */
         select(`#${this.graphId()}`).style('opacity', progress - 0.05);
