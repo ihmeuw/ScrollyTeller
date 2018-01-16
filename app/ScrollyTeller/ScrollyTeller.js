@@ -43,7 +43,7 @@ export default class ScrollyTeller {
    *  but before buildChart() is invoked and can be overridden to build chart data before
    *  creating the chart
    */
-  parseData() {
+  async parseData() {
   }
 
   /** This method is invoked AFTER the narration and graph scroll components have constructed,
@@ -150,6 +150,9 @@ export default class ScrollyTeller {
           .insert('div', ':first-child')
           .attr('class', this.graphClass())
           .attr('id', this.graphId());
+      })
+      .catch((error) => {
+        throw new Error('Error in ScrollyTeller._buildSectionWithNarration() Invalid narrationCSVFilePath variable');
       });
   }
 

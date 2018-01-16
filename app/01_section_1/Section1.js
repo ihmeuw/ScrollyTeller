@@ -43,7 +43,7 @@ export default class Section1 extends ScrollyTeller {
     });
   }
 
-  parseData() {
+  async parseData() {
   }
 
   buildChart() {

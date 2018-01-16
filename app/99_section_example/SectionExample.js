@@ -3,6 +3,7 @@ import {
   isUndefined,
 } from 'lodash';
 import * as d3 from 'd3';
+import * as d3promise from 'd3.promise';
 import ScrollyTeller from '../ScrollyTeller/ScrollyTeller';
 import SampleChart from '../sample/template.chart';
 
@@ -43,63 +44,61 @@ export default class SectionExample extends ScrollyTeller {
     });
   }
 
-  parseData() {
-    this.data = {
-      one: [],
-      two: [],
-      three: [],
-      four: [],
-    };
+  async parseData() {
+    this.data = {};
+
+    /** using d3promise to convert d3.csv calls to promises */
     const parseTime = d3.timeParse('%y');
-
-    d3.csv('app/sample/update-data.csv', (error, data) => {
-      if (error) throw error;
-      this.data.one = data;
-      this.data.one.forEach((d) => {
-        d.date = parseTime(d.date);
-        d.close = +d.close;
+    await Promise.all([
+      d3promise.csv('app/sample/sample-data.csv'),
+      d3promise.csv('app/sample/update-data.csv'),
+      d3promise.csv('app/sample/two-data.csv'),
+      d3promise.csv('app/sample/three-data.csv'),
+    ])
+      .then((results) => {
+        results.forEach((result, index) => {
+          let dataname = '';
+          switch (index) {
+            case 0:
+              dataname = 'sampledata';
+              break;
+            case 1:
+              dataname = 'updatedata';
+              break;
+            case 2:
+              dataname = 'twodata';
+              break;
+            case 3:
+              dataname = 'threedata';
+              break;
+            default:
+              dataname = 'sampledata';
+          }
+          /** set this.data to the results array and handle some date and number conversion */
+          this.data[dataname] = result.map((datum) => {
+            return {
+              date: parseTime(datum.date),
+              close: +datum.close,
+            };
+          });
+        });
+      })
+      .catch((error) => {
+        throw new Error('Error in SectionExample.parseData() Invalid data file path.');
       });
-    });
-
-    d3.csv('app/sample/sample-data.csv', (error, data) => {
-      if (error) throw error;
-      this.data.two = data;
-      this.data.two.forEach((d) => {
-        d.date = parseTime(d.date);
-        d.close = +d.close;
-      });
-    });
-
-    d3.csv('app/sample/two-data.csv', (error, data) => {
-      if (error) throw error;
-      this.data.three = data;
-      this.data.three.forEach((d) => {
-        d.date = parseTime(d.date);
-        d.close = +d.close;
-      });
-    });
-
-    d3.csv('app/sample/three-data.csv', (error, data) => {
-      if (error) throw error;
-      this.data.four = data;
-      this.data.four.forEach((d) => {
-        d.date = parseTime(d.date);
-        d.close = +d.close;
-      });
-    });
   }
 
   buildChart() {
     this.chart = new SampleChart({
       container: `#${this.graphId()}`,
     });
-    this.chart.render(this.data.one);
+    this.chart.render(this.data.sampledata);
   }
 
   onActivateNarration(index, activeDomElement) {
     const trigger = activeDomElement.getAttribute('trigger');
-    /** trigger can be named as the data object "one", "two", "three" in the csv file
-     * and stored as this.data.one.
+    /** trigger can be named as the data object "sampledata", "updatedata', etc. in the csv file
+     * and stored as this.data.sampledata
      * The following lines attempt to retrieve the appropriate data based on the trigger
      * and if the data exists, update the chart */
     const data = get(this.data, trigger, undefined);
