@@ -11,14 +11,14 @@
 
 ### Terminology
 
- | Term | Description |
- | :---: | :---: |
- | **Narration** | The scrolling text content that 'narrates' a data story. |
- | **Narration Block** | A group of text, links, and spacers contained in a ```<div>```. Actions can be triggered when each narration block comes into view. |
- | **Narration Block Contents** | Each narration block contains: ```<h2>``` text (title), ```<p>``` text (subtitle), and an ```<a href=...>``` (link) with some text.  For convenience, each narration block also contains **spacers** whose height is customizeable to control the pacing of the story. |
- | **Section** | A group of narration blocks with a corresponding **graph** element. A story can be one or multiple sections. |
- | **Graph** | A <div> element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
- | **GraphScroll** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. ScrollyTeller uses a modified version of GraphScroll under the hood to provide extra functionality. |
+| Term | Description |
+| :---: | :---: |
+| **Narration** | The scrolling text content that 'narrates' a data story. |
+| **Narration Block** | A group of text, links, and spacers contained in a ```<div>```. Actions can be triggered when each narration block comes into view. |
+| **Narration Block Contents** | Each narration block contains: ```<h2>``` text (title), ```<p>``` text (subtitle), and an ```<a href=...>``` (link) with some text.  For convenience, each narration block also contains **spacers** whose height is customizeable to control the pacing of the story. |
+| **Section** | A group of narration blocks with a corresponding **graph** element. A story can be one or multiple sections. |
+| **Graph** | A ```<div>``` element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
+| **GraphScroll** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. ScrollyTeller uses a modified version of GraphScroll under the hood to provide extra functionality. |
 
 
 #### To create a new section:
@@ -79,20 +79,20 @@ export default class App {
 
 | narrationId | spaceAboveInVh | spaceBelowInVh | h2Text | paragraphText | hRef | hRefText | trigger |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|0|40|40|Some text that will be formatted as ```<h2>```| Some text that will be formatted as ```<p>``` |www.link.com|I'm a link to link.com|show_chart
-|1|40|40|More Narration...|Here's why this chart is important!|||show_data_1
+| 0 | 40 | 40 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` |www.link.com|I'm a link to link.com|show_chart
+| 1 | 40 | 40 |More Narration...|Here's why this chart is important!|||show_data_1
 
  Here's a description of what each column header controls:
 
- | Column Header | Effect |
- | :---: | :---: |
- | **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
- | **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
- | **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
- | **h2Text** | Optional larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
- | **paragraphText** | Optional paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
- | **hRef** | Optional link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
- | **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
+| Column Header | Effect |
+| :---: | :---: |
+| **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
+| **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **h2Text** | Optional larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
+| **paragraphText** | Optional paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
+| **hRef** | Optional link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
+| **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
 
 
 * override ```fetchData()``` to parse your data.  See `SectionExample.js` for an example of how to implement this using [d3.promise](https://github.com/kristw/d3.promise).
