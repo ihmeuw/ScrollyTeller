@@ -24,7 +24,7 @@ export default class Section1 extends ScrollyTeller {
       * The super class 'ScrollyTeller' takes the narration.csv and
      *      builds the following in the following order:
      * In parallel:
-     * - Calls this.parseData() to parse any data
+     * - Calls this.fetchData() to parse any data
      * - Builds the narration as follows:
      *   - A <div> with class = this.sectionClass() and id = this.sectionId() to hold narration
      *      and our graph
@@ -43,7 +43,7 @@ export default class Section1 extends ScrollyTeller {
     });
   }
 
-  async parseData() {
+  async fetchData() {
   }
 
   buildChart() {

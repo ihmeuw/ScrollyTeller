@@ -25,7 +25,7 @@ export default class SectionExample extends ScrollyTeller {
      * The super class 'ScrollyTeller' takes the narration.csv and
      *      builds the following in the following order:
      * In parallel:
-     * - Calls this.parseData() to parse any data
+     * - Calls this.fetchData() to parse any data
      * - Builds the narration as follows:
      *   - A <div> with class = this.sectionClass() and id = this.sectionId() to hold narration
      *      and our graph
@@ -44,7 +44,7 @@ export default class SectionExample extends ScrollyTeller {
     });
   }
 
-  async parseData() {
+  async fetchData() {
     this.data = {};
 
     /** using d3promise to convert d3.csv calls to promises */
@@ -84,7 +84,7 @@ export default class SectionExample extends ScrollyTeller {
         });
       })
       .catch((error) => {
-        throw new Error('Error in SectionExample.parseData() Invalid data file path.');
+        throw new Error('Error in SectionExample.fetchData() Invalid data file path.');
       });
   }
 

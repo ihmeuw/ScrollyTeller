@@ -23,7 +23,7 @@ export default class ScrollyTeller {
 
     /** _buildAsync() takes the narration.csv and builds the following in the following order:
      * In parallel:
-     * - Calls this.parseData() to parse any data necessary
+     * - Calls this.fetchData() to parse any data necessary
      * - Builds the following:
      *   - A <div> with class = this.sectionClass() and id = this.sectionId() to hold narration
      *      and our graph
@@ -43,7 +43,7 @@ export default class ScrollyTeller {
    *  but before buildChart() is invoked and can be overridden to build chart data before
    *  creating the chart
    */
-  async parseData() {
+  async fetchData() {
   }
 
   /** This method is invoked AFTER the narration and graph scroll components have constructed,
@@ -110,7 +110,7 @@ export default class ScrollyTeller {
 
   _buildAsync() {
     Promise.all([
-      this.parseData(),
+      this.fetchData(),
       this._buildSectionWithNarration(this.narrationFilePath, this.sectionIdentifier),
     ])
       .then(() => {
