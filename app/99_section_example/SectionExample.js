@@ -1,11 +1,16 @@
 import {
   get,
   isUndefined,
+  groupBy,
+  toNumber,
+  toArray,
+  isEmpty,
+  reduce,
 } from 'lodash';
 import * as d3 from 'd3';
 import * as d3promise from 'd3.promise';
 import ScrollyTeller from '../ScrollyTeller/ScrollyTeller';
-import SampleChart from '../sample/template.chart';
+import SampleChart from './components/template.chart';
 
 export default class SectionExample extends ScrollyTeller {
   constructor({
@@ -14,7 +19,7 @@ export default class SectionExample extends ScrollyTeller {
     /** can be any number, string, etc */
     sectionIdentifier = 'example',
     /** must be an absolure path */
-    narrationCSVFilePath = 'app/99_section_example/narration_example.csv',
+    narrationCSVFilePath = 'app/99_section_example/data/narration_example.csv',
     /** set to true to show spacer sizes for debugging */
     showSpacers = false,
     /**  if false, you must specify your own graph css, where
@@ -49,42 +54,23 @@ export default class SectionExample extends ScrollyTeller {
 
     /** using d3promise to convert d3.csv calls to promises */
     const parseTime = d3.timeParse('%y');
-    await Promise.all([
-      d3promise.csv('app/sample/sample-data.csv'),
-      d3promise.csv('app/sample/update-data.csv'),
-      d3promise.csv('app/sample/two-data.csv'),
-      d3promise.csv('app/sample/three-data.csv'),
-    ])
+    await d3promise.csv('app/99_section_example/data/data-by-series.csv')
       .then((results) => {
-        results.forEach((result, index) => {
-          let dataname = '';
-          switch (index) {
-            case 0:
-              dataname = 'sampledata';
-              break;
-            case 1:
-              dataname = 'updatedata';
-              break;
-            case 2:
-              dataname = 'twodata';
-              break;
-            case 3:
-              dataname = 'threedata';
-              break;
-            default:
-              dataname = 'sampledata';
-          }
-          /** set this.data to the results array and handle some date and number conversion */
-          this.data[dataname] = result.map((datum) => {
-            return {
-              date: parseTime(datum.date),
-              close: +datum.close,
-            };
-          });
+        /** parse results and convert dates to years, close to number */
+        const dataProcessed = results.map((datum) => {
+          return {
+            series: datum.series,
+            date: parseTime(datum.date),
+            close: toNumber(datum.close),
+          };
         });
+        /** set this.data to the results array and handle some date and number conversion */
+        this.data = groupBy(dataProcessed, 'series');
+
+        console.log(this.data);
       })
       .catch((error) => {
-        throw new Error('Error in SectionExample.fetchData() Invalid data file path.');
+        throw new Error('Error in SectionExample.fetchData()');
       });
   }
 
@@ -92,19 +78,54 @@ export default class SectionExample extends ScrollyTeller {
     this.chart = new SampleChart({
       container: `#${this.graphId()}`,
     });
-    this.chart.render(this.data.sampledata);
+    this.chart.render(this.getFilteredDataByTriggerString('series1:90-17'));
   }
 
   onActivateNarration(index, activeNarrationBlock) {
     const trigger = activeNarrationBlock.getAttribute('trigger');
-    /** trigger can be named as the data object "sampledata", "updatedata', etc. in the csv file
-     * and stored as this.data.sampledata
-     * The following lines attempt to retrieve the appropriate data based on the trigger
-     * and if the data exists, update the chart */
-    const data = get(this.data, trigger, undefined);
-    if (!isUndefined(data)) {
-      this.chart.update(data);
+    const narrationId = activeNarrationBlock.id;
+
+    switch (trigger) {
+      case 'unhide':
+      case 'hide':
+      case 'opacityzero':
+        break; // do nothing for unhide, hide, opacity zero
+      default: {
+        const filteredData = this.getFilteredDataByTriggerString(trigger);
+        if (!isEmpty(filteredData)) {
+          filteredData.forEach((datum) => {
+            this.chart.update(datum);
+          });
+        }
+      }
     }
+  }
+
+  getFilteredDataByTriggerString(trigger) {
+    /** assume trigger is formatted as follows:
+     * series:yearstart-yearend,series:yearstart-yearend
+     */
+    const seriesYearRangeArray = trigger.split(',');
+    const allDataFiltered = reduce(seriesYearRangeArray, (accum, seriesYearRange) => {
+      const [series, yearRange] = seriesYearRange.split(':');
+      if (!isEmpty(series) && !isEmpty(yearRange)) {
+        // TODO: check that years are in valid range?
+        const dataSeries = get(this.data, series, undefined);
+        if (!isUndefined(dataSeries)) {
+          const parseTime = d3.timeParse('%y');
+          const yearArray = yearRange.split('-');
+          const [yearStartDate, yearEndDate] = yearArray.map(parseTime);
+          const filteredData = dataSeries.filter((datum) => {
+            return datum.date >= yearStartDate && datum.date <= yearEndDate;
+          });
+          if (!isEmpty(filteredData)) {
+            return accum.concat(filteredData);
+          }
+        }
+      }
+    }, []);
+
+    return toArray(groupBy(allDataFiltered, 'series'));
   }
 
   onScroll(index, progress, activeNarrationBlock) {
@@ -112,7 +133,7 @@ export default class SectionExample extends ScrollyTeller {
     switch (activeNarrationBlock.getAttribute('trigger')) {
       case 'unhide':
         /** set opacity based on progress to fade graph in */
-        d3.select(`#${this.graphId()}`).style('opacity', progress - 0.1);
+        d3.select(`#${this.graphId()}`).style('opacity', progress - 0.05);
         break;
       case 'hide':
         /** set opacity based on progress to fade graph out */
