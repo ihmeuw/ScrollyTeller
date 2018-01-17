@@ -39,7 +39,7 @@ export default new Config().extend('./webpack/webpack.config.base.js').merge({
   plugins: [
     new WebpackNotifierPlugin({alwaysNotify: true}),
     new BrowserSyncPlugin({
-      proxy: 'http://localhost:8888/opioid-crisis/'
+      proxy: 'http://localhost:8888/scrolly-teller/'
     })
   ]
 });
