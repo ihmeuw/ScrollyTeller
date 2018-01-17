@@ -6,7 +6,7 @@ import SectionExample from './99_section_example/SectionExample';
 export default class App {
   constructor() {
     const containerSelector = { appContainerId: 'app' };
-    const titleSectionProps = { titleTextCSS: 'title', titleText: 'Story Theme Template' };
+    const titleSectionProps = { titleTextCSS: 'title', titleText: 'Scrolly Teller Example' };
 
     this.title = new TitleSection({ ...containerSelector, ...titleSectionProps });
     this.section1 = new Section1(containerSelector);
