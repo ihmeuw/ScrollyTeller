@@ -160,7 +160,7 @@ export default class App {
     }
   }
 ```
-* Optionally override the CSS for your chart if ```useDefaultGraphCSS``` is set to false in the constructor. See ```SectionExample.js``` and ```scrolly-graph-example.scss``` for an example.
+* Optionally override the CSS for your chart if ```useDefaultGraphCSS``` is set to false in the constructor. See ```SectionExample.js``` and ```extend-scrolly-graph-example.scss``` for an example.
 
 ### Method Documentation
 #### TODO...
