@@ -6,4 +6,4 @@ narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,tri
 4,40,40,,Also notice the 'trigger' property on the div with class=narration.  The 'trigger' is a string that you can use to respond to actions received by ScrollyTeller.onActivateNarration() and ScrollyTeller.onScroll(),,,
 5,40,30,onScroll(),"As we leave this section, we'll use onScroll( progress ) to fade things in and out.",,,
 6,40,30,Fade Out,"The graph will fade out during the next narration as we trigger ""unhide"" on the DOM Element with id=narration_4.",,,
-7,40,100,END SECTION 1,,https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a Link to the scrolly-teller repo,hide
+7,40,100,END SECTION 1,,https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a link to the scrolly-teller repo,hide

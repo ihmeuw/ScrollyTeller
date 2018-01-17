@@ -7,4 +7,4 @@ narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,tri
 4,40,40,It's baaad,And the graph wiggles really show how bad it is,,,series3:90-05
 5,40,40,And it's getting worse,More wiggles,,,series3:90-17
 6,40,100,in closing,"We have no idea what to do about it, so now the graph will fade out",,,hide
-7,50,50,The end,,https://www.drugabuse.gov/drugs-abuse/opioids/opioid-overdose-crisis,What can I do to help?,opacityzero
+7,50,50,The end,,https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a link to the scrolly-teller repo,opacityzero
