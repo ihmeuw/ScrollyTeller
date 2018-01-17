@@ -1,7 +1,7 @@
 {
-  "name": "opioid-crisis",
+  "name": "scrolly-teller",
   "version": "1.0.0",
-  "description": "\"opioid crisis story for GRUMP\"",
+  "description": "\"Scrolling story builder for IHME\"",
   "main": "app/app.js",
   "scripts": {
     "build:dev": "NODE_ENV='development' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@stash.ihme.washington.edu:7999/viz/opioid-crisis.git"
+    "url": "ssh://git@stash.ihme.washington.edu:7999/viz/scrolly-teller.git"
   },
   "author": "",
   "license": "ISC",
