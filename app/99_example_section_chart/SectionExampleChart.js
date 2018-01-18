@@ -12,7 +12,7 @@ import * as d3promise from 'd3.promise';
 import ScrollyTeller from '../ScrollyTeller/ScrollyTeller';
 import SampleChart from './components/template.chart';
 
-export default class SectionExample extends ScrollyTeller {
+export default class SectionExampleChart extends ScrollyTeller {
   constructor({
     /** the id of a div to which this section should be added */
     appContainerId = 'app',
@@ -70,7 +70,7 @@ export default class SectionExample extends ScrollyTeller {
         console.log(this.data);
       })
       .catch((error) => {
-        throw new Error('Error in SectionExample.fetchData()');
+        throw new Error('Error in SectionExampleChart.fetchData()');
       });
   }
 

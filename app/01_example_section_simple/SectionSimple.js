@@ -6,7 +6,7 @@ import {
 import { select } from 'd3';
 import ScrollyTeller from '../ScrollyTeller/ScrollyTeller';
 
-export default class Section1 extends ScrollyTeller {
+export default class SectionSimple extends ScrollyTeller {
   constructor({
     /** the id of a div to which this section should be added */
     appContainerId,

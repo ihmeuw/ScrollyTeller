@@ -28,14 +28,14 @@
    * assign the full path of your narrationCSVFilePath to your new narration.csv file
 
 ```javascript
-export default class Section1 extends ScrollyTeller {
+export default class SectionSimple extends ScrollyTeller {
   constructor({
     /** the id of a div to which this section should be added */
     appContainerId,
     /** can be any number, string, etc */
-    sectionIdentifier = 1,
+    sectionIdentifier = 'simple',
     /** must be an absolure path */
-    narrationCSVFilePath = 'app/01_section_1/narration_section_1.csv',
+    narrationCSVFilePath = 'app/01_example_section_simple/data/narration_section_simple.csv',
     /** set to true to show spacer sizes for debugging */
     showSpacers = true,
     /**  if false, you must specify your own graph css, where
@@ -46,7 +46,7 @@ export default class Section1 extends ScrollyTeller {
       * The super class 'ScrollyTeller' takes the narration.csv and
      *      builds the following in the following order:
      * In parallel:
-     * - Calls this.parseData() to parse any data
+     * - Calls this.fetchData() to parse any data
      * - Builds the narration as follows:
      *   - A <div> with class = this.sectionClass() and id = this.sectionId() to hold narration
      *      and our graph
@@ -69,8 +69,11 @@ export default class Section1 extends ScrollyTeller {
 ```javascript
 export default class App {
   constructor() {
-    const appContainerId = 'app';
-    this.section1 = new Section1({ appContainerId });
+    const containerSelector = { appContainerId: 'app' };
+    const titleSectionProps = { titleTextCSS: 'title', titleText: 'Scrolly Teller Example' };
+
+    this.title = new TitleSection({ ...containerSelector, ...titleSectionProps });
+    this.sectionSimple = new SectionSimple(containerSelector);
   }
 }
 ```
