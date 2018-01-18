@@ -1,7 +1,7 @@
 import './scss/style.scss';
 import TitleSection from './00_title_section/TitleSection';
-import Section1 from './01_section_1/Section1';
-import SectionExample from './99_section_example/SectionExample';
+import SectionSimple from './01_example_section_simple/SectionSimple';
+import SectionExample from './99_example_section_chart/SectionExampleChart.js';
 
 export default class App {
   constructor() {
@@ -9,8 +9,8 @@ export default class App {
     const titleSectionProps = { titleTextCSS: 'title', titleText: 'Scrolly Teller Example' };
 
     this.title = new TitleSection({ ...containerSelector, ...titleSectionProps });
-    this.section1 = new Section1(containerSelector);
-    this.example = new SectionExample(containerSelector);
+    this.sectionSimple = new SectionSimple(containerSelector);
+    this.sectionWithChart = new SectionExample(containerSelector);
   }
 }
 

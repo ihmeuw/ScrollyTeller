@@ -95,7 +95,7 @@ export default class App {
 | **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
 
 
-* override ```fetchData()``` to parse your data.  See `SectionExample.js` for an example of how to implement this using [d3.promise](https://github.com/kristw/d3.promise).
+* override ```fetchData()``` to parse your data.  See `SectionExampleChart.js` for an example of how to implement this using [d3.promise](https://github.com/kristw/d3.promise).
 ```javascript
   /** This method is invoked IN PARALLEL with the narration and graph scroll construction,
    *  but before buildChart() is invoked and can be overridden to build chart data before
@@ -160,7 +160,7 @@ export default class App {
     }
   }
 ```
-* Optionally override the CSS for your chart if ```useDefaultGraphCSS``` is set to false in the constructor. See ```SectionExample.js``` and ```extend-scrolly-graph-example.scss``` for an example.
+* Optionally override the CSS for your chart if ```useDefaultGraphCSS``` is set to false in the constructor. See ```SectionExampleChart.js``` and ```extend-scrolly-graph-example.scss``` for an example.
 
 ### Method Documentation
 #### TODO...

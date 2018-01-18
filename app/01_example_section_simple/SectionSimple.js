@@ -11,9 +11,9 @@ export default class Section1 extends ScrollyTeller {
     /** the id of a div to which this section should be added */
     appContainerId,
     /** can be any number, string, etc */
-    sectionIdentifier = 1,
+    sectionIdentifier = 'simple',
     /** must be an absolure path */
-    narrationCSVFilePath = 'app/01_section_1/narration_section_1.csv',
+    narrationCSVFilePath = 'app/01_example_section_simple/data/narration_section_simple.csv',
     /** set to true to show spacer sizes for debugging */
     showSpacers = true,
     /**  if false, you must specify your own graph css, where

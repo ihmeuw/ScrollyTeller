@@ -17,9 +17,9 @@ export default class SectionExample extends ScrollyTeller {
     /** the id of a div to which this section should be added */
     appContainerId = 'app',
     /** can be any number, string, etc */
-    sectionIdentifier = 'example',
-    /** must be an absolure path */
-    narrationCSVFilePath = 'app/99_section_example/data/narration_example.csv',
+    sectionIdentifier = 'chart',
+    /** must be an absolute path */
+    narrationCSVFilePath = 'app/99_example_section_chart/data/narration_section_chart.csv',
     /** set to true to show spacer sizes for debugging */
     showSpacers = false,
     /**  if false, you must specify your own graph css, where
@@ -54,7 +54,7 @@ export default class SectionExample extends ScrollyTeller {
 
     /** using d3promise to convert d3.csv calls to promises */
     const parseTime = d3.timeParse('%y');
-    await d3promise.csv('app/99_section_example/data/data-by-series.csv')
+    await d3promise.csv('app/99_example_section_chart/data/data-by-series.csv')
       .then((results) => {
         /** parse results and convert dates to years, close to number */
         const dataProcessed = results.map((datum) => {

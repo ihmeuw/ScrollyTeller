@@ -1,7 +1,7 @@
 narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,trigger
 0,0,0,,,,,opacityzero
 0,1,1,,,,,series1:95-05
-1,40,40,Section II,Scroll down to fade the graph in,,,unhide
+1,40,40,EXAMPLE SECTION WITH CHART,Scroll down to fade the graph in,,,unhide
 2,40,40,Some data,This is really important,,,series1:95-05
 3,40,40,No Really,This wiggly graph tells us it's really important,,,series2:95-05
 4,40,40,It's baaad,And the graph wiggles really show how bad it is,,,series3:90-05

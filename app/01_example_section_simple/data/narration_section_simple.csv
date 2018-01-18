@@ -1,9 +1,9 @@
 narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,trigger
-0,40,30,SECTION 1,(scroll down),,,unhide
+0,40,30,EXAMPLE SECTION SIMPLE,(scroll down),,,unhide
 1,40,30,,This demo just shows the scrolling text with an empty chart for now.,,,
 2,40,30,Right-click -> Inspect,Right click on this text and see that each div element with class='narration' gets classed with .graph-scroll-active when the spacer ABOVE hits the top of the page.,,,
 3,40,30,,The spacer heights can be controlled in narration_example.csv,,,
 4,40,40,,Also notice the 'trigger' property on the div with class=narration.  The 'trigger' is a string that you can use to respond to actions received by ScrollyTeller.onActivateNarration() and ScrollyTeller.onScroll(),,,
 5,40,30,onScroll(),"As we leave this section, we'll use onScroll( progress ) to fade things in and out.",,,
 6,40,30,Fade Out,"The graph will fade out during the next narration as we trigger ""unhide"" on the DOM Element with id=narration_4.",,,
-7,40,100,END SECTION 1,,https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a link to the scrolly-teller repo,hide
+7,40,100,END SECTION SIMPLE,,https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a link to the scrolly-teller repo,hide
