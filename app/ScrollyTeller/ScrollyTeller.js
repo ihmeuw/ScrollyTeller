@@ -4,7 +4,7 @@ import {
 import { select, selectAll } from 'd3';
 import * as d3promise from 'd3.promise';
 import { CSS } from './constants/constants';
-import GraphScroll from './lib/graph-scroll-scrollyteller-v0.0';
+import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
 
 export default class ScrollyTeller {
   constructor({
