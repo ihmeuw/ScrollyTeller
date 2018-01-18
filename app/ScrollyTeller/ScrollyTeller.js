@@ -4,7 +4,7 @@ import {
 import { select, selectAll } from 'd3';
 import * as d3promise from 'd3.promise';
 import { CSS } from './constants/constants';
-import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
+import GraphScroll from './lib/graph-scroll-scrollyteller-v0.0';
 
 export default class ScrollyTeller {
   constructor({
@@ -19,7 +19,7 @@ export default class ScrollyTeller {
     this.narrationCSVFilePath = narrationCSVFilePath;
     this.showSpacers = showSpacers;
     this.useDefaultGraphCSS = useDefaultGraphCSS;
-    this.graphScroll = null; /** constructed via _buildGraphScrollContainer() */
+    this.graphScroll = new GraphScroll();
 
     /** _buildAsync() takes the narration.csv and builds the following in the following order:
      * In parallel:
@@ -122,8 +122,7 @@ export default class ScrollyTeller {
   }
 
   _buildGraphScrollContainer() {
-    this.graphScroll = graphScroll()
-      .container(select(`#${this.sectionId()}`))
+    this.graphScroll.container(select(`#${this.sectionId()}`))
       .graph(selectAll(`#${this.graphId()}`))
       .sections(selectAll(`#${this.sectionId()} > .${CSS.narrationBlock}`))
       .on('active', this.onActivateNarration.bind(this))
