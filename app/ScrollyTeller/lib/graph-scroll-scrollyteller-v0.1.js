@@ -8,7 +8,7 @@ import {
 
 export default class GraphScroll {
   constructor() {
-    this.dispatch = dispatch('scroll', 'active');
+    this.dispatchInstance = dispatch('scroll', 'active');
     this.sectionSelection = select('null');
     this.activeSectionIndex = NaN;
     this.sectionPos = [];
@@ -31,65 +31,97 @@ export default class GraphScroll {
   }
 
   _reposition() {
+    const {
+      belowStart,
+      containerStart,
+      dispatchInstance,
+      graphContainer,
+      numberOfSections,
+      sectionPos,
+      sectionSelection,
+    } = this;
     let i1 = 0;
-    this.sectionPos.forEach((d, i) => {
-      if (d < (pageYOffset - this.containerStart) + 200) {
+    sectionPos.forEach((d, i) => {
+      if (d < pageYOffset - containerStart + 200) {
         i1 = i;
       }
     });
-    i1 = Math.min(this.numberOfSections - 1, i1);
+    i1 = Math.min(numberOfSections - 1, i1);
     if (this.activeSectionIndex !== i1) {
-      this.sectionSelection.classed('graph-scroll-active', (d, i) => { return i === i1; });
+      sectionSelection.classed('graph-scroll-active', (d, i) => { return i === i1; });
 
-      this.dispatch.apply('active', this, [i1, this._getSectionNodeByIndex(i1)]);
+      dispatchInstance.apply('active', this, [i1, this._getSectionNodeByIndex(i1)]);
 
       this.activeSectionIndex = i1;
     }
 
-    const isBelow1 = pageYOffset > this.belowStart;
+    const isBelow1 = pageYOffset > belowStart;
     if (this.isBelow !== isBelow1) {
       this.isBelow = isBelow1;
-      this.graphContainer.classed('graph-scroll-below', this.isBelow);
+      graphContainer.classed('graph-scroll-below', this.isBelow);
     }
-    const isFixed1 = !this.isBelow && pageYOffset > this.containerStart;
+    const isFixed1 = !this.isBelow && pageYOffset > containerStart;
     if (this.isFixed !== isFixed1) {
       this.isFixed = isFixed1;
-      this.graphContainer.classed('graph-scroll-fixed', this.isFixed);
+      graphContainer.classed('graph-scroll-fixed', this.isFixed);
     }
 
-    const pos = pageYOffset - 10 - this.containerStart;
-    const prevTop = this.sectionPos[this.activeSectionIndex];
+    const pos = pageYOffset - 10 - containerStart;
+    const prevTop = sectionPos[this.activeSectionIndex];
     const nextTop =
       (
-        this.activeSectionIndex + 1 < this.sectionPos.length
-          ? this.sectionPos[this.activeSectionIndex + 1]
-          : (this.belowStart - this.containerStart)
+        this.activeSectionIndex + 1 < sectionPos.length
+          ? sectionPos[this.activeSectionIndex + 1]
+          : (belowStart - containerStart)
       ) - 200;
     const progress = (pos - prevTop) / (nextTop - prevTop);
     if (progress >= 0 && progress <= 1) {
-      this.dispatch.apply('scroll', this, [this.activeSectionIndex, progress, this._getSectionNodeByIndex(this.activeSectionIndex)]);
+      dispatchInstance.apply(
+        'scroll',
+        this,
+        [this.activeSectionIndex, progress, this._getSectionNodeByIndex(this.activeSectionIndex)],
+      );
     }
   }
 
   _resize() {
-    this.sectionPos = [];
-    const that = this;
+    const {
+      graphContainer,
+      parentContainer,
+      sectionSelection,
+    } = this;
+    const self = this;
     let startPos;
-    this.sectionSelection.each(function (d, i) {
-      if (!i) startPos = this.getBoundingClientRect().top;
-      that.sectionPos.push(this.getBoundingClientRect().top - startPos);
+
+    self.sectionPos = [];
+    sectionSelection.each(function (d, i) {
+      if (!i) {
+        startPos = this.getBoundingClientRect().top; // this === selection element
+      }
+      self.sectionPos.push(this.getBoundingClientRect().top - startPos); // self === GraphScroll
     });
 
-    const containerBB = this.parentContainer.node().getBoundingClientRect();
-    const graphBB = this.graphContainer.node().getBoundingClientRect();
+    const containerBB = parentContainer.node().getBoundingClientRect();
+    const graphHeight = graphContainer.node()
+      ? graphContainer.node().getBoundingClientRect().height
+      : 0;
 
     this.containerStart = containerBB.top + pageYOffset;
-    this.belowStart = containerBB.bottom - (graphBB.height + pageYOffset);
+    this.belowStart = containerBB.bottom - graphHeight + pageYOffset;
   }
 
   _keydown() {
-    if (!this.isFixed) return;
+    const {
+      activeSectionIndex,
+      containerStart,
+      isFixed,
+      numberOfSections,
+      sectionPos,
+    } = this;
     let delta;
+
+    if (!isFixed) return;
+
     switch (event.keyCode) {
       case 39: // right arrow
         if (event.metaKey) return;
@@ -107,14 +139,14 @@ export default class GraphScroll {
       default: return;
     }
 
-    const i1 = Math.max(0, Math.min(this.activeSectionIndex + delta, this.numberOfSections - 1));
+    const i1 = Math.max(0, Math.min(activeSectionIndex + delta, numberOfSections - 1));
     select(document.documentElement)
       .interrupt()
       .transition()
       .duration(500)
       .tween('scroll', () => {
         const interpolator =
-          interpolateNumber(pageYOffset, this.sectionPos[i1] + this.containerStart);
+          interpolateNumber(pageYOffset, sectionPos[i1] + containerStart);
         return (t) => { scrollTo(0, interpolator(t)); };
       });
 
@@ -145,27 +177,33 @@ export default class GraphScroll {
   }
 
   sections(_x) {
+    const {
+      eventIdentifier,
+    } = this;
+
     if (!_x) return this.sectionSelection;
 
     this.sectionSelection = _x;
     this.numberOfSections = this.sectionSelection.size();
 
     select(window)
-      .on(`scroll.gscroll${this.eventIdentifier}`, this._reposition)
-      .on(`resize.gscroll${this.eventIdentifier}`, this._resize)
-      .on(`keydown.gscroll${this.eventIdentifier}`, this._keydown);
+      .on(`scroll.gscroll${eventIdentifier}`, this._reposition)
+      .on(`resize.gscroll${eventIdentifier}`, this._resize)
+      .on(`keydown.gscroll${eventIdentifier}`, this._keydown);
 
     this._resize();
-    timer(() => {
-      this._reposition();
-      return true;
-    });
+
+    const scrollTimerString = `gscrollTimer${eventIdentifier}`;
+    if (window[scrollTimerString]) {
+      window[scrollTimerString].stop();
+    }
+    window[scrollTimerString] = timer(this._reposition);
 
     return this;
   }
 
   on() {
-    const value = this.dispatch.on.apply(this.dispatch, arguments);
-    return value === this.dispatch ? this : value;
+    const value = this.dispatchInstance.on.apply(this.dispatchInstance, arguments);
+    return value === this.dispatchInstance ? this : value;
   }
 }
