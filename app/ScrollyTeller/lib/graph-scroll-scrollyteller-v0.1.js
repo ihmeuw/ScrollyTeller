@@ -7,7 +7,14 @@ import {
 } from 'd3';
 
 export default class GraphScroll {
-  constructor() {
+  constructor({
+    sectionActiveClassName = 'graph-scroll-active',
+    graphActiveClassName = 'graph-scroll-fixed',
+    graphInactiveClassName = 'graph-scroll-below',
+  } = {}) {
+    this.sectionActiveClassName = sectionActiveClassName;
+    this.graphActiveClassName = graphActiveClassName;
+    this.graphInactiveClassName = graphInactiveClassName;
     this.dispatchInstance = dispatch('scroll', 'active');
     this.sectionSelection = select('null');
     this.activeSectionIndex = NaN;
@@ -36,9 +43,12 @@ export default class GraphScroll {
       containerStart,
       dispatchInstance,
       graphContainer,
+      graphActiveClassName,
+      graphInactiveClassName,
       numberOfSections,
       sectionPos,
       sectionSelection,
+      sectionActiveClassName,
     } = this;
     let i1 = 0;
     sectionPos.forEach((d, i) => {
@@ -48,7 +58,7 @@ export default class GraphScroll {
     });
     i1 = Math.min(numberOfSections - 1, i1);
     if (this.activeSectionIndex !== i1) {
-      sectionSelection.classed('graph-scroll-active', (d, i) => { return i === i1; });
+      sectionSelection.classed(sectionActiveClassName, (d, i) => { return i === i1; });
 
       dispatchInstance.apply('active', this, [i1, this._getSectionNodeByIndex(i1)]);
 
@@ -58,12 +68,12 @@ export default class GraphScroll {
     const isBelow1 = pageYOffset > belowStart;
     if (this.isBelow !== isBelow1) {
       this.isBelow = isBelow1;
-      graphContainer.classed('graph-scroll-below', this.isBelow);
+      graphContainer.classed(graphInactiveClassName, this.isBelow);
     }
     const isFixed1 = !this.isBelow && pageYOffset > containerStart;
     if (this.isFixed !== isFixed1) {
       this.isFixed = isFixed1;
-      graphContainer.classed('graph-scroll-fixed', this.isFixed);
+      graphContainer.classed(graphActiveClassName, this.isFixed);
     }
 
     const pos = pageYOffset - 10 - containerStart;
