@@ -19,13 +19,13 @@ export default class GraphScroll {
     this.sectionSelection = select('null');
     this.activeSectionIndex = NaN;
     this.sectionPos = [];
-    this.numberOfSections = undefined;
+    this.numberOfSections = 0;
     this.graphContainer = select('null');
     this.isFixed = null;
     this.isBelow = null;
     this.parentContainer = select('body');
     this.containerStart = 0;
-    this.belowStart = undefined;
+    this.belowStart = null;
     this.eventIdentifier = Math.random();
     this._reposition = this._reposition.bind(this);
     this._resize = this._resize.bind(this);
