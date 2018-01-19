@@ -32,9 +32,7 @@ export default class GraphScroll {
   }
 
   _getSectionNodeByIndex(index) {
-    return this.sectionSelection.nodes()[index]
-      ? this.sectionSelection.nodes()[index]
-      : null;
+    return this.sectionSelection.nodes()[index] || null;
   }
 
   _reposition() {
@@ -50,19 +48,26 @@ export default class GraphScroll {
       sectionSelection,
       sectionActiveClassName,
     } = this;
-    let i1 = 0;
-    sectionPos.forEach((d, i) => {
-      if (d < pageYOffset - containerStart + 200) {
-        i1 = i;
+    let newActiveSectionIndex = 0;
+    sectionPos.forEach((sectionTopPosition, sectionIndex) => {
+      if (sectionTopPosition < pageYOffset - containerStart + 200) {
+        newActiveSectionIndex = sectionIndex;
       }
     });
-    i1 = Math.min(numberOfSections - 1, i1);
-    if (this.activeSectionIndex !== i1) {
-      sectionSelection.classed(sectionActiveClassName, (d, i) => { return i === i1; });
+    newActiveSectionIndex = Math.min(numberOfSections - 1, newActiveSectionIndex);
+    if (this.activeSectionIndex !== newActiveSectionIndex) {
+      sectionSelection.classed(
+        sectionActiveClassName,
+        (_, i) => { return i === newActiveSectionIndex; },
+      );
 
-      dispatchInstance.apply('active', this, [i1, this._getSectionNodeByIndex(i1)]);
+      dispatchInstance.apply(
+        'active',
+        this,
+        [newActiveSectionIndex, this._getSectionNodeByIndex(newActiveSectionIndex)],
+      );
 
-      this.activeSectionIndex = i1;
+      this.activeSectionIndex = newActiveSectionIndex;
     }
 
     const isBelow1 = pageYOffset > belowStart;
@@ -104,7 +109,7 @@ export default class GraphScroll {
     let startPos;
 
     self.sectionPos = [];
-    sectionSelection.each(function (d, i) {
+    sectionSelection.each(function (_, i) {
       if (!i) {
         startPos = this.getBoundingClientRect().top; // this === selection element
       }
