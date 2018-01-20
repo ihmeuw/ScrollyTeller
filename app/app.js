@@ -15,17 +15,8 @@ export default class App {
     /** css naming handler for ScrollyTeller
      * optionally override any scrollyteller css variable names
      * from ScrollyTeller/css_utils/name_defaults.js */
-    const cssNames = new ScrollyTellerNames();
     const appContainerId = 'app';
-
-    /** build a list of story sections.  Constructors should return a valid configuration */
-
-    const simple = new SimpleSection({ appContainerId, cssNames }); // returns it own config
-    const example = new ExampleChartSection({ appContainerId, cssNames });
-    const storySections = [
-      simple,
-      example,
-    ];
+    const cssNames = new ScrollyTellerNames();
 
     this.state = {
       appContainerId,
@@ -34,9 +25,19 @@ export default class App {
         titleTextCSS: 'title',
         titleText: 'Scrolly Teller Example',
       },
-      sectionList: keyBy(storySections, 'sectionIdentifier'),
+      /** build a list of story sections, keyed by sectionIdentifier.
+       * Each section constructor should return a valid configuration */
+      sectionList: keyBy(
+        [
+          new SimpleSection({ appContainerId, cssNames }),
+          new ExampleChartSection({ appContainerId, cssNames }),
+          /** add a new chart here */
+        ],
+        'sectionIdentifier', // key by this value
+      ),
     };
 
+    /** now build the components */
     this.title = new TitleSection({
       appContainerId: this.state.appContainerId,
       ...this.state.titleSectionProps,
