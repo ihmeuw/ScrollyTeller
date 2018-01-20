@@ -19,9 +19,11 @@ export default class SimpleSection {
       /** promise example... */
       // data: d3promise.csv('app/99_example_section_chart/data/data-by-series.csv'),
 
+      /** optional function to reshape data after queries or parsing from a file */
+      // reshapeDataFunction: function(data) { return data; },
+
       /** functions that must be implemented/defined */
       functionBindingContext: this,
-      reshapeDataFunction: this.processData,
       buildGraphFunction: this.buildChart,
       onScrollFunction: this.onScroll,
       onActivateNarrationFunction: this.onActivateNarration,
@@ -36,9 +38,6 @@ export default class SimpleSection {
     };
 
     return this.config;
-  }
-
-  processData() {
   }
 
   buildChart() {

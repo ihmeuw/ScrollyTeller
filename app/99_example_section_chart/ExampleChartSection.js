@@ -28,9 +28,11 @@ export default class ExampleChartSection {
       // data: { notEmpty: [] }, // data can't be empty
       data: d3promise.csv('app/99_example_section_chart/data/data-by-series.csv'),
 
+      /** optional function to reshape data after queries or parsing from a file */
+      reshapeDataFunction: this.processData,
+
       /** functions that must be implemented/defined */
       functionBindingContext: this,
-      reshapeDataFunction: this.processData,
       buildGraphFunction: this.buildChart,
       onScrollFunction: this.onScroll,
       onActivateNarrationFunction: this.onActivateNarration,
