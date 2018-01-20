@@ -65,7 +65,7 @@ export default class ScrollyTeller {
   }
 
   async _buildSections() {
-    await Promise.resolve(forEach(this.sectionList, this._buildSectionWithNarration.bind(this)));
+    await forEach(this.sectionList, this._buildSectionWithNarration.bind(this));
   }
 
   _buildSectionWithNarration(config) {
