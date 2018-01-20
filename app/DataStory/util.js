@@ -1,19 +1,33 @@
 import {
+  get,
+  map,
   forEach,
   isEmpty,
-  isFunction,
   isObject,
   isUndefined,
+  toArray,
 } from 'lodash';
+import {
+  isPromise,
+  sectionConfigValidator,
+} from '../ScrollyTeller/utils/config_validator';
 
-export function isPromise(value) {
-  return Object.prototype.toString.call(value) === '[object Promise]';
-}
-
-export function isANonEmptyObjectOrPromise(value) {
-  const isAnObject = isObject(value) && !isEmpty(value);
-  const isAPromise = isPromise(value);
-  return (isAnObject || isAPromise);
+/** returns an array of promises: 1 for each section in sectionList.
+ *  Looks for already stored data and returns a promise to return the un-modified data,
+ *  OR if section.data is already a promise, it returns that promise
+ *  @param propertyName: property name to look for in each section (data or narration) */
+export function getPromisesFromSectionList(sectionList, propertyName) {
+  const sectionArray = toArray(sectionList);
+  /** return a promise for every section so we can used the indices to index into results array
+   * after the promise is resolved */
+  return map(sectionArray, (config) => {
+    /** if the promise is already specified by the user spec, just return it */
+    if (isPromise(get(config, propertyName))) {
+      return get(config, propertyName);
+    }
+    /** otherwise, return a promise to just get the already stored data from the section */
+    return Promise.resolve(get(config, propertyName));
+  });
 }
 
 export function validateDataStoryState(state) {
@@ -28,56 +42,7 @@ export function validateDataStoryState(state) {
   if (isEmpty(sectionList) || !isObject(sectionList)) {
     throw Error('DataStory.validateDataStoryState() sectionList is empty.');
   } else {
-    /** validate each array configuration object */
-    forEach(sectionList, (sectionObject) => {
-      const {
-        sectionIdentifier,
-        cssNames,
-        narration,
-        data,
-        reshapeDataFunction,
-        buildGraphFunction,
-        onScrollFunction,
-        onActivateNarrationFunction,
-      } = sectionObject;
-
-      /** need a valid app container id */
-      if (isUndefined(sectionObject.appContainerId)) {
-        throw Error(`DataStory.validateState() missing appContainerId: ${sectionIdentifier}.`);
-      }
-
-      /** must have a valid section identifier */
-      if (isUndefined(sectionIdentifier) || !sectionIdentifier.length) {
-        throw Error('DataStory.validateDataStoryState() sectionArray is empty.');
-      }
-
-      if (isUndefined(cssNames)) {
-        throw Error('DataStory.validateDataStoryState() cssNames is undefined.');
-      }
-
-      /** narration and data must be either arrays of ibjects or promises */
-      if (!isANonEmptyObjectOrPromise(narration)) {
-        throw Error('DataStory.validateDataStoryState() narration must be an array or a promise.');
-      }
-
-      if (!isANonEmptyObjectOrPromise(data)) {
-        throw Error('DataStory.validateDataStoryState() data must be an array or a promise.');
-      }
-
-      /** must have implemented the following functions */
-      if (!isFunction(reshapeDataFunction)) {
-        throw Error('DataStory.validateDataStoryState() reshapeDataFunction must be a function.');
-      }
-      if (!isFunction(buildGraphFunction)) {
-        throw Error('DataStory.validateDataStoryState() buildGraphFunction must be a function.');
-      }
-      if (!isFunction(onScrollFunction)) {
-        throw Error('DataStory.validateDataStoryState() onScrollFunction must be a function.');
-      }
-      if (!isFunction(onActivateNarrationFunction)) {
-        throw Error('DataStory.validateDataStoryState() onActivateNarrationFunction must be a function.');
-      }
-    });
+    forEach(sectionList, sectionConfigValidator);
   }
 }
 
