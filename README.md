@@ -98,13 +98,13 @@ export default class App {
 | **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
 
 
-* override ```fetchData()``` to parse your data.  See `SectionExampleChart.js` for an example of how to implement this using [d3.promise](https://github.com/kristw/d3.promise).
+* override ```fetchDataAndProcessResults()``` to parse your data.  See `SectionExampleChart.js` for an example of how to implement this using [d3.promise](https://github.com/kristw/d3.promise).
 ```javascript
   /** This method is invoked IN PARALLEL with the narration and graph scroll construction,
    *  but before buildChart() is invoked and can be overridden to build chart data before
    *  creating the chart
    */
-  async fetchData() {
+  async fetchDataAndProcessResults() {
     // await Promise.resolve(...);
   }
 ```
