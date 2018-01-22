@@ -4,7 +4,7 @@ import {
 
 import './scss/style.scss';
 import TitleSection from './00_title_section/TitleSection';
-import DataStory from './DataStory/DataStory';
+import ScrollyTeller from './ScrollyTeller/ScrollyTeller';
 
 import SimpleSection from './01_example_section_simple/SimpleSection';
 import ExampleChartSection from './99_example_section_chart/ExampleChartSection';
@@ -26,7 +26,9 @@ export default class App {
         titleText: 'Scrolly Teller Example',
       },
       /** build a list of story sections, keyed by sectionIdentifier.
-       * Each section constructor should return a valid configuration */
+       * Each section constructor should return a valid configuration,
+       * or create a new section "object" outside, and add a .config() function
+       * that returns a valid configuration object */
       sectionList: keyBy(
         [
           new SimpleSection({ appContainerId, cssNames }),
@@ -43,7 +45,7 @@ export default class App {
       ...this.state.titleSectionProps,
     });
 
-    this.dataStory = new DataStory(this.state);
+    this.scrollingDataStory = new ScrollyTeller(this.state);
   }
 }
 
