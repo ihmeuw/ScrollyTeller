@@ -86,12 +86,25 @@ function isANonEmptyObjectOrPromise(value) {
   return (isAnObject || isAPromise);
 }
 
+function validateCSSNames(state) {
+  const {
+    cssNames,
+  } = state;
+
+  /** cssNames is optional, so allow ScrollyTeller to create the default ScrollyTellerNames object,
+   * however, DO check for an incorrectly defined cssNames object
+   * (not of class ScrollyTellerNames) */
+  if (cssNames && (cssNames.constructor.name !== 'ScrollyTellerNames')) {
+    throw Error('ScrollyTeller.sectionConfigValidator() ' +
+      'cssNames must be a ScrollyTellerNames object.');
+  }
+}
+
 export function sectionConfigValidator(sectionConfig) {
   /** validate each array configuration object */
   const {
     appContainerId,
     sectionIdentifier,
-    cssNames,
     narration,
     data,
     functionBindingContext,
@@ -113,13 +126,7 @@ export function sectionConfigValidator(sectionConfig) {
     throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
   }
 
-  /** cssNames is optional, so allow ScrollyTeller to create the default ScrollyTellerNames object,
-   * however, DO check for an incorrectly defined cssNames object
-   * (not of class ScrollyTellerNames) */
-  if (cssNames && (cssNames.constructor.name !== 'ScrollyTellerNames')) {
-    throw Error('ScrollyTeller.sectionConfigValidator() ' +
-      'cssNames must be a ScrollyTellerNames object.');
-  }
+  validateCSSNames(sectionConfig);
 
   /** narration and data must be either arrays of objects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
@@ -169,6 +176,8 @@ export function validateState(state) {
   if (isEmpty(sectionList) || !isObject(sectionList)) {
     throw Error('ScrollyTeller.validateState() sectionList is empty.');
   } else {
+    validateCSSNames(state);
+
     forEach(sectionList, sectionConfigValidator);
   }
 }
