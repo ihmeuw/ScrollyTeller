@@ -1,4 +1,5 @@
 import {
+  forEach,
   isEmpty,
   isFunction,
   isObject,
@@ -35,32 +36,48 @@ export function sectionConfigValidator(sectionConfig) {
 
   /** must have a valid section identifier */
   if (isUndefined(sectionIdentifier) || !sectionIdentifier.length) {
-    throw Error('DataStory.validateDataStoryState() sectionArray is empty.');
+    throw Error('DataStory.validateState() sectionArray is empty.');
   }
 
   if (isUndefined(cssNames)) {
-    throw Error('DataStory.validateDataStoryState() cssNames is undefined.');
+    throw Error('DataStory.validateState() cssNames is undefined.');
   }
 
   /** narration and data must be either arrays of ibjects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
-    throw Error('DataStory.validateDataStoryState() narration must be an array or a promise.');
+    throw Error('DataStory.validateState() narration must be an array or a promise.');
   }
 
   if (!isANonEmptyObjectOrPromise(data)) {
-    throw Error('DataStory.validateDataStoryState() data must be an array or a promise.');
+    throw Error('DataStory.validateState() data must be an array or a promise.');
   }
 
   /** reshapeData data is an optional function, so don't require it */
 
   /** must have implemented the following functions */
   if (!isFunction(buildGraphFunction)) {
-    throw Error('DataStory.validateDataStoryState() buildGraphFunction must be a function.');
+    throw Error('DataStory.validateState() buildGraphFunction must be a function.');
   }
   if (!isFunction(onScrollFunction)) {
-    throw Error('DataStory.validateDataStoryState() onScrollFunction must be a function.');
+    throw Error('DataStory.validateState() onScrollFunction must be a function.');
   }
   if (!isFunction(onActivateNarrationFunction)) {
-    throw Error('DataStory.validateDataStoryState() onActivateNarrationFunction must be a function.');
+    throw Error('DataStory.validateState() onActivateNarrationFunction must be a function.');
+  }
+}
+
+export function validateState(state) {
+  const { appContainerId } = state;
+  /** need a valid app container id */
+  if (isUndefined(appContainerId)) {
+    throw Error('DataStory.validateState() No appContainerId is set for the DataStory.');
+  }
+
+  /** need a valid array of sections */
+  const { sectionList } = state;
+  if (isEmpty(sectionList) || !isObject(sectionList)) {
+    throw Error('DataStory.validateState() sectionList is empty.');
+  } else {
+    forEach(sectionList, sectionConfigValidator);
   }
 }
