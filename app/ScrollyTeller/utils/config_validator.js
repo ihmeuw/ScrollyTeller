@@ -24,45 +24,60 @@ export function sectionConfigValidator(sectionConfig) {
     cssNames,
     narration,
     data,
+    functionBindingContext,
     buildGraphFunction,
     onScrollFunction,
     onActivateNarrationFunction,
+    showSpacers,
+    useDefaultGraphCSS,
   } = sectionConfig;
 
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error(`DataStory.validateState() missing appContainerId: ${sectionIdentifier}.`);
+    throw Error(`ScrollyTeller.sectionConfigValidator() missing appContainerId: ${sectionIdentifier}.`);
   }
 
   /** must have a valid section identifier */
   if (isUndefined(sectionIdentifier) || !sectionIdentifier.length) {
-    throw Error('DataStory.validateState() sectionArray is empty.');
+    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
   }
 
-  if (isUndefined(cssNames)) {
-    throw Error('DataStory.validateState() cssNames is undefined.');
+  if (isUndefined(cssNames) || (cssNames.constructor.name !== 'CSSNames')) {
+    throw Error('ScrollyTeller.sectionConfigValidator() cssNames must be a CSSNames object.');
   }
 
   /** narration and data must be either arrays of ibjects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
-    throw Error('DataStory.validateState() narration must be an array or a promise.');
+    throw Error('ScrollyTeller.sectionConfigValidator() narration must be an array or a promise.');
   }
 
   if (!isANonEmptyObjectOrPromise(data)) {
-    throw Error('DataStory.validateState() data must be an array or a promise.');
+    throw Error('ScrollyTeller.sectionConfigValidator() data must be an array or a promise.');
   }
 
   /** reshapeData data is an optional function, so don't require it */
 
+  if (isUndefined(functionBindingContext)) {
+    throw Error('ScrollyTeller.sectionConfigValidator() functionBindingContext must be defined.');
+  }
   /** must have implemented the following functions */
   if (!isFunction(buildGraphFunction)) {
-    throw Error('DataStory.validateState() buildGraphFunction must be a function.');
+    throw Error('ScrollyTeller.sectionConfigValidator() buildGraphFunction must be a function.');
   }
   if (!isFunction(onScrollFunction)) {
-    throw Error('DataStory.validateState() onScrollFunction must be a function.');
+    throw Error('ScrollyTeller.sectionConfigValidator() onScrollFunction must be a function.');
   }
   if (!isFunction(onActivateNarrationFunction)) {
-    throw Error('DataStory.validateState() onActivateNarrationFunction must be a function.');
+    throw Error('ScrollyTeller.sectionConfigValidator() onActivateNarrationFunction must be a function.');
+  }
+
+  /** must have a valid showSpacers flag */
+  if (isUndefined(showSpacers)) {
+    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
+  }
+  /** must have a useDefaultGraphCSS flag */
+  if (isUndefined(useDefaultGraphCSS)) {
+    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
   }
 }
 
@@ -70,13 +85,13 @@ export function validateState(state) {
   const { appContainerId } = state;
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error('DataStory.validateState() No appContainerId is set for the DataStory.');
+    throw Error('ScrollyTeller.validateState() No appContainerId is set for the ScrollyTeller.');
   }
 
   /** need a valid array of sections */
   const { sectionList } = state;
   if (isEmpty(sectionList) || !isObject(sectionList)) {
-    throw Error('DataStory.validateState() sectionList is empty.');
+    throw Error('ScrollyTeller.validateState() sectionList is empty.');
   } else {
     forEach(sectionList, sectionConfigValidator);
   }
