@@ -5,31 +5,30 @@ import {
 } from 'lodash';
 import { select, selectAll } from 'd3';
 import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
+import { validateState } from './utils/config_validator';
+import {
+  fetchNarration,
+  fetchDataAndProcessResults,
+} from './utils/fetch_utils';
 
 export default class ScrollyTeller {
   constructor(state) {
-    /** new props */
+    validateState(state);
+
     this.cssNames = state.cssNames;
     this.appContainerId = state.appContainerId;
     this.sectionList = state.sectionList;
 
-    /** _buildAsync() takes the narration.csv and builds the following in the following order:
-     * In parallel:
-     * - Calls this.fetchData() to parse any data necessary
-     * - Builds the following:
-     *   - A <div> with class = this.sectionClass() and id = this.sectionId() to hold narration
-     *      and our graph
-     *   - A 'narration' <div> with class = 'narration=' for each row in the narration.csv file
-     *      which contains the scrolling text to narrate our graph
-     *   - A 'graph' <div> with id = this.graphId() to hold our graph
-     *
-     * THEN after the data is parsed and the page is built:
-     *   - calls this.buildChart() to build the chart
-     */
-    this._buildAsync();
+    /** convert all narration promises to data, and all data promises to processed data */
+    Promise.all([
+      fetchNarration(this.sectionList),
+      fetchDataAndProcessResults(this.sectionList),
+    ])
+      /** then build the html we need along with the graph scroll objects for each section */
+      .then(() => {
+        this._buildAsync();
+      });
   }
-
-  /** 'PUBLIC' methods * */
 
   /** 'PRIVATE' METHODS * */
 
