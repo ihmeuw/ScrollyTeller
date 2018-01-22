@@ -34,7 +34,8 @@ export function sectionConfigValidator(sectionConfig) {
 
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error(`ScrollyTeller.sectionConfigValidator() missing appContainerId: ${sectionIdentifier}.`);
+    throw Error('ScrollyTeller.sectionConfigValidator() missing ' +
+      `appContainerId for section: ${sectionIdentifier}.`);
   }
 
   /** must have a valid section identifier */
@@ -46,7 +47,7 @@ export function sectionConfigValidator(sectionConfig) {
     throw Error('ScrollyTeller.sectionConfigValidator() cssNames must be a CSSNames object.');
   }
 
-  /** narration and data must be either arrays of ibjects or promises */
+  /** narration and data must be either arrays of objects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
     throw Error('ScrollyTeller.sectionConfigValidator() narration must be an array or a promise.');
   }
@@ -68,7 +69,8 @@ export function sectionConfigValidator(sectionConfig) {
     throw Error('ScrollyTeller.sectionConfigValidator() onScrollFunction must be a function.');
   }
   if (!isFunction(onActivateNarrationFunction)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() onActivateNarrationFunction must be a function.');
+    throw Error('ScrollyTeller.sectionConfigValidator()' +
+      'onActivateNarrationFunction must be a function.');
   }
 
   /** must have a valid showSpacers flag */
