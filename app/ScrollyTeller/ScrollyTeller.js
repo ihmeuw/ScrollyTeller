@@ -1,7 +1,9 @@
 import {
+  assign,
   get,
   forEach,
   isEmpty,
+  isUndefined,
 } from 'lodash';
 import { select, selectAll } from 'd3';
 import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
@@ -10,14 +12,27 @@ import {
   fetchNarration,
   fetchDataAndProcessResults,
 } from './utils/fetch_utils';
+import ScrollyTellerNames from './utils/ScrollyTellerNames';
 
 export default class ScrollyTeller {
+  /**
+   * Validates state, converts any narration or data promises in the sectionList to arrays of data
+   * or narration, and builds the HTML necessary for a scrolling story
+   * @param {object} state object containing configuration
+   */
   constructor(state) {
     validateState(state);
 
-    this.cssNames = state.cssNames;
     this.appContainerId = state.appContainerId;
     this.sectionList = state.sectionList;
+
+    /** if cssNames is unassigned, use the default ScrollyTellerNames constructor to create a new one */
+    if (isUndefined(state.cssNames) || (state.cssNames.constructor.name !== 'ScrollyTellerNames')) {
+      this.cssNames = new ScrollyTellerNames();
+    } else {
+      this.cssNames = state.cssNames;
+    }
+    this._assignScrollyTellerNamesToSections(this.cssNames);
 
     /** convert all narration promises to data, and all data promises to processed data */
     Promise.all([
@@ -31,6 +46,10 @@ export default class ScrollyTeller {
   }
 
   /** 'PRIVATE' METHODS * */
+
+  _assignScrollyTellerNamesToSections() {
+    forEach(this.sectionList, (section) => { section.cssNames = this.cssNames; });
+  }
 
   _buildAsync() {
     Promise.all([
@@ -57,7 +76,8 @@ export default class ScrollyTeller {
       config.graphScroll = graphScroll()
         .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
         .graph(selectAll(`#${names.graphId(config.sectionIdentifier)}`))
-        .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > .${css.narrationBlock}`))
+        .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
+          `.${css.narrationBlock}`))
         .on('active', config.onActivateNarrationFunction.bind(config.functionBindingContext))
         .on('scroll', config.onScrollFunction.bind(config.functionBindingContext));
     });

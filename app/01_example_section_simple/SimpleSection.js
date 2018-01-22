@@ -8,7 +8,6 @@ export default class SimpleSection {
     this.config = {
       appContainerId,
       sectionIdentifier: 'simple',
-      cssNames,
       /** array of narration objects, OR a promise to return an array of narration objects.
        * See README for the specfication of the narration objects */
       narration: d3promise.csv('app/01_example_section_simple/data/narration_section_simple.csv'),

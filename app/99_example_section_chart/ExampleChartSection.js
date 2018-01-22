@@ -12,13 +12,12 @@ import * as d3promise from 'd3.promise';
 import SampleChart from './components/template.chart';
 
 export default class ExampleChartSection {
-  constructor({ appContainerId, cssNames }) {
+  constructor({ appContainerId }) {
     /** section object with identifier, narration, and data (for the graph), stored, and returned
      * to create the state object */
     this.config = {
       appContainerId,
       sectionIdentifier: 'example',
-      cssNames,
       /** array of narration objects, OR a promise to return an array of narration objects.
        * See README for the specfication of the narration objects */
       narration: d3promise.csv('app/99_example_section_chart/data/narration_section_chart.csv'),
