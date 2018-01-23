@@ -95,12 +95,12 @@ function validateCSSNames(state) {
    * however, DO check for an incorrectly defined cssNames object
    * (not of class ScrollyTellerNames) */
   if (cssNames && (cssNames.constructor.name !== 'ScrollyTellerNames')) {
-    throw Error('ScrollyTeller.sectionConfigValidator() ' +
+    throw Error('ScrollyTeller.validateSectionConfig() ' +
       'cssNames must be a ScrollyTellerNames object.');
   }
 }
 
-export function sectionConfigValidator(sectionConfig) {
+export function validateSectionConfig(sectionConfig) {
   /** validate each array configuration object */
   const {
     appContainerId,
@@ -117,69 +117,69 @@ export function sectionConfigValidator(sectionConfig) {
 
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() missing ' +
+    throw Error('ScrollyTeller.validateSectionConfig() missing ' +
       `appContainerId for section: ${sectionIdentifier}.`);
   }
 
   /** must have a valid section identifier */
   if (isUndefined(sectionIdentifier) || !sectionIdentifier.length) {
-    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
+    throw Error('ScrollyTeller.validateSectionConfig() sectionArray is empty.');
   }
 
   validateCSSNames(sectionConfig);
 
   /** narration and data must be either arrays of objects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() narration must be an array or a promise.');
+    throw Error('ScrollyTeller.validateSectionConfig() narration must be an array or a promise.');
   }
 
   if (!isANonEmptyObjectOrPromise(data)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() data must be an array or a promise.');
+    throw Error('ScrollyTeller.validateSectionConfig() data must be an array or a promise.');
   }
 
   /** reshapeData data is an optional function, so don't require it */
 
   if (isUndefined(functionBindingContext)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() functionBindingContext must be defined.');
+    throw Error('ScrollyTeller.validateSectionConfig() functionBindingContext must be defined.');
   }
   /** must have implemented the following functions */
   if (!isFunction(buildGraphFunction)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() buildGraphFunction must be a function.');
+    throw Error('ScrollyTeller.validateSectionConfig() buildGraphFunction must be a function.');
   }
   if (!isFunction(onScrollFunction)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() onScrollFunction must be a function.');
+    throw Error('ScrollyTeller.validateSectionConfig() onScrollFunction must be a function.');
   }
   if (!isFunction(onActivateNarrationFunction)) {
-    throw Error('ScrollyTeller.sectionConfigValidator()' +
+    throw Error('ScrollyTeller.validateSectionConfig()' +
       'onActivateNarrationFunction must be a function.');
   }
 
   /** must have a valid showSpacers flag */
   if (isUndefined(showSpacers)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
+    throw Error('ScrollyTeller.validateSectionConfig() sectionArray is empty.');
   }
   /** must have a useDefaultGraphCSS flag */
   if (isUndefined(useDefaultGraphCSS)) {
-    throw Error('ScrollyTeller.sectionConfigValidator() sectionArray is empty.');
+    throw Error('ScrollyTeller.validateSectionConfig() sectionArray is empty.');
   }
 }
 
-export function validateState(state) {
+export function validateScrollyTellerConfig(state) {
   const {
     appContainerId,
     sectionList,
   } = state;
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error('ScrollyTeller.validateState() No appContainerId is set for the ScrollyTeller.');
+    throw Error('ScrollyTeller.validateScrollyTellerConfig() No appContainerId is set for the ScrollyTeller.');
   }
 
   /** need a valid array of sections */
   if (isEmpty(sectionList) || !isObject(sectionList)) {
-    throw Error('ScrollyTeller.validateState() sectionList is empty.');
+    throw Error('ScrollyTeller.validateScrollyTellerConfig() sectionList is empty.');
   } else {
     validateCSSNames(state);
 
-    forEach(sectionList, sectionConfigValidator);
+    forEach(sectionList, validateSectionConfig);
   }
 }
