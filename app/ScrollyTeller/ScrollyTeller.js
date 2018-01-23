@@ -34,33 +34,24 @@ export default class ScrollyTeller {
     }
     this._assignScrollyTellerNamesToSections(this.cssNames);
 
-    /** convert all narration promises to data, and all data promises to processed data */
-    Promise.all([
-      fetchNarration(this.sectionList),
-      fetchDataAndProcessResults(this.sectionList),
-    ])
-      /** then build the html we need along with the graph scroll objects for each section */
-      .then(() => {
-        this._buildAsync();
-      });
+    /** convert all narration promises to data, and all data promises to processed data,
+     * then build all the necessary HTML */
+    Promise.resolve(this._buildAsync());
   }
 
   /** 'PRIVATE' METHODS * */
 
-  _assignScrollyTellerNamesToSections() {
-    forEach(this.sectionList, (section) => { section.cssNames = this.cssNames; });
+  async _buildAsync() {
+    await fetchNarration(this.sectionList);
+    await fetchDataAndProcessResults(this.sectionList);
+    /** then build the html we need along with the graph scroll objects for each section */
+    this._buildSections();
+    this._buildGraphScrollContainers();
+    this._buildGraphs();
   }
 
-  _buildAsync() {
-    Promise.all([
-      this._buildSections(),
-    ])
-      .then(() => {
-        this._buildGraphScrollContainers();
-      })
-      .then(() => {
-        this._buildGraphs();
-      });
+  _assignScrollyTellerNamesToSections() {
+    forEach(this.sectionList, (section) => { section.cssNames = this.cssNames; });
   }
 
   _buildGraphs() {
@@ -83,8 +74,8 @@ export default class ScrollyTeller {
     });
   }
 
-  async _buildSections() {
-    await forEach(this.sectionList, this._buildSectionWithNarration.bind(this));
+  _buildSections() {
+    forEach(this.sectionList, this._buildSectionWithNarration.bind(this));
   }
 
   _buildSectionWithNarration(config) {
