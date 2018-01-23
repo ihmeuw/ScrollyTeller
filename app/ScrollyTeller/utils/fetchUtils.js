@@ -5,7 +5,7 @@ import {
   isFunction,
   toArray,
 } from 'lodash';
-import { isPromise } from './config_validator';
+import { isPromise } from './configValidator';
 
 /**
  *  Looks for already stored data and returns a promise to return the un-modified data,

@@ -1,4 +1,4 @@
-import CSS from './name_defaults';
+import CSS from './nameDefaults';
 
 export default class ScrollyTellerNames {
   constructor(scrollyTellerCSS) {
