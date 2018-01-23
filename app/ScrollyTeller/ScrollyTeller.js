@@ -5,14 +5,13 @@ import {
   isUndefined,
 } from 'lodash';
 import { select, selectAll } from 'd3';
-import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
-
 import {
   validateScrollyTellerConfig,
   fetchNarration,
   fetchDataAndProcessResults,
 } from './utils';
 import ScrollyTellerNames from './utils/ScrollyTellerNames';
+import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
 
 export default class ScrollyTeller {
   /**
@@ -64,7 +63,7 @@ export default class ScrollyTeller {
     forEach(this.sectionList, (config) => {
       const names = config.cssNames;
       const css = get(config, ['cssNames', 'css']);
-      config.graphScroll = graphScroll()
+      config.graphScroll = new GraphScroll()
         .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
         .graph(selectAll(`#${names.graphId(config.sectionIdentifier)}`))
         .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
