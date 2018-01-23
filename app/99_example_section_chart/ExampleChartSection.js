@@ -20,12 +20,12 @@ export default class ExampleChartSection {
       sectionIdentifier: 'example',
       /** array of narration objects, OR a promise to return an array of narration objects.
        * See README for the specfication of the narration objects */
-      narration: d3promise.csv('app/99_example_section_chart/data/narration_section_chart.csv'),
+      narration: d3promise.csv('app/99_example_section_chart/data/narrationSectionChart.csv'),
       // narration: [ {}, ],
       /** data in a form consumable by user specified graphing methods,
        * OR a promise to return data. */
       // data: { notEmpty: [] }, // data can't be empty
-      data: d3promise.csv('app/99_example_section_chart/data/data-by-series.csv'),
+      data: d3promise.csv('app/99_example_section_chart/data/dataBySeries.csv'),
 
       /** optional function to reshape data after queries or parsing from a file */
       reshapeDataFunction: this.processData,

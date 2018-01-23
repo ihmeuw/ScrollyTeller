@@ -10,13 +10,13 @@ export default class SimpleSection {
       sectionIdentifier: 'simple',
       /** array of narration objects, OR a promise to return an array of narration objects.
        * See README for the specfication of the narration objects */
-      narration: d3promise.csv('app/01_example_section_simple/data/narration_section_simple.csv'),
+      narration: d3promise.csv('app/01_example_section_simple/data/narrationSectionSimple.csv'),
       // narration: [ {}, ],
       /** data in a form consumable by user specified graphing methods,
        * OR a promise to return data. */
       data: { notEmpty: [] }, // data can't be empty
       /** promise example... */
-      // data: d3promise.csv('app/99_example_section_chart/data/data-by-series.csv'),
+      // data: d3promise.csv('app/99_example_section_chart/data/dataBySeries.csv'),
 
       /** optional function to reshape data after queries or parsing from a file */
       // reshapeDataFunction: function(data) { return data; },

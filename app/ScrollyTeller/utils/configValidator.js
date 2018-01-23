@@ -24,13 +24,13 @@ export const exampleConfigObject = {
       cssNames: new ScrollyTellerNames(),
       /** array of narration objects, OR a promise to return an array of narration objects.
        * See README for the specfication of the narration objects */
-      // narration: d3promise.csv('app/...filePath.../narration_section_simple.csv'),
+      // narration: d3promise.csv('app/...filePath.../narrationSectionSimple.csv'),
       narration: [{}],
       /** data in a form consumable by user specified buildGraphFunction method below,
        * OR a promise to return data. */
       data: { notEmpty: [] }, // data can't be empty
       /** promise example... */
-      /** data: d3promise.csv('app/99_example_section_chart/data/data-by-series.csv'), * */
+      /** data: d3promise.csv('app/99_example_section_chart/data/dataBySeries.csv'), * */
 
       /** optional function to reshape data after queries or parsing from a file */
       reshapeDataFunction(data) { return data; },

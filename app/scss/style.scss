@@ -1,18 +1,18 @@
 @import 'reset';
 
 /* all variables */
-@import 'story-variables';
-@import '../ScrollyTeller/scss/scrolly-variables';
+@import 'storyVariables';
+@import '../ScrollyTeller/scss/scrollyVariables';
 
 /* standard css for this story, to be adhered to for consistency */
-@import 'story-base';
-@import 'story-layout';
-@import 'story-graph';
+@import 'storyBase';
+@import 'storyLayout';
+@import 'storyGraph';
 
 /* required by ScrollyTeller */
-@import '../ScrollyTeller/scss/scrolly-narration';
-@import '../ScrollyTeller/scss/scrolly-graph';
+@import '../ScrollyTeller/scss/scrollyNarration';
+@import '../ScrollyTeller/scss/scrollyGraph';
 
 /* example of overriding the default scrolly-graph css when specifying your own CSS
  * (ScrollyTeller.useDefaultGraphCSS = false) */
-@import '../99_example_section_chart/scss/extend-scrolly-graph-example';
+@import '../99_example_section_chart/scss/extendScrollyGraphExample';
