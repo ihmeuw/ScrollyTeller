@@ -17,4 +17,9 @@ export default new Config().extend('./webpack/webpack.config.base.js').merge({
     library: 'ScrollyTeller',
     libraryTarget: 'umd',
   },
+  resolve: {
+    root: [
+      path.resolve('../node_modules')
+    ]
+  }
 });
