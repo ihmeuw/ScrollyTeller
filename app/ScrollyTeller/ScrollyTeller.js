@@ -6,7 +6,7 @@ import {
 } from 'lodash';
 import { select, selectAll } from 'd3';
 import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
-import { validateState } from './utils/config_validator';
+import { validateScrollyTellerConfig } from './utils/config_validator';
 import {
   fetchNarration,
   fetchDataAndProcessResults,
@@ -20,7 +20,7 @@ export default class ScrollyTeller {
    * @param {object} state object containing configuration
    */
   constructor(state) {
-    validateState(state);
+    validateScrollyTellerConfig(state);
 
     this.appContainerId = state.appContainerId;
     this.sectionList = state.sectionList;
