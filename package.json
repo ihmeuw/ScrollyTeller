@@ -2,8 +2,10 @@
   "name": "scrolly-teller",
   "version": "1.0.0",
   "description": "\"Scrolling story builder for IHME\"",
-  "main": "app/app.js",
+  "main": "dist/lib.js",
   "scripts": {
+    "build": "npm run build:umd",
+    "build:umd": "NODE_ENV='build' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
     "build:dev": "NODE_ENV='development' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
     "build:prod": "NODE_ENV='production' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
     "build:watch": "NODE_ENV='development' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors --watch"
