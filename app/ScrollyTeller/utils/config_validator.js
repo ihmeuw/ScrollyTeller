@@ -77,7 +77,7 @@ export function exampleConfigObject() {
 
 
 export function isPromise(value) {
-  return Object.prototype.toString.call(value) === '[object Promise]';
+  return Promise.resolve(value) === value;
 }
 
 function isANonEmptyObjectOrPromise(value) {
