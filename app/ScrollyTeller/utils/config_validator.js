@@ -165,14 +165,16 @@ export function sectionConfigValidator(sectionConfig) {
 }
 
 export function validateState(state) {
-  const { appContainerId } = state;
+  const {
+    appContainerId,
+    sectionList,
+  } = state;
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
     throw Error('ScrollyTeller.validateState() No appContainerId is set for the ScrollyTeller.');
   }
 
   /** need a valid array of sections */
-  const { sectionList } = state;
   if (isEmpty(sectionList) || !isObject(sectionList)) {
     throw Error('ScrollyTeller.validateState() sectionList is empty.');
   } else {
