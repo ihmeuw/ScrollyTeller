@@ -6,11 +6,12 @@ import {
 } from 'lodash';
 import { select, selectAll } from 'd3';
 import graphScroll from './lib/graph-scroll-scrollyteller-v0.0';
-import { validateScrollyTellerConfig } from './utils/config_validator';
+
 import {
+  validateScrollyTellerConfig,
   fetchNarration,
   fetchDataAndProcessResults,
-} from './utils/fetch_utils';
+} from './utils';
 import ScrollyTellerNames from './utils/ScrollyTellerNames';
 
 export default class ScrollyTeller {
