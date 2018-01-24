@@ -58,7 +58,7 @@ export default class ScrollyTeller {
   }
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
-      config.graph = config.buildGraphFunction(this._graphIdForSection(config), config.data);
+      config.graph = config.buildGraphFunction(this._graphIdForSection(config), config.data, config);
     });
   }
 
@@ -77,8 +77,7 @@ export default class ScrollyTeller {
             progress,
             activeNarrationBlock,
             this._graphIdForSection(config),
-            config.graph,
-            config.data,
+            config,
           );
         })
         .on('scroll', (index, progress, activeNarrationBlock) => {
@@ -87,8 +86,7 @@ export default class ScrollyTeller {
             progress,
             activeNarrationBlock,
             this._graphIdForSection(config),
-            config.graph,
-            config.data,
+            config,
           );
         });
     });
@@ -99,14 +97,14 @@ export default class ScrollyTeller {
   }
 
   _buildSectionWithNarration(config) {
+    const names = config.cssNames;
     select(`#${config.appContainerId}`)
       .append('div')
-      .attr('class', this.cssNames.sectionClass())
-      .attr('id', this.cssNames.sectionId(config.sectionIdentifier));
+      .attr('class', names.sectionClass())
+      .attr('id', names.sectionId(config.sectionIdentifier));
 
     /** select the appropriate section by id, and append a properly formatted html string
      * containing the contents of each narration block (row in the narration.csv file) */
-    const names = config.cssNames;
     select(`#${names.sectionId(config.sectionIdentifier)}`)
       .html(this._getNarrationHtmlString(config.narration, config));
 

@@ -32,9 +32,10 @@ function buildGraph(graphId, data) {
  * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param graph - the chart instance, or a reference containing the result of
  *                  the buildChart() function above
- * @param data - the data that was passed in or resolved by the promise, AND processed by reshapeDataFunction()
+ * @param data - the data that was passed in or resolved by the promise,
+ *                AND processed by reshapeDataFunction()
  */
-function onActivateNarration(index, progress, activeNarrationBlock, graphId, graph, data) {
+function onActivateNarration(index, progress, activeNarrationBlock, graphId, sectionConfig) {
 }
 
 /**
@@ -45,9 +46,10 @@ function onActivateNarration(index, progress, activeNarrationBlock, graphId, gra
  * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param graph - the chart instance, or a reference containing the result of
  *                  the buildChart() function above
- * @param data - the data that was passed in or resolved by the promise, AND processed by reshapeDataFunction()
+ * @param data - the data that was passed in or resolved by the promise,
+ *                AND processed by reshapeDataFunction()
  */
-function onScroll(index, progress, activeNarrationBlock, graphId, graph, data) {
+function onScroll(index, progress, activeNarrationBlock, graphId, sectionConfig) {
   /** use trigger specified in the narration csv file to trigger actions */
   switch (activeNarrationBlock.getAttribute('trigger')) {
     case 'unhide':
