@@ -1,16 +1,15 @@
 # ScrollyTeller
-
+----------------------------------------------------------------------------------------------------------------------------------
 ### Using ScrollyTeller to dynamically build story narration
 ##### ScrollyTeller is a JavaScript library that dynamically builds the HTML/CSS for the ***narration*** part of a scrolling based data story from a .csv file, and provides functionality for linking named 'triggers' to actions dispatched when each narration comes into view.
-
+----------------------------------------------------------------------------------------------------------------------------------
 #### Use cases and functionality
 * Separation of stories into multiple sections with different graphs and narrations.
 * Separation of story sections allows multiple developers to work on different sections of a data story without interfering with one another.
 * Customizing story narration to an audience: user-specific narration.csv files can tell a story differently based on audience, using the same rendering code, with different actions based on a user's area of interest or expertise.
 * Changing the spacing between narration text, or the 'pacing' of a data story.
-
+----------------------------------------------------------------------------------------------------------------------------------
 ### Terminology
-
 | Term | Description |
 | :---: | :---: |
 | **Narration** | The scrolling text content that 'narrates' a data story. |
@@ -20,6 +19,7 @@
 | **Graph** | A ```<div>``` element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
 | **GraphScroll** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. ScrollyTeller uses a modified version of GraphScroll under the hood to provide extra functionality. |
 
+----------------------------------------------------------------------------------------------------------------------------------
 ### Building a scrolling data story using ScrollyTeller
 ##### ScrollyTeller contains two methods: a constructor method ```ScrollyTeller(config)``` that takes a configuration object, and a ```render()``` method that returns a Promise to build all HTML. The pseudo code below shows how a to create a ```ScrollyTeller``` instance from a configuration object, and then render the HTML.  The configuration object is described in much more detail below.
 ```javascript
@@ -117,7 +117,8 @@ myScrollyTellerInstance.render();
 ##### See ```app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```app/01_example_section_simple/SimpleSection.js``` and ```app/99_example_section_chart/ExampleChartSection.js```.
 
 
-#### Narration file/object format
+----------------------------------------------------------------------------------------------------------------------------------
+### Narration file/object format
 ##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
 | narrationId | spaceAboveInVh | spaceBelowInVh | h2Text | paragraphText | hRef | hRefText | trigger |
@@ -137,8 +138,7 @@ myScrollyTellerInstance.render();
 | **hRef** | Optional link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
 | **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
 
-
-
+----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
 * (uses lodash toNumber() and groupBy() functions to manipulate data)
