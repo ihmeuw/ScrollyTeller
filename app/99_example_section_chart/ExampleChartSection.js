@@ -12,6 +12,12 @@ import { select, timeParse } from 'd3';
 import * as d3promise from 'd3.promise';
 import SampleChart from './components/template.chart';
 
+/**
+ * Optional method to reshape the data passed into ScrollyTeller, or resolved by the data promise
+ * @param data - data passed into ScrollyTeller or the result of resolving
+ *                  the data promise (see below).
+ * @returns {data} an object or array of data of user-defined shape
+ */
 function processData(results) {
   /** using d3promise to convert d3.csv calls to promises */
   const parseTime = timeParse('%y');
@@ -27,6 +33,14 @@ function processData(results) {
   return groupBy(dataProcessed, 'series');
 }
 
+/**
+ * Helper function to convert a user specified 'trigger' (set in the narration.csv file) to
+ * to a data shape using the following specification:
+ * series:yearstart-yearend,series:yearstart-yearend
+ * @param trigger {string} representing the data requested
+ * @param data - data to parse
+ * @returns {Array} of data specified by the trigger string
+ */
 function getFilteredDataByTriggerString(trigger, data) {
   /** assume trigger is formatted as follows:
    * series:yearstart-yearend,series:yearstart-yearend
@@ -54,6 +68,13 @@ function getFilteredDataByTriggerString(trigger, data) {
   return toArray(groupBy(allDataFiltered, 'series'));
 }
 
+/**
+ * Called AFTER data is fetched, and reshapeDataFunction is called.  This method should
+ * build the graph and return an instance of that graph, which will be passed as arguments
+ * to the onScrollFunction and onActivateNarration functions
+ * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+ * @param data - the data that was passed in or resolved by the promise, AND processed by reshapeDataFunction()
+ */
 function buildChart(graphId, data) {
   const graph = new SampleChart({
     container: `#${graphId}`,
@@ -68,6 +89,16 @@ function buildChart(graphId, data) {
   return graph;
 }
 
+/**
+ * Called when a narration block is activated
+ * @param index - index of the active narration object
+ * @param progress - 0-1 (sort of) value indicating progress through the active narration block
+ * @param activeNarrationBlock - the narration block DOM element that is currently active
+ * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+ * @param graph - the chart instance, or a reference containing the result of
+ *                  the buildChart() function above
+ * @param data - the data that was passed in or resolved by the promise, AND processed by reshapeDataFunction()
+ */
 function onActivateNarration(index, progress, activeNarrationBlock, graphId, graph, data) {
   const trigger = activeNarrationBlock.getAttribute('trigger');
   switch (trigger) {
@@ -86,6 +117,16 @@ function onActivateNarration(index, progress, activeNarrationBlock, graphId, gra
   }
 }
 
+/**
+ * Called upon scrolling of the section
+ * @param index - index of the active narration object
+ * @param progress - 0-1 (sort of) value indicating progress through the active narration block
+ * @param activeNarrationBlock - the narration block DOM element that is currently active
+ * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+ * @param graph - the chart instance, or a reference containing the result of
+ *                  the buildChart() function above
+ * @param data - the data that was passed in or resolved by the promise, AND processed by reshapeDataFunction()
+ */
 function onScroll(index, progress, activeNarrationBlock, graphId, graph, data) {
   const myGraph = select(`#${graphId}`);
   const classNames = myGraph.nodes()[0].className.split(' ');
@@ -112,6 +153,11 @@ function onScroll(index, progress, activeNarrationBlock, graphId, graph, data) {
   }
 }
 
+/**
+ * Returns a valid ScrollyTeller section configuration object
+ * @param appContainerId - id of the parent container
+ * @returns {Object} representing a valid configuration object for a ScrollyTeller Section
+ */
 export default function exampleChartConfig({ appContainerId }) {
   /** section object with identifier, narration, and data (for the graph), stored, and returned
    * to create the state object */

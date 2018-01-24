@@ -102,7 +102,6 @@ export function validateSectionConfig(sectionConfig) {
     appContainerId,
     sectionIdentifier,
     narration,
-    data,
     buildGraphFunction,
     onScrollFunction,
     onActivateNarrationFunction,
@@ -123,14 +122,12 @@ export function validateSectionConfig(sectionConfig) {
 
   validateCSSNames(sectionConfig);
 
-  /** narration and data must be either arrays of objects or promises */
+  /** narration  must be either arrays of objects or promises */
   if (!isANonEmptyObjectOrPromise(narration)) {
     throw Error('ScrollyTeller.validateSectionConfig() narration must be an array or a promise.');
   }
 
-  if (!isANonEmptyObjectOrPromise(data)) {
-    throw Error('ScrollyTeller.validateSectionConfig() data must be an array or a promise.');
-  }
+  /** data can be undefined or empty */
 
   /** reshapeData data is an optional function, so don't require it */
 
