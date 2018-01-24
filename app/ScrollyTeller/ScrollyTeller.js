@@ -35,7 +35,7 @@ export default class ScrollyTeller {
 
     /** convert all narration promises to data, and all data promises to processed data,
      * then build all the necessary HTML */
-    Promise.resolve(this._buildAsync());
+    this._buildAsync();
   }
 
   /** 'PRIVATE' METHODS * */
