@@ -4,7 +4,7 @@
   "description": "Scrolling story builder for IHME",
   "main": "dist/lib.js",
   "scripts": {
-    "install": "NODE_ENV='build' $(npm bin)/../node_modules/.bin/babel-node $(npm bin)/../node_modules/.bin/webpack",
+    "install": "NODE_ENV='build' $(npm bin)/../../../.bin/babel-node $(npm bin)/../../../.bin/webpack",
     "build:umd": "NODE_ENV='build' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
     "build:dev": "NODE_ENV='development' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
     "build:prod": "NODE_ENV='production' $(npm bin)/babel-node $(npm bin)/webpack --progress --colors",
