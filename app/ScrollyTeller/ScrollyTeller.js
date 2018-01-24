@@ -59,7 +59,7 @@ export default class ScrollyTeller {
   }
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
-      config.graph = config.buildGraphFunction(this._graphIdForSection(config), config.data, config);
+      config.graph = config.buildGraphFunction(this._graphIdForSection(config), config);
     });
   }
 
