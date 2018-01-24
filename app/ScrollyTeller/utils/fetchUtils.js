@@ -2,9 +2,31 @@ import {
   get,
   map,
   forEach,
+  findIndex,
   isFunction,
   toArray,
+  isString,
 } from 'lodash';
+import {
+  getFileExtensionFromURLString,
+} from './configValidator';
+import * as d3promise from 'd3.promise';
+
+function convertURLToPromise(config, propertyName) {
+  const urlPromiseOrArray = get(config, propertyName);
+  if (isString(urlPromiseOrArray)) {
+    /** which function? csv, html, json? */
+    const fileExtension = getFileExtensionFromURLString(urlPromiseOrArray);
+    const d3PromiseFunction = get(d3promise, fileExtension);
+    /** if we found a function, return, otherwise throw exception */
+    if (isFunction(d3PromiseFunction)) {
+      return d3PromiseFunction(urlPromiseOrArray);
+    }
+    throw Error('ScrollyTeller.convertURLToPromise(). URL must have a file extension of ' +
+      '.csv, .tsv, .json, .html, .txt, or .xml');
+  }
+  return urlPromiseOrArray;
+}
 
 /**
  * finds any narration promises in the sectionList, resolves them,
@@ -18,7 +40,7 @@ export async function fetchNarration(sectionList) {
   const fetches = map(sectionArray, (config) => {
     /** if the promise is already specified by the user spec, just return it
      * (if property is a promise, resolve will resolve to a Promise) */
-    return Promise.resolve(get(config, 'narration'));
+    return Promise.resolve(convertURLToPromise(config, 'narration'));
   });
   /** section array: indexed the same as the fetches array, and to the results array */
   const results = await Promise.all(fetches);
@@ -45,7 +67,7 @@ export async function fetchDataAndProcessResults(sectionList) {
   const fetches = map(sectionArray, (config) => {
     /** if the promise is already specified by the user spec, just return it
      * (if property is a promise, resolve will resolve to a Promise) */
-    return Promise.resolve(get(config, 'data'));
+    return Promise.resolve(convertURLToPromise(config, 'data'));
   });
   /** section array: indexed the same as the fetches array, and to the results array */
   const results = await Promise.all(fetches);
