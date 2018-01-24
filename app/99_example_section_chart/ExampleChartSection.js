@@ -180,13 +180,10 @@ function onActivateNarration(index, progress, activeNarrationBlock, graphId, sec
  * @param appContainerId - id of the parent container
  * @returns {Object} representing a valid configuration object for a ScrollyTeller Section
  */
-export default function exampleChartConfig({ appContainerId }) {
+export default function exampleChartConfig() {
   /** section object with identifier, narration, and data (for the graph), stored, and returned
    * to create the state object */
   return {
-    /** The id of the <div> that will hold this and all other sections */
-    appContainerId,
-
     /** identifier used to delineate different sections.  Should be unique from other sections
      * identifiers */
     sectionIdentifier: 'example',
@@ -285,7 +282,7 @@ export default function exampleChartConfig({ appContainerId }) {
 
     /** optional flags to govern spacers and css behavior */
     /** set to true to show spacer sizes for debugging */
-    showSpacers: true,
+    showSpacers: false,
     /**  if false, you must specify your own graph css, where
      * the graph class name is "graph_section_ + sectionIdentifier" */
     useDefaultGraphCSS: false,

@@ -14,6 +14,10 @@ export default class ScrollyTellerNames {
     return `${this.css.sectionContainer}_${sectionIdentifier}`;
   }
 
+  narrationClass() {
+    return this.css.narrationBlock;
+  }
+
   /** Returns the section id associated with this section based on the sectionIdentifier
    * @param {string} narrationId id of the narration to concatenate to default narrationBlock keyword
    * @returns {string} representing the id of the div containing narration

@@ -6,13 +6,10 @@ import * as d3promise from 'd3.promise';
  * @param appContainerId - id of the parent container
  * @returns {Object} representing a valid configuration object for a ScrollyTeller Section
  */
-export default function simpleSectionConfig({ appContainerId }) {
+export default function simpleSectionConfig() {
   /** section object with identifier, narration, and data (for the graph), stored, and returned
-   * to create the state object */
+   * to create the scrollyTellerConfig object */
   return {
-    /** The id of the <div> that will hold this and all other sections */
-    appContainerId,
-
     /** identifier used to delineate different sections.  Should be unique from other sections
      * identifiers */
     sectionIdentifier: 'simple',
@@ -24,7 +21,6 @@ export default function simpleSectionConfig({ appContainerId }) {
      *  3) a promise to return an array of narration objects in the appropriate form
      * See README for the specfication of the narration objects */
     narration: 'app/01_example_section_simple/data/narrationSectionSimple.csv',
-    // narration: [ {}, ],
 
     /** data can be either of the following 4 options:
      *  1) a string representing an absolute file path to a file of the following types:
@@ -41,8 +37,16 @@ export default function simpleSectionConfig({ appContainerId }) {
 
     /** optional function to reshape data after queries or parsing from a file */
     reshapeDataFunction(data) {
-      // do any data reshaping here and return
-      return data;
+      // do any data reshaping here and return the processed data
+      if (data) {
+        /** example: convert x and y string variables to numbers */
+        return data.map((datum) => {
+          return {
+            x: +datum.x,
+            y: +datum.y,
+          };
+        });
+      }
     },
 
     /**
