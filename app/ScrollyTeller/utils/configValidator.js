@@ -182,21 +182,12 @@ function validateCSSNames(state) {
 export function validateSectionConfig(sectionConfig) {
   /** validate each array configuration object */
   const {
-    appContainerId,
     sectionIdentifier,
     narration,
     buildGraphFunction,
     onScrollFunction,
     onActivateNarrationFunction,
-    showSpacers,
-    useDefaultGraphCSS,
   } = sectionConfig;
-
-  /** need a valid app container id */
-  if (isUndefined(appContainerId)) {
-    throw Error('ScrollyTeller.validateSectionConfig() missing ' +
-      `appContainerId for section: ${sectionIdentifier}.`);
-  }
 
   /** must have a valid section identifier */
   if (isUndefined(sectionIdentifier) || !sectionIdentifier.length) {
@@ -224,15 +215,6 @@ export function validateSectionConfig(sectionConfig) {
   if (!isFunction(onActivateNarrationFunction)) {
     throw Error('ScrollyTeller.validateSectionConfig()' +
       'onActivateNarrationFunction must be a function.');
-  }
-
-  /** must have a valid showSpacers flag */
-  if (isUndefined(showSpacers)) {
-    throw Error('ScrollyTeller.validateSectionConfig() sectionArray is empty.');
-  }
-  /** must have a useDefaultGraphCSS flag */
-  if (isUndefined(useDefaultGraphCSS)) {
-    throw Error('ScrollyTeller.validateSectionConfig() sectionArray is empty.');
   }
 }
 
