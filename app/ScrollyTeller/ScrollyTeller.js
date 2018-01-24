@@ -25,7 +25,8 @@ export default class ScrollyTeller {
     this.appContainerId = state.appContainerId;
     this.sectionList = state.sectionList;
 
-    /** if cssNames is unassigned, use the default ScrollyTellerNames constructor to create a new one */
+    /** if cssNames is unassigned,
+     * use the default ScrollyTellerNames constructor to create a new one */
     if (isUndefined(state.cssNames) || (state.cssNames.constructor.name !== 'ScrollyTellerNames')) {
       this.cssNames = new ScrollyTellerNames();
     } else {
