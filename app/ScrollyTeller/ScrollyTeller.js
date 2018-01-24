@@ -66,14 +66,15 @@ export default class ScrollyTeller {
     forEach(this.sectionList, (config) => {
       const names = config.cssNames;
       const css = get(config, ['cssNames', 'css']);
-      config.graphScroll = new GraphScroll()
+      config.graphScroll = new GraphScroll({ sectionTopBuffer: 100 })
         .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
         .graph(selectAll(`#${names.graphId(config.sectionIdentifier)}`))
         .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
           `.${css.narrationBlock}`))
-        .on('active', (index, activeNarrationBlock) => {
+        .on('active', (index, progress, activeNarrationBlock) => {
           config.onActivateNarrationFunction(
             index,
+            progress,
             activeNarrationBlock,
             this._graphIdForSection(config),
             config.graph,

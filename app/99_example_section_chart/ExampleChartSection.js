@@ -68,7 +68,7 @@ function buildChart(graphId, data) {
   return graph;
 }
 
-function onActivateNarration(index, activeNarrationBlock, graphId, graph, data) {
+function onActivateNarration(index, progress, activeNarrationBlock, graphId, graph, data) {
   const trigger = activeNarrationBlock.getAttribute('trigger');
   switch (trigger) {
     case 'unhide':

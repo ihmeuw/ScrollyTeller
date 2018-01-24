@@ -11,10 +11,12 @@ export default class GraphScroll {
     sectionActiveClassName = 'graph-scroll-active',
     graphActiveClassName = 'graph-scroll-fixed',
     graphInactiveClassName = 'graph-scroll-below',
+    sectionTopBuffer = 200,
   } = {}) {
     this.sectionActiveClassName = sectionActiveClassName;
     this.graphActiveClassName = graphActiveClassName;
     this.graphInactiveClassName = graphInactiveClassName;
+    this.sectionTopBuffer = sectionTopBuffer;
     this.dispatchInstance = dispatch('scroll', 'active');
     this.sectionSelection = select('null');
     this.activeSectionIndex = NaN;
@@ -38,6 +40,7 @@ export default class GraphScroll {
   _reposition() {
     const {
       belowStart,
+      sectionTopBuffer,
       containerStart,
       dispatchInstance,
       graphContainer,
@@ -50,23 +53,17 @@ export default class GraphScroll {
     } = this;
     let newActiveSectionIndex = 0;
     sectionPos.forEach((sectionTopPosition, sectionIndex) => {
-      if (sectionTopPosition < pageYOffset - containerStart + 200) {
+      if (sectionTopPosition < pageYOffset - containerStart + sectionTopBuffer) {
         newActiveSectionIndex = sectionIndex;
       }
     });
     newActiveSectionIndex = Math.min(numberOfSections - 1, newActiveSectionIndex);
-    if (this.activeSectionIndex !== newActiveSectionIndex) {
+    const isNewActiveSection = this.activeSectionIndex !== newActiveSectionIndex;
+    if (isNewActiveSection) {
       sectionSelection.classed(
         sectionActiveClassName,
         (_, i) => { return i === newActiveSectionIndex; },
       );
-
-      dispatchInstance.apply(
-        'active',
-        this,
-        [newActiveSectionIndex, this._getSectionNodeByIndex(newActiveSectionIndex)],
-      );
-
       this.activeSectionIndex = newActiveSectionIndex;
     }
 
@@ -88,13 +85,20 @@ export default class GraphScroll {
         this.activeSectionIndex + 1 < sectionPos.length
           ? sectionPos[this.activeSectionIndex + 1]
           : (belowStart - containerStart)
-      ) - 200;
+      ) - sectionTopBuffer;
     const progress = (pos - prevTop) / (nextTop - prevTop);
     if (progress >= 0 && progress <= 1) {
       dispatchInstance.apply(
         'scroll',
         this,
         [this.activeSectionIndex, progress, this._getSectionNodeByIndex(this.activeSectionIndex)],
+      );
+    }
+    if (isNewActiveSection) {
+      dispatchInstance.apply(
+        'active',
+        this,
+        [newActiveSectionIndex, progress, this._getSectionNodeByIndex(newActiveSectionIndex)],
       );
     }
   }

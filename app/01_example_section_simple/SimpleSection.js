@@ -4,7 +4,7 @@ import * as d3promise from 'd3.promise';
 function buildChart() {
 }
 
-function onActivateNarration(index, activeNarrationBlock, graphId, graph, data) {
+function onActivateNarration(index, progress, activeNarrationBlock, graphId, graph, data) {
 }
 
 function onScroll(index, progress, activeNarrationBlock, graphId, graph, data) {
