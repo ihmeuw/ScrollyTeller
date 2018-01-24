@@ -61,7 +61,7 @@ const myScrollyTellerConfig = {
 | ```showSpacers``` | **Optional** Boolean. Set to true if undefined. Set to true to show spacers in the web page for debugging purposes, or false to hide spacers in production. |
 | ```useDefaultGraphCSS``` | **Optional** Boolean. Set to true if undefined. Set to false to specify your own graph css, where the graph class name is "graph_section_```sectionIdentifier```". See ```app/99_example_section_chart/ExampleChartSection.js``` for an example of how to extend ScrollyTeller's default CSS. |
 
-* Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
+##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
 ```javascript
 const myAppId = 'myAppId';
 const myExampleSection0Name = 'myExampleSection0';
@@ -98,7 +98,8 @@ const myScrollyTellerConfig = {
   }, 
 };
 ```
-* Finally, pass the configuration to the ScrollyTeller constructor.  The configuration will be validated, and will throw errors if the configuration is not valid.
+
+##### Finally, pass the configuration to the ScrollyTeller constructor.  The configuration will be validated, and will throw errors if the configuration is not valid.
 ```javascript
 /** create the ScrollyTeller object to validate the config */
 const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
@@ -107,10 +108,11 @@ const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
 myScrollyTellerInstance.render();
 ```
 
-* See: ```app/app.js```, which creates sections using ```app/01_example_section_simple/SimpleSection.js``` and ```app/99_example_section_chart/ExampleChartSection.js``` for fully implemented examples that handle scrolling and narration actions.
+##### See ```app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```app/01_example_section_simple/SimpleSection.js``` and ```app/99_example_section_chart/ExampleChartSection.js```.
+
 
 #### Narration file/object format
-* If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
+##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
 | narrationId | spaceAboveInVh | spaceBelowInVh | h2Text | paragraphText | hRef | hRefText | trigger |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -129,9 +131,12 @@ myScrollyTellerInstance.render();
 | **hRef** | Optional link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
 | **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
 
-### Examples of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction``` implementations
+
+
+### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
 * (uses lodash toNumber() and groupBy() functions to manipulate data)
+* Notice that the function returns a new "grouped" data set, which is stored in the ```sectionConfig``` object and passed as an argument to ```onScrollFunction``` and ```onActivateNavigationFunction``` below, where it is accessed as ```sectionConfig.data```.
 ```javascript
 /**
  * Optional method to reshape the data passed into ScrollyTeller, or resolved by the data promise
@@ -154,9 +159,10 @@ function reshapeDataFunction(results) {
 }
 ```
 
+
 #### ```buildGraphFunction()```
-* uses an imported SampleChart to build the chart element.  SampleChart selects the ```<div>``` element to build the graph (chart) by using d3 to select #```graphId```
-* Notice that the function returns the chart instance, which is stored in the sectionConfig object and returned in other methods
+* uses an imported SampleChart to build the chart element.  An imported class ```SampleChart``` selects the ```<div>``` element to build the graph (chart) by using d3 to select #```graphId```
+* Notice that the function returns the chart instance, which is stored in the ```sectionConfig``` object and passed as an argument to ```onScrollFunction``` and ```onActivateNavigationFunction``` below, where it is accessed as ```sectionConfig.graph```
 ```javascript
 /**
  * Called AFTER data is fetched, and reshapeDataFunction is called.  This method should
@@ -178,16 +184,10 @@ function buildGraphFunction(graphId, sectionConfig) {
   const graph = new SampleChart({
     container: `#${graphId}`,
   });
-  const filteredData = getFilteredDataByTriggerString('series1:90-17', sectionConfig.data);
-
-  if (!isEmpty(filteredData)) {
-    filteredData.forEach((datum) => {
-      graph.render(datum);
-    });
-  }
   return graph;
 }
 ```
+
 
 #### ```onActivateNarrationFunction()```
 * This is called when a narration block is activated by hitting the top of the page. See below for how to access different properties from the sectionConfig object and other function parameters
