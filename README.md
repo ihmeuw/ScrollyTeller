@@ -21,7 +21,7 @@
 | **GraphScroll** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. ScrollyTeller uses a modified version of GraphScroll under the hood to provide extra functionality. |
 
 ### Building a scrolling data story using ScrollyTeller
-##### ScrollyTeller contains two methods: a constructor method ```ScrollyTeller(config)``` that takes a configuration object, and a ```render()``` method that returns a Promise to build all HTML.  The configuration object has following shape:
+##### ScrollyTeller contains two methods: a constructor method ```ScrollyTeller(config)``` that takes a configuration object, and a ```render()``` method that returns a Promise to build all HTML. The pseudo code below shows how a to create a ```ScrollyTeller``` instance from a configuration object, and then render the HTML.  The configuration object is described in much more detail below.
 ```javascript
 const myAppId = 'myAppId';
 const myScrollyTellerConfig = {
@@ -42,6 +42,12 @@ const myScrollyTellerConfig = {
     },
   },
 };
+
+/** create the ScrollyTeller object to validate the config */
+const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
+
+/** parse data and build all HMTL */
+myScrollyTellerInstance.render();
 ```
 
 ##### Each section in the ```{ sectionList }``` object should have a key value that is its ```sectionIdentifier```, and a value object with the properties listed in the table below
