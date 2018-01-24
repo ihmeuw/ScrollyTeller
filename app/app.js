@@ -6,8 +6,8 @@ import './scss/style.scss';
 import TitleSection from './00_title_section/TitleSection';
 import ScrollyTeller from './ScrollyTeller/ScrollyTeller';
 
-import SimpleSection from './01_example_section_simple/SimpleSection';
-import ExampleChartSection from './99_example_section_chart/ExampleChartSection';
+import simpleSectionConfig from './01_example_section_simple/SimpleSection';
+import exampleChartConfig from './99_example_section_chart/ExampleChartSection';
 
 export default class App {
   constructor() {
@@ -25,8 +25,8 @@ export default class App {
        * that returns a valid configuration object */
       sectionList: keyBy(
         [
-          new SimpleSection({ appContainerId }),
-          new ExampleChartSection({ appContainerId }),
+          simpleSectionConfig({ appContainerId }),
+          exampleChartConfig({ appContainerId }),
           /** add a new chart here */
         ],
         'sectionIdentifier', // key by this value

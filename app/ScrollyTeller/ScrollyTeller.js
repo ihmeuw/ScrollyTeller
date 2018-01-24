@@ -53,9 +53,12 @@ export default class ScrollyTeller {
     forEach(this.sectionList, (section) => { section.cssNames = this.cssNames; });
   }
 
+  _graphIdForSection(config) {
+    return config.cssNames.graphId(config.sectionIdentifier);
+  }
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
-      config.buildGraphFunction.apply(config.functionBindingContext);
+      config.graph = config.buildGraphFunction(this._graphIdForSection(config), config.data);
     });
   }
 
@@ -68,8 +71,25 @@ export default class ScrollyTeller {
         .graph(selectAll(`#${names.graphId(config.sectionIdentifier)}`))
         .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
           `.${css.narrationBlock}`))
-        .on('active', config.onActivateNarrationFunction.bind(config.functionBindingContext))
-        .on('scroll', config.onScrollFunction.bind(config.functionBindingContext));
+        .on('active', (index, activeNarrationBlock) => {
+          config.onActivateNarrationFunction(
+            index,
+            activeNarrationBlock,
+            this._graphIdForSection(config),
+            config.graph,
+            config.data,
+          );
+        })
+        .on('scroll', (index, progress, activeNarrationBlock) => {
+          config.onScrollFunction(
+            index,
+            progress,
+            activeNarrationBlock,
+            this._graphIdForSection(config),
+            config.graph,
+            config.data,
+          );
+        });
     });
   }
 

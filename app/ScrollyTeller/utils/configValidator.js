@@ -35,8 +35,6 @@ export const exampleConfigObject = {
       /** optional function to reshape data after queries or parsing from a file */
       reshapeDataFunction(data) { return data; },
 
-      /** functions that must be implemented/defined */
-      functionBindingContext: this,
       /**
        * Build graph in this function
        */
@@ -105,7 +103,6 @@ export function validateSectionConfig(sectionConfig) {
     sectionIdentifier,
     narration,
     data,
-    functionBindingContext,
     buildGraphFunction,
     onScrollFunction,
     onActivateNarrationFunction,
@@ -137,9 +134,6 @@ export function validateSectionConfig(sectionConfig) {
 
   /** reshapeData data is an optional function, so don't require it */
 
-  if (isUndefined(functionBindingContext)) {
-    throw Error('ScrollyTeller.validateSectionConfig() functionBindingContext must be defined.');
-  }
   /** must have implemented the following functions */
   if (!isFunction(buildGraphFunction)) {
     throw Error('ScrollyTeller.validateSectionConfig() buildGraphFunction must be a function.');
@@ -169,7 +163,8 @@ export function validateScrollyTellerConfig(state) {
   } = state;
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error('ScrollyTeller.validateScrollyTellerConfig() No appContainerId is set for the ScrollyTeller.');
+    throw Error('ScrollyTeller.validateScrollyTellerConfig() ' +
+      'No appContainerId is set for the ScrollyTeller.');
   }
 
   /** need a valid array of sections */
