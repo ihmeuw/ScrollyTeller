@@ -11,10 +11,8 @@ import exampleChartConfig from './99_example_section_chart/ExampleChartSection';
 
 export default class App {
   constructor() {
-    const appContainerId = 'app';
-
-    this.state = {
-      appContainerId,
+    this.scrollyTellerConfig = {
+      appContainerId: 'app',
       titleSectionProps: {
         titleTextCSS: 'title',
         titleText: 'Scrolly Teller Example',
@@ -25,8 +23,8 @@ export default class App {
        * that returns a valid configuration object */
       sectionList: keyBy(
         [
-          simpleSectionConfig({ appContainerId }),
-          exampleChartConfig({ appContainerId }),
+          simpleSectionConfig(),
+          exampleChartConfig(),
           /** add a new chart here */
         ],
         'sectionIdentifier', // key by this value
@@ -35,11 +33,15 @@ export default class App {
 
     /** now build the components */
     this.title = new TitleSection({
-      appContainerId: this.state.appContainerId,
-      ...this.state.titleSectionProps,
+      appContainerId: this.scrollyTellerConfig.appContainerId,
+      ...this.scrollyTellerConfig.titleSectionProps,
     });
 
-    this.scrollingDataStory = new ScrollyTeller(this.state);
+    /** create the ScrollyTeller object to validate the config */
+    this.scrollingDataStory = new ScrollyTeller(this.scrollyTellerConfig);
+
+    /** parse data and build all HMTL */
+    this.scrollingDataStory.render();
   }
 }
 

@@ -15,7 +15,7 @@ import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
 
 export default class ScrollyTeller {
   /**
-   * Validates state, converts any narration or data promises in the sectionList to arrays of data
+   * Validates scrollyTellerConfig, converts any narration or data promises in the sectionList to arrays of data
    * or narration, and builds the HTML necessary for a scrolling story
    * @param {object} state object containing configuration
    */
@@ -32,16 +32,15 @@ export default class ScrollyTeller {
     } else {
       this.cssNames = state.cssNames;
     }
-    this._assignScrollyTellerNamesToSections(this.cssNames);
-
-    /** convert all narration promises to data, and all data promises to processed data,
-     * then build all the necessary HTML */
-    this._buildAsync();
+    this._assignConfigVariablesToSectionConfigs(this.cssNames);
   }
 
-  /** 'PRIVATE' METHODS * */
-
-  async _buildAsync() {
+  /**
+   * Converts all narration promises to data, and all data promises to processed data,
+   * then build all the necessary HTML
+   * @returns {Promise<void>} that is resolved when everything is built
+   */
+  async render() {
     await fetchNarration(this.sectionList);
     await fetchDataAndProcessResults(this.sectionList);
     /** then build the html we need along with the graph scroll objects for each section */
@@ -50,13 +49,25 @@ export default class ScrollyTeller {
     this._buildGraphs();
   }
 
-  _assignScrollyTellerNamesToSections() {
-    forEach(this.sectionList, (section) => { section.cssNames = this.cssNames; });
+  /** 'PRIVATE' METHODS * */
+
+  _assignConfigVariablesToSectionConfigs() {
+    forEach(this.sectionList, (section) => {
+      section.showSpacers = isUndefined(section.showSpacers)
+        ? true
+        : section.showSpacers;
+      section.useDefaultGraphCSS = isUndefined(section.useDefaultGraphCSS)
+        ? true
+        : section.useDefaultGraphCSS;
+      section.appContainerId = this.appContainerId;
+      section.cssNames = this.cssNames;
+    });
   }
 
   _graphIdForSection(config) {
     return config.cssNames.graphId(config.sectionIdentifier);
   }
+
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
       config.graph = config.buildGraphFunction(this._graphIdForSection(config), config);
