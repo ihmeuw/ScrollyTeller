@@ -7,9 +7,6 @@ const env = environment.valueOf('env');
 
 export default new Config().merge({
   bail: true,
-  entry: {
-    bundle: ['babel-polyfill', './app/app.js'],
-  },
   output: {
     path: `${baseDir}/dist`,
     filename: '[name].js',
@@ -22,8 +19,8 @@ export default new Config().merge({
   ],
   module: {
     rules: [
-      { 
-        test: /\.js$/, 
+      {
+        test: /\.js$/,
         include: [ `${baseDir}/app` ],
         use: 'babel-loader'
       },
@@ -32,14 +29,14 @@ export default new Config().merge({
         include: [ `${baseDir}/app` ],
         use: 'babel-loader'
       },
-      { 
+      {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",
           use: "css-loader"
         })
       },
-      { 
+      {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           use: [{
@@ -51,7 +48,7 @@ export default new Config().merge({
           fallback: "style-loader"
         })
       },
-      { 
+      {
         test: /\.less$/,
         use: ExtractTextPlugin.extract({
           fallback: "style-loader",

@@ -7,8 +7,11 @@ import {
   Config,
   ConfigEnvironment
 } from 'webpack-config';
- 
+
 export default new Config().extend('./webpack/webpack.config.base.js').merge({
+  entry: {
+    bundle: ['babel-polyfill', './app/app.js'],
+  },
   filename: __filename,
   devtool: 'inline-source-map',
   output: {
