@@ -17,20 +17,20 @@ export default class ScrollyTeller {
   /**
    * Validates scrollyTellerConfig, converts any narration or data promises in the sectionList to arrays of data
    * or narration, and builds the HTML necessary for a scrolling story
-   * @param {object} state object containing configuration
+   * @param {object} config object containing configuration
    */
-  constructor(state) {
-    validateScrollyTellerConfig(state);
+  constructor(config) {
+    validateScrollyTellerConfig(config);
 
-    this.appContainerId = state.appContainerId;
-    this.sectionList = state.sectionList;
+    this.appContainerId = config.appContainerId;
+    this.sectionList = config.sectionList;
 
     /** if cssNames is unassigned,
      * use the default ScrollyTellerNames constructor to create a new one */
-    if (isUndefined(state.cssNames) || (state.cssNames.constructor.name !== 'ScrollyTellerNames')) {
+    if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'ScrollyTellerNames')) {
       this.cssNames = new ScrollyTellerNames();
     } else {
-      this.cssNames = state.cssNames;
+      this.cssNames = config.cssNames;
     }
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
   }
