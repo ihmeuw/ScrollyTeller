@@ -35,20 +35,6 @@ export default class ScrollyTeller {
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
   }
 
-  /**
-   * Converts all narration promises to data, and all data promises to processed data,
-   * then build all the necessary HTML
-   * @returns {Promise<void>} that is resolved when everything is built
-   */
-  async render() {
-    await fetchNarration(this.sectionList);
-    await fetchDataAndProcessResults(this.sectionList);
-    /** then build the html we need along with the graph scroll objects for each section */
-    this._buildSections();
-    this._buildGraphScrollContainers();
-    this._buildGraphs();
-  }
-
   /** 'PRIVATE' METHODS * */
 
   _assignConfigVariablesToSectionConfigs() {
@@ -106,5 +92,22 @@ export default class ScrollyTeller {
 
   _buildSections() {
     forEach(this.sectionList, buildSectionWithNarration);
+  }
+
+
+  /** 'PUBLIC' METHODS * */
+
+  /**
+   * Converts all narration promises to data, and all data promises to processed data,
+   * then build all the necessary HTML
+   * @returns {Promise<void>} that is resolved when everything is built
+   */
+  async render() {
+    await fetchNarration(this.sectionList);
+    await fetchDataAndProcessResults(this.sectionList);
+    /** then build the html we need along with the graph scroll objects for each section */
+    this._buildSections();
+    this._buildGraphScrollContainers();
+    this._buildGraphs();
   }
 }
