@@ -81,7 +81,7 @@ function getFilteredDataByTriggerString(trigger, data) {
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */
 function buildChart(graphId, sectionConfig) {
@@ -112,7 +112,7 @@ function buildChart(graphId, sectionConfig) {
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */
 function onActivateNarration(index, progress, activeNarrationBlock, graphId, sectionConfig) {
@@ -147,7 +147,7 @@ function onActivateNarration(index, progress, activeNarrationBlock, graphId, sec
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */function onScroll(index, progress, activeNarrationBlock, graphId, sectionConfig) {
   const myGraph = select(`#${graphId}`);
@@ -232,7 +232,7 @@ export default function exampleChartConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     buildGraphFunction: buildChart,
@@ -253,7 +253,7 @@ export default function exampleChartConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     onScrollFunction: onScroll,
@@ -275,7 +275,7 @@ export default function exampleChartConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     onActivateNarrationFunction: onActivateNarration,

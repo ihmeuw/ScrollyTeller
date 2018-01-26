@@ -65,7 +65,7 @@ export default function simpleSectionConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     buildGraphFunction(graphId, sectionConfig) {
@@ -90,7 +90,7 @@ export default function simpleSectionConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     onScrollFunction:
@@ -127,7 +127,7 @@ export default function simpleSectionConfig() {
      *           data - the data that was passed in or resolved by the promise
      *                   and processed by reshapeDataFunction()
      *           graphScroll - the GraphScroll object that handles activation of narration, etc
-     *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+     *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
     onActivateNarrationFunction:

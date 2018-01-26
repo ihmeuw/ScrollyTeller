@@ -7,7 +7,7 @@ import {
   isString,
   isUndefined,
 } from 'lodash';
-import ScrollyTellerNames from './ScrollyTellerNames';
+import CSSNames from './CSSNames';
 
 export function getFileExtensionFromURLString(url) {
   /** check for string */
@@ -35,7 +35,7 @@ export const exampleConfigObject = {
   /** The id of the <div> that will hold this and all other sections */
   appContainerId: 'myAppId',
   /** can override the defaults in this class to customize CSS */
-  cssNames: new ScrollyTellerNames(),
+  cssNames: new CSSNames(),
   /** build a list of story sections, keyed by sectionIdentifier.
    * Each section constructor should return a valid configuration,
    * or create a new section "object" outside, and add a .config() function
@@ -137,7 +137,7 @@ export const exampleConfigObject = {
        *           data - the data that was passed in or resolved by the promise
        *                   and processed by reshapeDataFunction()
        *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+       *           cssNames - the CSSNames object containing some useful functions for getting
        *                    the css identifiers of narrations, graph, and the section
        */
       onActivateNarrationFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {},
@@ -170,12 +170,12 @@ function validateCSSNames(state) {
     cssNames,
   } = state;
 
-  /** cssNames is optional, so allow ScrollyTeller to create the default ScrollyTellerNames object,
+  /** cssNames is optional, so allow ScrollyTeller to create the default CSSNames object,
    * however, DO check for an incorrectly defined cssNames object
-   * (not of class ScrollyTellerNames) */
-  if (cssNames && (cssNames.constructor.name !== 'ScrollyTellerNames')) {
+   * (not of class CSSNames) */
+  if (cssNames && (cssNames.constructor.name !== 'CSSNames')) {
     throw Error('ScrollyTeller.validateSectionConfig() ' +
-      'cssNames must be a ScrollyTellerNames object.');
+      'cssNames must be a CSSNames object.');
   }
 }
 

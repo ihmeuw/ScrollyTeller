@@ -1,6 +1,6 @@
-import CSS from './nameDefaults';
+import CSS from './CSSNameDefaults';
 
-export default class ScrollyTellerNames {
+export default class CSSNames {
   constructor(scrollyTellerCSS) {
     this.css = { ...CSS, ...scrollyTellerCSS };
   }

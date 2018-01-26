@@ -10,7 +10,7 @@ import {
   fetchDataAndProcessResults,
   buildSectionWithNarration,
 } from './utils';
-import ScrollyTellerNames from './utils/ScrollyTellerNames';
+import CSSNames from './utils/CSSNames';
 import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
 
 export default class ScrollyTeller {
@@ -26,9 +26,9 @@ export default class ScrollyTeller {
     this.sectionList = config.sectionList;
 
     /** if cssNames is unassigned,
-     * use the default ScrollyTellerNames constructor to create a new one */
-    if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'ScrollyTellerNames')) {
-      this.cssNames = new ScrollyTellerNames();
+     * use the default CSSNames constructor to create a new one */
+    if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'CSSNames')) {
+      this.cssNames = new CSSNames();
     } else {
       this.cssNames = config.cssNames;
     }

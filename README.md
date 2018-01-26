@@ -57,7 +57,7 @@ myScrollyTellerInstance.render();
 | Section Property | Property function |
 | :---: | :---: |
 | ```sectionIdentifier``` | Unique identifier to distinguish each section. No two ```sectionIdentifier```'s should be the same in the ScrollyTeller configuration object  |
-| ```cssNames``` | **Optional**: instance of ```ScrollyTellerNames``` class.  Can be used to override the default naming of id's and css classes. If left undefined, the default naming will be used. |
+| ```cssNames``` | **Optional**: instance of ```CSSNames``` class.  Can be used to override the default naming of id's and css classes. If left undefined, the default naming will be used. |
 | ```narration``` | Defines the scrolling narration of the story. The narration can be either of the following 3 options: 1) a URL string with the absolute file path to a file of type  'csv', 'tsv', 'json', 'html', 'txt', 'xml', 2) an array of narration objects, or 3) a promise to return an array of narration objects.  SEE DOCUMENTATION BELOW FOR SPECIFICATION OF THE NARRATION TABLE / ARRAY |
 | ```data``` | **Optional**: user defined data.  Data can be either of the following 4 options: 1) a URL string with the absolute file path to a file of type  'csv', 'tsv', 'json', 'html', 'txt', 'xml', 2) an array of narration objects, 3) a promise to return an array of narration objects, or  4) undefined |
 | ```reshapeDataFunction``` | **Optional**: Called AFTER data is fetched as ```reshapeDataFunction(data)```  This method can be used to filter or reshape data after the datahas been fetched or parsed from a file. It should return the reshaped data, which will overwrite the ```data``` proprerty for this section. |
@@ -183,7 +183,7 @@ function reshapeDataFunction(results) {
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */
 function buildGraphFunction(graphId, sectionConfig) {
@@ -212,7 +212,7 @@ function buildGraphFunction(graphId, sectionConfig) {
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */
 function onActivateNarrationFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {
@@ -259,7 +259,7 @@ function onActivateNarrationFunction(index, progress, activeNarrationBlock, grap
  *           data - the data that was passed in or resolved by the promise
  *                   and processed by reshapeDataFunction()
  *           graphScroll - the GraphScroll object that handles activation of narration, etc
- *           cssNames - the ScrollyTellerNames object containing some useful functions for getting
+ *           cssNames - the CSSNames object containing some useful functions for getting
  *                    the css identifiers of narrations, graph, and the section
  */function onScrollFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {
   const myGraphDiv = select(`#${graphId}`);
