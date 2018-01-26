@@ -133,10 +133,10 @@ myScrollyTellerInstance.render();
 | **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
 | **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
 | **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
-| **h2Text** | Optional larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
-| **paragraphText** | Optional paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
-| **hRef** | Optional link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
-| **trigger** | Optional user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. See examples below fo usage. |
+| **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
+| **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
+| **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
+| **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage. |
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
