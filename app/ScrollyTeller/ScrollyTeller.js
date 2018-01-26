@@ -1,7 +1,6 @@
 import {
   get,
   forEach,
-  isEmpty,
   isUndefined,
 } from 'lodash';
 import { select, selectAll } from 'd3';
@@ -81,7 +80,7 @@ export default class ScrollyTeller {
       const css = get(config, ['cssNames', 'css']);
       config.graphScroll = new GraphScroll({ sectionTopBuffer: 100 })
         .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
-        .graph(selectAll(`#${names.graphId(config.sectionIdentifier)}`))
+        .graph(select(`#${names.graphId(config.sectionIdentifier)}`))
         .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
           `.${css.narrationBlock}`))
         .on('active', (index, progress, activeNarrationBlock) => {
