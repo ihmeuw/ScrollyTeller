@@ -36,18 +36,20 @@ export default function simpleSectionConfig() {
     // data: d3promise.csv('app/99_example_section_chart/data/dataBySeries.csv'),
 
     /** optional function to reshape data after queries or parsing from a file */
-    reshapeDataFunction(data) {
-      // do any data reshaping here and return the processed data
-      if (data) {
-        /** example: convert x and y string variables to numbers */
-        return data.map((datum) => {
-          return {
-            x: +datum.x,
-            y: +datum.y,
-          };
-        });
-      }
-    },
+    reshapeDataFunction:
+      function reshapeData(data) {
+        // do any data reshaping here and return the processed data
+        if (data) {
+          /** example: convert x and y string variables to numbers */
+          return data.map((datum) => {
+            return {
+              x: +datum.x,
+              y: +datum.y,
+            };
+          });
+        }
+        return [];
+      },
 
     /**
      * Called AFTER data is fetched, and reshapeDataFunction is called.  This method should
@@ -68,11 +70,12 @@ export default function simpleSectionConfig() {
      *           cssNames - the CSSNames object containing some useful functions for getting
      *                    the css identifiers of narrations, graph, and the section
      */
-    buildGraphFunction(graphId, sectionConfig) {
-      // build graph
-      // render using any initial data (sectionConfig.data) here
-      // return the result to store in sectionConfig.graph
-    },
+    buildGraphFunction:
+      function buildGraph(graphId, sectionConfig) {
+        // build graph
+        // render using any initial data (sectionConfig.data) here
+        // return the result to store in sectionConfig.graph
+      },
 
     /**
      * Called upon scrolling of the section. See argument list below, this function is called as:
