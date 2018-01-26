@@ -1,4 +1,4 @@
-export const CSS = {
+export default {
   sectionContainer: 'section',
   narrationBlock: 'narration',
   graphContainer: 'graph_section',

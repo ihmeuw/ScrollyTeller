@@ -1,6 +1,5 @@
 narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,trigger
-0,10,10,,,,,opacityzero
-0,10,10,,,,,series1:95-05
+0,20,20,,,,,opacityzero
 1,40,40,EXAMPLE SECTION WITH CHART,Scroll down to fade the graph in,,,unhide
 2,40,40,Some data,This is really important,,,series1:95-05
 3,40,40,No Really,This wiggly graph tells us it's really important,,,series2:95-05

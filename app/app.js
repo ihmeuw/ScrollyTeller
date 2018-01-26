@@ -1,16 +1,47 @@
+import {
+  keyBy,
+} from 'lodash';
+
 import './scss/style.scss';
 import TitleSection from './00_title_section/TitleSection';
-import SectionSimple from './01_example_section_simple/SectionSimple';
-import SectionExample from './99_example_section_chart/SectionExampleChart.js';
+import ScrollyTeller from './ScrollyTeller/ScrollyTeller';
+
+import simpleSectionConfig from './01_example_section_simple/SimpleSection';
+import exampleChartConfig from './99_example_section_chart/ExampleChartSection';
 
 export default class App {
   constructor() {
-    const containerSelector = { appContainerId: 'app' };
-    const titleSectionProps = { titleTextCSS: 'title', titleText: 'Scrolly Teller Example' };
+    this.scrollyTellerConfig = {
+      appContainerId: 'app',
+      titleSectionProps: {
+        titleTextCSS: 'title',
+        titleText: 'Scrolly Teller Example',
+      },
+      /** build a list of story sections, keyed by sectionIdentifier.
+       * Each section constructor should return a valid configuration,
+       * or create a new section "object" outside, and add a .config() function
+       * that returns a valid configuration object */
+      sectionList: keyBy(
+        [
+          simpleSectionConfig(),
+          exampleChartConfig(),
+          /** add a new chart here */
+        ],
+        'sectionIdentifier', // key by this value
+      ),
+    };
 
-    this.title = new TitleSection({ ...containerSelector, ...titleSectionProps });
-    this.sectionSimple = new SectionSimple(containerSelector);
-    this.sectionWithChart = new SectionExample(containerSelector);
+    /** now build the components */
+    this.title = new TitleSection({
+      appContainerId: this.scrollyTellerConfig.appContainerId,
+      ...this.scrollyTellerConfig.titleSectionProps,
+    });
+
+    /** create the ScrollyTeller object to validate the config */
+    this.scrollingDataStory = new ScrollyTeller(this.scrollyTellerConfig);
+
+    /** parse data and build all HMTL */
+    this.scrollingDataStory.render();
   }
 }
 
