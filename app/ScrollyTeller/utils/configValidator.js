@@ -94,7 +94,7 @@ export const exampleConfigObject = {
        *           data - the data that was passed in or resolved by the promise
        *                   and processed by reshapeDataFunction()
        *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssnames - the scrollytellernames object containing some useful functions
+       *           cssNames - the CSSNames object containing some useful functions
        *                  for getting the css identifiers of narrations, graph, and the section
        */
       buildGraphFunction(graphId, sectionConfig) { /** build and return myChart */ },
@@ -115,7 +115,7 @@ export const exampleConfigObject = {
        *           data - the data that was passed in or resolved by the promise
        *                   and processed by reshapeDataFunction()
        *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssnames - the scrollytellernames object containing some useful functions
+       *           cssNames - the CSSNames object containing some useful functions
        *                  for getting the css identifiers of narrations, graph, and the section
        */
       onScrollFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {},
