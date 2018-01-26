@@ -167,7 +167,7 @@ function reshapeDataFunction(results) {
 
 
 #### ```buildGraphFunction()```
-* uses an imported SampleChart to build the chart element.  An imported class ```SampleChart``` selects the ```<div>``` element to build the graph (chart) by using d3 to select #```graphId```
+* uses an imported SampleChart to build the chart element.  An imported class ```SampleChart``` selects the ```<div>``` element to build the graph (chart) by using d3 to select ```#graphId```
 * Notice that the function returns the chart instance, which is stored in the ```sectionConfig``` object and passed as an argument to ```onScrollFunction``` and ```onActivateNavigationFunction``` below, where it is accessed as ```sectionConfig.graph```
 ```javascript
 /**
