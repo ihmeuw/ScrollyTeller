@@ -9,7 +9,7 @@ import {
   fetchNarration,
   fetchDataAndProcessResults,
   buildSectionWithNarration,
-} from './utils';
+} from './utils/index';
 import CSSNames from './utils/CSSNames';
 import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
 

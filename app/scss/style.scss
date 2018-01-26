@@ -2,7 +2,7 @@
 
 /* all variables */
 @import 'storyVariables';
-@import '../ScrollyTeller/scss/scrollyVariables';
+@import '../../src/ScrollyTeller/scss/scrollyVariables';
 
 /* standard css for this story, to be adhered to for consistency */
 @import 'storyBase';
@@ -10,8 +10,8 @@
 @import 'storyGraph';
 
 /* required by ScrollyTeller */
-@import '../ScrollyTeller/scss/scrollyNarration';
-@import '../ScrollyTeller/scss/scrollyGraph';
+@import '../../src/ScrollyTeller/scss/scrollyNarration';
+@import '../../src/ScrollyTeller/scss/scrollyGraph';
 
 /* example of overriding the default scrolly-graph css when specifying your own CSS
  * (ScrollyTeller.useDefaultGraphCSS = false) */

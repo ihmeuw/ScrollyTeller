@@ -4,7 +4,7 @@ import {
 
 import './scss/style.scss';
 import TitleSection from './00_title_section/TitleSection';
-import ScrollyTeller from './ScrollyTeller/ScrollyTeller';
+import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
 
 import simpleSectionConfig from './01_example_section_simple/SimpleSection';
 import exampleChartConfig from './99_example_section_chart/ExampleChartSection';
