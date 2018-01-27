@@ -1,8 +1,9 @@
 import CSS from './CSSNameDefaults';
+import { merge } from 'lodash';
 
 export default class CSSNames {
   constructor(scrollyTellerCSS) {
-    this.css = { ...CSS, ...scrollyTellerCSS };
+    this.css = merge({}, CSS, scrollyTellerCSS);
   }
 
   /**
