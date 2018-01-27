@@ -1,6 +1,6 @@
 {
   "name": "scrolly-teller",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Scrolling story builder for IHME",
   "main": "dist/lib.js",
   "scripts": {
@@ -14,7 +14,12 @@
     "type": "git",
     "url": "ssh://git@stash.ihme.washington.edu:7999/viz/scrolly-teller.git"
   },
-  "author": "",
+  "author": "Ryan Shackleton <ryshack@uw.edu>",
+  "contributors": [
+    "Kat Beame <kbeame@uw.edu>",
+    "Evan Laurie <evanl5@wu.edu>",
+    "Aaron Keel <akeel@uw.edu>"
+  ],
   "license": "ISC",
   "devDependencies": {
     "babel": "^6.23.0",
@@ -22,6 +27,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
+    "babel-minify-webpack-plugin": "^0.2.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.1",

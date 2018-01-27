@@ -5,7 +5,6 @@ const baseDir = environment.valueOf('dir');
 
 import {
   Config,
-  ConfigEnvironment
 } from 'webpack-config';
 
 export default new Config().extend('./webpack/webpack.config.base.js').merge({
@@ -22,8 +21,8 @@ export default new Config().extend('./webpack/webpack.config.base.js').merge({
       {
         enforce: 'pre',
         test: /\.js$/,
-        include: [`${baseDir}/app`],
-        loader: 'eslint-loader',
+        include: [`${baseDir}/dist`],
+        loader: 'babel-loader',
         options: {
           fix: true,
         }
@@ -31,8 +30,8 @@ export default new Config().extend('./webpack/webpack.config.base.js').merge({
       {
         enforce: 'pre',
         test: /\.jsx$/,
-        include: [`${baseDir}/app`],
-        loader: 'eslint-loader',
+        include: [`${baseDir}/dist`],
+        loader: 'babel-loader',
         options: {
           fix: true,
         }
