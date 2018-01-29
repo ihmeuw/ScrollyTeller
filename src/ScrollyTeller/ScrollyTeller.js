@@ -65,7 +65,7 @@ export default class ScrollyTeller {
     forEach(this.sectionList, (config) => {
       const names = config.cssNames;
       const css = get(config, ['cssNames', 'css']);
-      config.graphScroll = new GraphScroll({ sectionTopBuffer: 100 })
+      config.graphScroll = new GraphScroll({ sectionTopBuffer: 200 })
         .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
         .graph(select(`#${names.graphId(config.sectionIdentifier)}`))
         .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
