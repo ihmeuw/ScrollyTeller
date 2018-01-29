@@ -12,7 +12,7 @@ export default new Config().merge({
     filename: '[name].js',
   },
   plugins: [
-    new ExtractTextPlugin('[name].css'),
+    new ExtractTextPlugin(env === 'build' ? 'styles.scss' : '[name].css'),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env),
     }),
