@@ -8,18 +8,21 @@ function getSpacerText(config, block, narrationBlockId, location) {
   const viewportHeightSpace = location === 'ABOVE'
     ? block.spaceAboveInVh
     : block.spaceBelowInVh;
+
   if (isEmpty(viewportHeightSpace)) {
     return '';
   }
 
   const css = get(config, ['cssNames', 'css']);
   const spacerClassName = config.showSpacers ? css.spacerShow : css.spacerHide;
-  const spacerText = config.showSpacers ? `<h3>SPACER: ${viewportHeightSpace} vh</h3>\
-                                <h3>${location}: ${narrationBlockId}</h3>` : '';
-  return `<div class="${spacerClassName}"\
-             style="height:${viewportHeightSpace}vh">\
-             ${spacerText}\
-          </div>`;
+  const spacerText = config.showSpacers ? `
+    <h3>SPACER: ${viewportHeightSpace} vh</h3>
+    <h3>${location}: ${narrationBlockId}</h3>
+  ` : '';
+
+  return `<div class="${spacerClassName}"  style="height:${viewportHeightSpace}vh">
+    ${spacerText}
+  </div>`;
 }
 
 function getNarrationHtmlString(narrationBlocksArray, config) {
@@ -29,10 +32,10 @@ function getNarrationHtmlString(narrationBlocksArray, config) {
   return narrationBlocksArray.reduce((narrationHtmlString, block) => {
     /** outer sectionContainer for each part of the narration + spacerHide */
     const narrationBlockId = `${names.narrationId(block.narrationId)}`;
-    const blockContainer = `<div class=${css.narrationBlock}\
-                                   id=${narrationBlockId}\
-                                   trigger=${block.trigger}\
-                                   >`;
+    const blockContainer = `<div 
+      class=${css.narrationBlock} 
+      id=${narrationBlockId}
+    >`;
 
     /** spacerHide component below, with text if this.showSpacers is set to true */
     const spacerAbove = getSpacerText(config, block, narrationBlockId, 'ABOVE');
@@ -44,9 +47,9 @@ function getNarrationHtmlString(narrationBlocksArray, config) {
     /** link component */
     const href = (isEmpty(block.hRefText) || isEmpty(block.hRef))
       ? ''
-      : `<div class="${css.linkContainer}">\
-                    <a href=${block.hRef} target="_blank">${block.hRefText}</a>\
-              </div>`;
+      : `<div class="${css.linkContainer}">
+          <a href=${block.hRef} target="_blank">${block.hRefText}</a>
+         </div>`;
 
     /** spacerHide component below, with text if this.showSpacers is set to true */
     const spacerBelow = getSpacerText(config, block, narrationBlockId, 'BELOW');
@@ -74,7 +77,7 @@ export function buildSectionWithNarration(config) {
   /** select the appropriate section by id, and append a properly formatted html string
    * containing the contents of each narration block (row in the narration.csv file) */
   select(`#${names.sectionId(config.sectionIdentifier)}`)
-    .html(getNarrationHtmlString(config.narration, config));
+    .html(`<div>${getNarrationHtmlString(config.narration, config)}</div>`);
 
   /** insert the graph as the first div before narration divs */
   select(`#${names.sectionId(config.sectionIdentifier)}`)
