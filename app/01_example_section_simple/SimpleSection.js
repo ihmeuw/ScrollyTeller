@@ -93,8 +93,6 @@ export default function simpleSectionConfig() {
      */
     onScrollFunction:
       function onScroll({ progress, trigger, graphId }) {
-      console.log(progress);
-
         /** use trigger specified in the narration csv file to trigger actions */
         switch (trigger) {
           case 'unhide':
