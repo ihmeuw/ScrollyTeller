@@ -2,8 +2,9 @@ import {
   get,
   forEach,
   isUndefined,
+  noop,
 } from 'lodash';
-import { select, selectAll } from 'd3';
+import { select } from 'd3';
 import {
   validateScrollyTellerConfig,
   fetchNarration,
@@ -12,7 +13,7 @@ import {
 } from './utils/index';
 import './scss/style.scss';
 import CSSNames from './utils/CSSNames';
-import GraphScroll from './lib/graph-scroll-scrollyteller-v0.1';
+import scrollama from 'scrollama';
 
 export default class ScrollyTeller {
   /**
@@ -61,32 +62,44 @@ export default class ScrollyTeller {
     });
   }
 
-  _buildGraphScrollContainers() {
-    forEach(this.sectionList, (config) => {
-      const names = config.cssNames;
-      const css = get(config, ['cssNames', 'css']);
-      config.graphScroll = new GraphScroll({ sectionTopBuffer: 200 })
-        .container(select(`#${names.sectionId(config.sectionIdentifier)}`))
-        .graph(select(`#${names.graphId(config.sectionIdentifier)}`))
-        .sections(selectAll(`#${names.sectionId(config.sectionIdentifier)} > ` +
-          `.${css.narrationBlock}`))
-        .on('active', (index, progress, activeNarrationBlock) => {
-          config.onActivateNarrationFunction(
-            index,
-            progress,
-            activeNarrationBlock,
-            this._graphIdForSection(config),
-            config,
-          );
+  _buildScrollamaContainers() {
+    forEach(this.sectionList, (sectionConfig) => {
+      const css = get(sectionConfig, ['cssNames', 'css']);
+
+      const {
+        narration,
+        cssNames: names,
+        sectionIdentifier,
+        onScrollFunction = noop,
+        onActivateNarrationFunction = noop,
+      } = sectionConfig;
+
+      sectionConfig.scroller = scrollama();
+
+      const sectionId = names.sectionId(sectionIdentifier);
+      const graphId = names.graphId(sectionIdentifier);
+
+      sectionConfig.scroller
+        .setup({
+          step: `#${sectionId} .${css.narrationBlock}`,
+          container: `#${sectionId}`,
+          graphic: `#${graphId}`,
+          offset: 0.5,
+          progress: true,
         })
-        .on('scroll', (index, progress, activeNarrationBlock) => {
-          config.onScrollFunction(
-            index,
-            progress,
-            activeNarrationBlock,
-            this._graphIdForSection(config),
-            config,
-          );
+        .onStepEnter(({ element, index, direction }) => {
+          const { trigger = '' } = narration[index];
+          const progress = 0;
+
+          select(element).classed('active', true);
+          onActivateNarrationFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
+        })
+        .onStepExit(({ element }) => {
+          select(element).classed('active', false);
+        })
+        .onStepProgress(({ element, index, direction, progress }) => {
+          const { trigger = '' } = narration[index];
+          onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
         });
     });
   }
@@ -108,7 +121,7 @@ export default class ScrollyTeller {
     await fetchDataAndProcessResults(this.sectionList);
     /** then build the html we need along with the graph scroll objects for each section */
     this._buildSections();
-    this._buildGraphScrollContainers();
+    this._buildScrollamaContainers();
     this._buildGraphs();
   }
 }
