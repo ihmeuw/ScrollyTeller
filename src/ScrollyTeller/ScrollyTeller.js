@@ -1,3 +1,4 @@
+/* global window */
 import {
   get,
   forEach,
@@ -34,6 +35,7 @@ export default class ScrollyTeller {
     } else {
       this.cssNames = config.cssNames;
     }
+
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
   }
 
@@ -123,5 +125,11 @@ export default class ScrollyTeller {
     this._buildSections();
     this._buildScrollamaContainers();
     this._buildGraphs();
+
+    window.addEventListener('resize', () => {
+      forEach(this.sectionList, ({ scroller }) => {
+        scroller.resize();
+      });
+    });
   }
 }
