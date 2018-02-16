@@ -94,10 +94,18 @@ export default class ScrollyTeller {
           const progress = 0;
 
           select(element).classed('active', true);
+          select(`#${graphId}`).classed('active', true);
+
           onActivateNarrationFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
         })
-        .onStepExit(({ element }) => {
+        .onStepExit(({ index, element, direction }) => {
           select(element).classed('active', false);
+
+          if ((index === narration.length - 1 && direction === 'down')
+            || (index === 0 && direction === 'up')
+          ) {
+            select(`#${graphId}`).classed('active', false);
+          }
         })
         .onStepProgress(({ element, index, direction, progress }) => {
           const { trigger = '' } = narration[index];
