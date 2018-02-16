@@ -167,7 +167,7 @@ function onScroll({ progress, trigger, graphId }) {
         myGraph.style('opacity', 0);
         break;
       default:
-        myGraph.style('opacity', 1);
+        break;
     }
   }
 }

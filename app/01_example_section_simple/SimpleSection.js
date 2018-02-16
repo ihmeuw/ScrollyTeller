@@ -97,14 +97,14 @@ export default function simpleSectionConfig() {
         switch (trigger) {
           case 'unhide':
             /** set graph opacity based on progress to fade graph in */
-            select(`#${graphId}`).style('opacity', progress - 0.05);
+            select(`#${graphId}`).style('opacity', progress);
             break;
           case 'hide':
             /** set graph opacity based on progress to fade graph out */
-            select(`#${graphId}`).style('opacity', 0.9 - progress);
+            select(`#${graphId}`).style('opacity', 1 - progress);
             break;
           default:
-            select(`#${graphId}`).style('opacity', 1);
+            break;
         }
       },
 
