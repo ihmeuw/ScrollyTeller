@@ -85,62 +85,58 @@ export const exampleConfigObject = {
        *
        * This function is called as follows:
        * buildGraphFunction(graphId, sectionConfig)
-       * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
-       * @param sectionConfig - the configuration object passed to ScrollyTeller, with the following
-       *        properties: (sectionConfig.graph, sectionConfig.data, etc)
-       *           sectionIdentifier - the identifier for this section
-       *           graph - the chart instance, or a reference containing the result of
-       *                   the buildChart() function above
-       *           data - the data that was passed in or resolved by the promise
-       *                   and processed by reshapeDataFunction()
-       *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssNames - the CSSNames object containing some useful functions
-       *                  for getting the css identifiers of narrations, graph, and the section
+       * @param {string} graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+       * @param {object} sectionConfig - the configuration object passed to ScrollyTeller
+       * @param {object} [sectionConfig] - the configuration object passed to ScrollyTeller
+       * @param {string} [sectionConfig.sectionIdentifier] - the identifier for this section
+       * @param {object} [sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
+       * @param {object} [sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
+       * @param {object} [sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
+       * @param {object} [sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+       * @returns {object} - chart instance
        */
       buildGraphFunction(graphId, sectionConfig) { /** build and return myChart */ },
 
       /**
        * Called upon scrolling of the section. See argument list below, this function is called as:
-       * onScrollFunction(index, progress, activeNarrationBlock, graphId, sectionConfig)
-       *
-       * @param index - index of the active narration object
-       * @param progress - 0-1 value indicating progress through the active narration block
-       * @param activeNarrationBlock - the narration block DOM element that is currently active
-       * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
-       * @param sectionConfig - the configuration object passed to ScrollyTeller, with the following
-       *        properties: (sectionConfig.graph, sectionConfig.data, etc)
-       *           sectionIdentifier - the identifier for this section
-       *           graph - the chart instance, or a reference containing the result of
-       *                   the buildChart() function above
-       *           data - the data that was passed in or resolved by the promise
-       *                   and processed by reshapeDataFunction()
-       *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssNames - the CSSNames object containing some useful functions
-       *                  for getting the css identifiers of narrations, graph, and the section
+       * onActivateNarration({ index, progress, element, trigger, graphId, sectionConfig })
+       * @param {object} [params] - object containing parameters
+       * @param {number} [params.index] - index of the active narration object
+       * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
+       * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
+       * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+       * @param {string} [params.direction] - the direction the event happened in (up or down)
+       * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+       * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
+       * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
+       * @param {object} [params.sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
+       * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
+       * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
+       * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+       * @returns {void}
        */
-      onScrollFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {},
+      onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig }) {},
 
       /**
        * Called when a narration block is activated.
        * See argument list below, this function is called as:
-       * onActivateNarration(index, progress, activeNarrationBlock, graphId, sectionConfig)
-       *
-       * @param index - index of the active narration object
-       * @param progress - 0-1 value indicating progress through the active narration block
-       * @param activeNarrationBlock - the narration block DOM element that is currently active
-       * @param graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
-       * @param sectionConfig - the configuration object passed to ScrollyTeller, with the following
-       *        properties: (sectionConfig.graph, sectionConfig.data, etc)
-       *           sectionIdentifier - the identifier for this section
-       *           graph - the chart instance, or a reference containing the result of
-       *                   the buildChart() function above
-       *           data - the data that was passed in or resolved by the promise
-       *                   and processed by reshapeDataFunction()
-       *           graphScroll - the GraphScroll object that handles activation of narration, etc
-       *           cssNames - the CSSNames object containing some useful functions for getting
-       *                    the css identifiers of narrations, graph, and the section
+       * onActivateNarration({ index, progress, element, trigger, graphId, sectionConfig })
+       * @param {object} [params] - object containing parameters
+       * @param {number} [params.index] - index of the active narration object
+       * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
+       * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
+       * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+       * @param {string} [params.direction] - the direction the event happened in (up or down)
+       * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+       * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
+       * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
+       * @param {object} [params.sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
+       * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
+       * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
+       * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+       * @returns {void}
        */
-      onActivateNarrationFunction(index, progress, activeNarrationBlock, graphId, sectionConfig) {},
+      onActivateNarrationFunction({ index, progress, trigger, direction, graphId, sectionConfig }) {},
 
       /** optional flags to govern spacers and css behavior */
       /** set to true to show spacer sizes for debugging */
@@ -174,8 +170,7 @@ function validateCSSNames(state) {
    * however, DO check for an incorrectly defined cssNames object
    * (not of class CSSNames) */
   if (cssNames && (cssNames.constructor.name !== 'CSSNames')) {
-    throw Error('ScrollyTeller.validateSectionConfig() ' +
-      'cssNames must be a CSSNames object.');
+    throw Error('ScrollyTeller.validateSectionConfig() cssNames must be a CSSNames object.');
   }
 }
 
@@ -213,8 +208,7 @@ export function validateSectionConfig(sectionConfig) {
     throw Error('ScrollyTeller.validateSectionConfig() onScrollFunction must be a function.');
   }
   if (!isFunction(onActivateNarrationFunction)) {
-    throw Error('ScrollyTeller.validateSectionConfig()' +
-      'onActivateNarrationFunction must be a function.');
+    throw Error('ScrollyTeller.validateSectionConfig() onActivateNarrationFunction must be a function.');
   }
 }
 
@@ -225,8 +219,7 @@ export function validateScrollyTellerConfig(state) {
   } = state;
   /** need a valid app container id */
   if (isUndefined(appContainerId)) {
-    throw Error('ScrollyTeller.validateScrollyTellerConfig() ' +
-      'No appContainerId is set for the ScrollyTeller.');
+    throw Error('ScrollyTeller.validateScrollyTellerConfig() No appContainerId is set for the ScrollyTeller.');
   }
 
   /** need a valid array of sections */
