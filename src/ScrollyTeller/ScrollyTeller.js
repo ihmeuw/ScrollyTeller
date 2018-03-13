@@ -114,7 +114,7 @@ export default class ScrollyTeller {
   }
 
   _buildSections() {
-    const temp = select(`#${this.appContainerId}`)
+    select(`#${this.appContainerId}`)
       .append('div')
       .attr('class', this.cssNames.scrollContainer());
 
