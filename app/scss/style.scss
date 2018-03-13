@@ -1,18 +1,22 @@
-@import 'reset';
+@import "reset";
 
 /* all variables */
-@import 'storyVariables';
-@import '../../src/ScrollyTeller/scss/scrollyVariables';
+@import 'variables';
 
-/* standard css for this story, to be adhered to for consistency */
-@import 'storyBase';
-@import 'storyLayout';
-@import 'storyGraph';
+/* standard fonts for this story, to be adhered to for consistency */
+@import 'fonts';
 
-/* required by ScrollyTeller */
-@import '../../src/ScrollyTeller/scss/scrollyNarration';
-@import '../../src/ScrollyTeller/scss/scrollyGraph';
+/* default css for small screens */
+@import "defaultSmall";
 
-/* example of overriding the default scrolly-graph css when specifying your own CSS
- * (ScrollyTeller.useDefaultGraphCSS = false) */
-@import '../99_example_section_chart/scss/extendScrollyGraphExample';
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  @import "medium";
+}
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  @import "large";
+}
