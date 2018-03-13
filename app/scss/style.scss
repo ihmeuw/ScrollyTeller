@@ -6,6 +6,12 @@
 /* standard fonts for this story, to be adhered to for consistency */
 @import 'fonts';
 
+/* app specific css (specific to this example) */
+@import 'app';
+
+/* chart specific css (inside svg container) */
+@import 'svg';
+
 /* default css for small screens */
 @import "defaultSmall";
 

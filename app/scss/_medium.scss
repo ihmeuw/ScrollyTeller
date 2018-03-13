@@ -1,51 +1,53 @@
 //html { font-size: 80% } // enlarge base font size
 
-/*  ------------- SECTION -------------  */
-div.section {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-areas: "narrationArea graphArea";
 
-  /*  ------------- NARRATION LIST -------------  */
-  .narration_list {
+/*  ------------- SCROLL -------------  */
+.scroll {
+  /*  ------------- SECTION -------------  */
+  .section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas: "narrationArea graphArea";
 
-    /*  ------------- NARRATION (block) -------------  */
-    .narration {
-      h2 {
+    /*  ------------- NARRATION LIST -------------  */
+    .narration_list {
+
+      /*  ------------- NARRATION (block) -------------  */
+      .narration {
+        h2 {
+        }
+
+        p {
+        }
+
+        .link {
+        }
+
+        .spacer_hide {
+        }
+
+        .spacer_show {
+        }
+
+        .spacer_show > h3 {
+        }
       }
 
-      p {
+      .narration.active {
       }
+    } // end narration
 
-      .link {
-      }
-
-      .spacer_hide {
-      }
-
-      .spacer_show {
-      }
-
-      .spacer_show > h3 {
-      }
+    /*  ------------- GRAPHS -------------  */
+    .graph_default,
+    .graph_section_example {
+      top: 10vh;
+      height: 80vh;
     }
 
-    .narration.active {
-    }
-  }
-
-  /*  ------------- GRAPHS -------------  */
-  div.graph_default,
-  div.graph_section_example
-  {
-    top: 10vh;
-    height: 80vh;
-  }
-
-  div.graph_default.active,
-  div.graph_section_example.active
-  {
-    height: 80vh;
-  }
-
-} // end section
+    .graph_default.active,
+    .graph_section_example.active {
+      top: 10vh;
+      height: 80vh;
+    }// end narration_list
+  } // end section
+} // end scroll
