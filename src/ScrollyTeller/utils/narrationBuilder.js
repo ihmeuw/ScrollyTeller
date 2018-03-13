@@ -69,7 +69,7 @@ function getNarrationHtmlString(narrationBlocksArray, config) {
 
 export function buildSectionWithNarration(config) {
   const names = config.cssNames;
-  select(`#${config.appContainerId}`)
+  select(`.${names.scrollContainer()}`)
     .append('div')
     .attr('class', names.sectionClass())
     .attr('id', names.sectionId(config.sectionIdentifier));
@@ -77,7 +77,7 @@ export function buildSectionWithNarration(config) {
   /** select the appropriate section by id, and append a properly formatted html string
    * containing the contents of each narration block (row in the narration.csv file) */
   select(`#${names.sectionId(config.sectionIdentifier)}`)
-    .html(`<div>${getNarrationHtmlString(config.narration, config)}</div>`);
+    .html(`<div class=${names.narrationList()}>${getNarrationHtmlString(config.narration, config)}</div>`);
 
   /** insert the graph as the first div before narration divs */
   select(`#${names.sectionId(config.sectionIdentifier)}`)

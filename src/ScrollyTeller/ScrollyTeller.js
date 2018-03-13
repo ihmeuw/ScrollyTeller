@@ -12,7 +12,6 @@ import {
   fetchDataAndProcessResults,
   buildSectionWithNarration,
 } from './utils/index';
-import './scss/style.scss';
 import CSSNames from './utils/CSSNames';
 import scrollama from 'scrollama';
 
@@ -115,6 +114,10 @@ export default class ScrollyTeller {
   }
 
   _buildSections() {
+    const temp = select(`#${this.appContainerId}`)
+      .append('div')
+      .attr('class', this.cssNames.scrollContainer());
+
     forEach(this.sectionList, buildSectionWithNarration);
   }
 

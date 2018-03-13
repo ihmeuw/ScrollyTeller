@@ -15,6 +15,10 @@ export default class CSSNames {
     return `${this.css.sectionContainer}_${sectionIdentifier}`;
   }
 
+  narrationList() {
+    return this.css.narrationList;
+  }
+
   narrationClass() {
     return this.css.narrationBlock;
   }
@@ -25,6 +29,10 @@ export default class CSSNames {
    * */
   narrationId(narrationId) {
     return `${this.css.narrationBlock}_${narrationId}`;
+  }
+
+  scrollContainer() {
+    return this.css.scrollContainer;
   }
 
   /** Returns the section class name associated with this section based on the sectionIdentifier
