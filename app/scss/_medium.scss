@@ -6,11 +6,13 @@
   /*  ------------- SECTION -------------  */
   .section {
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas: "narrationArea graphArea";
 
     /*  ------------- NARRATION LIST -------------  */
     .narration_list {
+      padding: $narration-area-padding;
+      margin: $narration-area-margin;
 
       /*  ------------- NARRATION (block) -------------  */
       .narration {
@@ -42,12 +44,16 @@
     .graph_section_example {
       top: 10vh;
       height: 80vh;
+      padding: $graph-area-padding;
+      margin: $graph-area-margin;
     }
 
     .graph_default.active,
     .graph_section_example.active {
       top: 10vh;
       height: 80vh;
+      padding: $graph-area-padding;
+      margin: $graph-area-margin;
     }// end narration_list
   } // end section
 } // end scroll

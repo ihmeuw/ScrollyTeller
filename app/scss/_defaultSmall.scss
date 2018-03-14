@@ -22,12 +22,14 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     .narration_list {
       grid-area: narrationArea;
       justify-content: center;
+      padding: 0;
+      margin: 0;
 
       /*  ------------- NARRATION (block) -------------  */
       .narration {
         text-align: center;
         opacity: 0.3;
-        padding: $narration-padding;
+        margin: $narration-inner-margin;
 
         h2 {
           padding: 0.5rem 5% 0.5rem 5%;
@@ -57,7 +59,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
       }
 
       .narration.active {
-        padding: $narration-padding;
+        margin: $narration-inner-margin;
         opacity: 1;
       }
     }
@@ -69,9 +71,10 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
       grid-area: graphArea;
       position: sticky;
       opacity: $graph-default-opacity;
-      padding: $graph-padding;
+      padding: 0;
+      margin: 0;
       top: 0;
-      height: 45vh;
+      height: 50vh;
       background-color: $graph-background-color;
 
       display: flex;
@@ -82,8 +85,10 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     .graph_default.active,
     .graph_section_example.active {
       top: 0;
-      height: 45vh;
+      height: 50vh;
       position: sticky;
+      padding: 0;
+      margin: 0;
     }
 
     /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */

@@ -3,16 +3,11 @@
 #app {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 6rem auto 3rem;
+  grid-template-rows: 8rem auto 3rem;
   grid-template-areas:
           "title" // app specific
           "scroll" // scrollyteller
           "footer"; // app specific
-
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin: 4px;
-  padding: 5px;
   background-color: $background-color;
 }
 
