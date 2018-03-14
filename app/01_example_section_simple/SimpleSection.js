@@ -64,6 +64,7 @@ export default function simpleSectionConfig() {
      * @param {object} [sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {object} - chart instance
      */
     buildGraphFunction:
@@ -89,6 +90,7 @@ export default function simpleSectionConfig() {
      * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {void}
      */
     onScrollFunction:
@@ -125,6 +127,7 @@ export default function simpleSectionConfig() {
      * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {void}
      */
     onActivateNarrationFunction:
