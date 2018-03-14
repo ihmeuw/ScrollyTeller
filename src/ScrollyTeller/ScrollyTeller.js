@@ -5,6 +5,7 @@ import {
   isUndefined,
   noop,
 } from 'lodash';
+import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
 import {
   validateScrollyTellerConfig,
@@ -113,6 +114,30 @@ export default class ScrollyTeller {
     });
   }
 
+  _buildResizeListeners() {
+    forEach(this.sectionList, (sectionConfig) => {
+      const {
+        cssNames: names,
+        onResizeFunction = noop,
+        sectionIdentifier,
+      } = sectionConfig;
+
+      const graphId = names.graphId(sectionIdentifier);
+
+      sectionConfig.elementResizeDetector = elementResizeDetectorMaker({
+        strategy: 'scroll',
+      });
+
+      sectionConfig.elementResizeDetector
+        .listenTo(
+          select(`#${graphId}`).node(),
+          (element) => {
+            onResizeFunction({ graphElement: element, graphId, sectionConfig });
+          },
+        );
+    });
+  }
+
   _buildSections() {
     select(`#${this.appContainerId}`)
       .append('div')
@@ -120,7 +145,6 @@ export default class ScrollyTeller {
 
     forEach(this.sectionList, buildSectionWithNarration);
   }
-
 
   /** 'PUBLIC' METHODS * */
 
@@ -136,6 +160,7 @@ export default class ScrollyTeller {
     this._buildSections();
     this._buildScrollamaContainers();
     this._buildGraphs();
+    this._buildResizeListeners();
 
     window.addEventListener('resize', () => {
       forEach(this.sectionList, ({ scroller }) => {
