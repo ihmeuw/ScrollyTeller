@@ -18,8 +18,8 @@ export default class SampleChart extends Chart {
     const margin = {
         top: 20, right: 20, bottom: 50, left: 100,
       },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = this.properties.width - margin.left - margin.right,
+      height = this.properties.height - margin.top - margin.bottom;
 
     this.x = d3.scaleTime().range([0, width]);
     this.y = d3.scaleLinear().range([height, 0]);
@@ -108,8 +108,12 @@ export default class SampleChart extends Chart {
     const margin = {
         top: 20, right: 20, bottom: 50, left: 100,
       },
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = this.properties.width - margin.left - margin.right,
+      height = this.properties.height - margin.top - margin.bottom;
+
+    d3.select(`${this.properties.container} svg`)
+      .attr('width', this.properties.width)
+      .attr('height', this.properties.height);
 
     this.x.domain(d3.extent(this.data, (d) => {
       return d.date;
