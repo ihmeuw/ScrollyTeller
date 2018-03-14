@@ -81,8 +81,12 @@ function getFilteredDataByTriggerString(trigger, data) {
  * @returns {object} - chart instance
  */
 function buildChart(graphId, sectionConfig) {
+  const svgWidth = select(`#${graphId}`).node().offsetWidth * 0.9;
+  const svgHeight = select(`#${graphId}`).node().offsetHeight * 0.9;
   const graph = new SampleChart({
     container: `#${graphId}`,
+    width: svgWidth,
+    height: svgHeight,
   });
   const filteredData = getFilteredDataByTriggerString('series1:90-17', sectionConfig.data);
 
@@ -170,6 +174,12 @@ function onScroll({ progress, trigger, graphId }) {
         break;
     }
   }
+}
+
+function onResize({ graphElement, graphId, sectionConfig }) {
+  const svgWidth = graphElement.offsetWidth * 0.9;
+  const svgHeight = graphElement.offsetHeight * 0.9;
+  sectionConfig.graph.resize(svgWidth, svgHeight);
 }
 
 /**
@@ -272,6 +282,8 @@ export default function exampleChartConfig() {
      * @returns {void}
      */
     onActivateNarrationFunction: onActivateNarration,
+
+    onResizeFunction: onResize,
 
     /** optional flags to govern spacers and css behavior */
     /** set to true to show spacer sizes for debugging */
