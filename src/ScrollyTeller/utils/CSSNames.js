@@ -51,9 +51,7 @@ export default class CSSNames {
     return `${this.css.graphContainer}_${sectionIdentifier}`;
   }
 
-  graphClass(sectionIdentifier, usesDefaultGraphCSS = false) {
-    return usesDefaultGraphCSS
-      ? this.css.graphContainerDefault
-      : `${this.css.graphContainer}_${sectionIdentifier}`;
+  graphClass(sectionIdentifier) {
+    return `${this.css.graphContainer}_${sectionIdentifier}`;
   }
 }

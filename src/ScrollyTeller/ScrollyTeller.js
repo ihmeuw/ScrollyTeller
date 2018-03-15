@@ -46,9 +46,6 @@ export default class ScrollyTeller {
       section.showSpacers = isUndefined(section.showSpacers)
         ? true
         : section.showSpacers;
-      section.useDefaultGraphCSS = isUndefined(section.useDefaultGraphCSS)
-        ? true
-        : section.useDefaultGraphCSS;
       section.appContainerId = this.appContainerId;
       section.cssNames = this.cssNames;
     });
