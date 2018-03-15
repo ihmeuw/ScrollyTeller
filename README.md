@@ -66,7 +66,6 @@ myScrollyTellerInstance.render();
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
 | ```showSpacers``` | **Optional** Boolean. Set to true if undefined. Set to true to show spacers in the web page for debugging purposes, or false to hide spacers in production. |
-| ```useDefaultGraphCSS``` | **Optional** Boolean. Set to true if undefined. Set to false to specify your own graph css, where the graph class name is "graph_section_```sectionIdentifier```". See ```app/99_example_section_chart/ExampleChartSection.js``` for an example of how to extend ScrollyTeller's default CSS. |
 
 ##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
 ```javascript
@@ -98,7 +97,6 @@ const myExampleSection0 = {
         sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
       },
     showSpacers: true,
-    useDefaultGraphCSS: false,
   };
  
 /** Now add the section configuration to the overall ScrollyTeller config */
@@ -232,14 +230,13 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
   const { 
     cssNames, 
     sectionIdentifier, 
-    useDefaultGraphCSS, 
     appContainerId // the id of the container <div> that holds all sections
   } = sectionConfig
   
   const mySectionId = cssNames.sectionId(sectionIdentifier);
   const mySectionClass = cssNames.sectionClass();
   const globalNarrationClass = cssNames.narrationClass();
-  const myGraphClass = cssNames.graphClass(sectionIdentifier, useDefaultGraphCSS);
+  const myGraphClass = cssNames.graphClass(sectionIdentifier);
   /** same as the graphId function argument */
   const myGraphId = cssNames.graphId(sectionIdentifier);
 }
