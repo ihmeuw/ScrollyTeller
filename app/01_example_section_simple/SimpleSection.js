@@ -138,8 +138,5 @@ export default function simpleSectionConfig() {
 
     /** set to true to show spacer sizes for debugging */
     showSpacers: true,
-    /**  if false, you must specify your own graph css, where
-     * the graph class name is "graph_section_ + sectionIdentifier" */
-    useDefaultGraphCSS: true,
   };
 }

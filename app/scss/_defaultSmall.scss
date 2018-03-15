@@ -65,8 +65,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     }
 
     /*  ------------- GRAPHS -------------  */
-    .graph_default,
-    .graph_section_example
+    .graph_default
     {
       grid-area: graphArea;
       position: sticky;
@@ -82,24 +81,12 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
       justify-content: center;
     }
 
-    .graph_default.active,
-    .graph_section_example.active {
+    .graph_default.active {
       top: 0;
       height: 50vh;
       position: sticky;
       padding: 0;
       margin: 0;
-    }
-
-    /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
-    .graph_section_example
-    {
-      background-color: lightgray;
-    }
-
-    .graph_section_example.active
-    {
-      background-color: lightgray;
     }
   } // end section
 } // end scroll

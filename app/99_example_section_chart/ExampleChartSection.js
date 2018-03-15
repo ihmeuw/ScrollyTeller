@@ -305,8 +305,5 @@ export default function exampleChartConfig() {
     /** optional flags to govern spacers and css behavior */
     /** set to true to show spacer sizes for debugging */
     showSpacers: false,
-    /**  if false, you must specify your own graph css, where
-     * the graph class name is "graph_section_ + sectionIdentifier" */
-    useDefaultGraphCSS: false,
   };
 }
