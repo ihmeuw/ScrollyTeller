@@ -13,8 +13,8 @@ import {
   fetchDataAndProcessResults,
   buildSectionWithNarration,
 } from './utils/index';
-import CSSNames from './utils/CSSNames';
 import scrollama from 'scrollama';
+import CSSNames from './utils/CSSNames';
 
 export default class ScrollyTeller {
   /**

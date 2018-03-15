@@ -1,14 +1,15 @@
-//html { font-size: 95% } // enlarge base font size
-
 /*  ------------- SCROLL -------------  */
 .scroll {
   /*  ------------- SECTION -------------  */
   .section {
-    grid-template-columns: 1fr 2fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     grid-template-areas: "narrationArea graphArea";
 
     /*  ------------- NARRATION LIST -------------  */
     .narration_list {
+      padding: $narration-area-padding;
+      margin: $narration-area-margin;
 
       /*  ------------- NARRATION (block) -------------  */
       .narration {
@@ -36,12 +37,18 @@
     } // end narration
 
     /*  ------------- GRAPHS -------------  */
-    div.graph_default,
-    div.graph_section_example {
+    .graph_default {
+      top: 10vh;
+      height: 80vh;
+      padding: $graph-area-padding;
+      margin: $graph-area-margin;
     }
 
-    div.graph_default.active,
-    div.graph_section_example.active {
-    } // end narration_list
+    .graph_default.active {
+      top: 10vh;
+      height: 80vh;
+      padding: $graph-area-padding;
+      margin: $graph-area-margin;
+    }// end narration_list
   } // end section
 } // end scroll

@@ -1,7 +1,4 @@
-@import "reset";
-
-/* all variables */
-@import 'variables';
+@import 'reset';
 
 /* standard fonts for this story, to be adhered to for consistency */
 @import 'fonts';
@@ -12,20 +9,9 @@
 /* chart specific css (inside svg container) */
 @import 'svg';
 
-/* default css for small screens */
-@import 'defaultSmall';
+/* ScrollyTeller css */
+@import '../../src/ScrollyTeller/scss/style.scss';
 
 /* specialized css for each graph */
 @import '../99_example_section_chart/scss/exampleChartSectionGraph.scss';
 
-/* override for medium screens (tablet sized)
- * 35em is also 560px (if basefont is 16px) */
-@media only screen and (min-width: 35em) {
-  @import 'medium';
-}
-
-/* override for large screens (full monitor sizes)
- * 64em is also 1028px (if basefont is 16px) */
-@media only screen and (min-width: 64em) {
-  @import 'large';
-}

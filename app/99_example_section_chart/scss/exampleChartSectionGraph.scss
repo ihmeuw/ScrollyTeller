@@ -1,10 +1,10 @@
 /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
-.graph_section_example
+.graph_default.graph_section_example
 {
   background-color: lightgray;
 }
 
-.graph_section_example.active
+.graph_default.graph_section_example.active
 {
   background-color: lightgray;
 }
