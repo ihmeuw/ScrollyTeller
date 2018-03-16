@@ -59,7 +59,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "d3": "^4.11.0",
+    "d3": "^5.0.0-rc.4",
     "d3.promise": "^2.0.0",
     "element-resize-detector": "^1.1.14",
     "jquery-ui": "^1.12.1",
