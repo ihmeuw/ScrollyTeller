@@ -64,8 +64,8 @@ myScrollyTellerInstance.render();
 | ```buildGraphFunction``` | **Optional**: called as ```buildGraphFunction(graphId, sectionConfig)``` AFTER the data is fetched and reshaped by ```reshapeDataFunction```.  This method should build an instance of the graph and return that instance, which will be stored as a property on this section configuration object within ScrollyTeller.  The ```sectionConfig``` object will be passed as an arguments to the onScrollFunction and onActivateNarration functions for later access to the ```data``` and ```graph``` properties. |
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
+| ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
 | ```showSpacers``` | **Optional** Boolean. Set to true if undefined. Set to true to show spacers in the web page for debugging purposes, or false to hide spacers in production. |
-| ```useDefaultGraphCSS``` | **Optional** Boolean. Set to true if undefined. Set to false to specify your own graph css, where the graph class name is "graph_section_```sectionIdentifier```". See ```app/99_example_section_chart/ExampleChartSection.js``` for an example of how to extend ScrollyTeller's default CSS. |
 
 ##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
 ```javascript
@@ -91,8 +91,12 @@ const myExampleSection0 = {
     onActivateNarrationFunction: 
       function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
       },
+      
+    onResizeFunction: 
+      function onResize({ graphElement, graphId, sectionConfig }) {
+        sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
+      },
     showSpacers: true,
-    useDefaultGraphCSS: false,
   };
  
 /** Now add the section configuration to the overall ScrollyTeller config */
@@ -181,6 +185,7 @@ function reshapeDataFunction(results) {
  * @param {object} [sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
  * @param {object} [sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
  * @param {object} [sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+ * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {object} - chart instance
  */
 function buildGraphFunction(graphId, sectionConfig) {
@@ -210,6 +215,7 @@ function buildGraphFunction(graphId, sectionConfig) {
  * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
  * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
  * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+ * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
 function onActivateNarrationFunction({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
@@ -224,14 +230,13 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
   const { 
     cssNames, 
     sectionIdentifier, 
-    useDefaultGraphCSS, 
     appContainerId // the id of the container <div> that holds all sections
   } = sectionConfig
   
   const mySectionId = cssNames.sectionId(sectionIdentifier);
   const mySectionClass = cssNames.sectionClass();
   const globalNarrationClass = cssNames.narrationClass();
-  const myGraphClass = cssNames.graphClass(sectionIdentifier, useDefaultGraphCSS);
+  const myGraphClass = cssNames.graphClass(sectionIdentifier);
   /** same as the graphId function argument */
   const myGraphId = cssNames.graphId(sectionIdentifier);
 }
@@ -255,6 +260,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
  * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
  * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+ * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
 function onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
@@ -276,5 +282,36 @@ function onScrollFunction({ index, progress, element, trigger, direction, graphI
     default:
       myGraphDiv.style('opacity', 1);
   }
+}
+```
+
+#### ```onResizeFunction```
+* Called when the graph container is resized.
+```javascript
+/**
+ * Called when the graph container is resized 
+ * @param {object} [params] - object containing parameters
+ * @param {number} [params.index] - index of the active narration object
+ * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
+ * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
+ * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+ * @param {string} [params.direction] - the direction the event happened in (up or down)
+ * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+ * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
+ * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
+ * @param {object} [params.sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
+ * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
+ * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
+ * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+ * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
+ * @returns {void}
+ */
+function onResizeFunction({  graphElement, graphId, sectionConfig }) {
+  sectionConfig.graph.resize(
+    {
+      width: graphElement.offsetWidth * 0.95,
+      height: graphElement.offsetHeight * 0.95,
+    }
+  );
 }
 ```

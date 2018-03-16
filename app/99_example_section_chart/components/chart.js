@@ -71,10 +71,12 @@ export default class Chart extends Emitter {
   * @return {void}
   */
   resize(width, height, { animate = false } = {}) {
-    // this.properties = { ...this.properties, ...{ width, height } };
+    this.properties = { ...this.properties, ...{ width, height } };
 
     if (this.svg !== undefined) {
-      this.svg.attr('viewBox', `0 0 ${width} ${height}`);
+      this.svg
+        .attr('width', width)
+        .attr('height', height);
       this.update({ animate });
     }
   }

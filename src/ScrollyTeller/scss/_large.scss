@@ -1,0 +1,43 @@
+/*  ------------- SCROLL -------------  */
+.scroll {
+  /*  ------------- SECTION -------------  */
+  .section {
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas: "narrationArea graphArea";
+
+    /*  ------------- NARRATION LIST -------------  */
+    .narration_list {
+
+      /*  ------------- NARRATION (block) -------------  */
+      .narration {
+        h2 {
+        }
+
+        p {
+        }
+
+        .link {
+        }
+
+        .spacer_hide {
+        }
+
+        .spacer_show {
+        }
+
+        .spacer_show > h3 {
+        }
+      }
+
+      .narration.active {
+      }
+    } // end narration
+
+    /*  ------------- GRAPHS -------------  */
+    div.graph_default {
+    }
+
+    div.graph_default.active {
+    } // end narration_list
+  } // end section
+} // end scroll

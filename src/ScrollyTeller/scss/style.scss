@@ -1,4 +1,15 @@
-/* all variables */
-@import 'scrollyVariables';
-@import 'scrollyNarration';
-@import 'scrollyGraph';
+@import 'variables';
+@import 'defaultSmall';
+
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  @import 'medium';
+}
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  @import 'large';
+}
+

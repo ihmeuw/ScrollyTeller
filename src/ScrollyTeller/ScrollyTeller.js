@@ -5,6 +5,7 @@ import {
   isUndefined,
   noop,
 } from 'lodash';
+import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
 import {
   validateScrollyTellerConfig,
@@ -12,9 +13,8 @@ import {
   fetchDataAndProcessResults,
   buildSectionWithNarration,
 } from './utils/index';
-import './scss/style.scss';
-import CSSNames from './utils/CSSNames';
 import scrollama from 'scrollama';
+import CSSNames from './utils/CSSNames';
 
 export default class ScrollyTeller {
   /**
@@ -46,9 +46,6 @@ export default class ScrollyTeller {
       section.showSpacers = isUndefined(section.showSpacers)
         ? true
         : section.showSpacers;
-      section.useDefaultGraphCSS = isUndefined(section.useDefaultGraphCSS)
-        ? true
-        : section.useDefaultGraphCSS;
       section.appContainerId = this.appContainerId;
       section.cssNames = this.cssNames;
     });
@@ -114,10 +111,37 @@ export default class ScrollyTeller {
     });
   }
 
-  _buildSections() {
-    forEach(this.sectionList, buildSectionWithNarration);
+  _buildResizeListeners() {
+    forEach(this.sectionList, (sectionConfig) => {
+      const {
+        cssNames: names,
+        onResizeFunction = noop,
+        sectionIdentifier,
+      } = sectionConfig;
+
+      const graphId = names.graphId(sectionIdentifier);
+
+      sectionConfig.elementResizeDetector = elementResizeDetectorMaker({
+        strategy: 'scroll',
+      });
+
+      sectionConfig.elementResizeDetector
+        .listenTo(
+          select(`#${graphId}`).node(),
+          (element) => {
+            onResizeFunction({ graphElement: element, graphId, sectionConfig });
+          },
+        );
+    });
   }
 
+  _buildSections() {
+    select(`#${this.appContainerId}`)
+      .append('div')
+      .attr('class', this.cssNames.scrollContainer());
+
+    forEach(this.sectionList, buildSectionWithNarration);
+  }
 
   /** 'PUBLIC' METHODS * */
 
@@ -133,6 +157,7 @@ export default class ScrollyTeller {
     this._buildSections();
     this._buildScrollamaContainers();
     this._buildGraphs();
+    this._buildResizeListeners();
 
     window.addEventListener('resize', () => {
       forEach(this.sectionList, ({ scroller }) => {

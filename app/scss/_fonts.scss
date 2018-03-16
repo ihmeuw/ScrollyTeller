@@ -1,0 +1,71 @@
+@import 'variables';
+
+html { 	font-size: 11px; } // default font size
+
+/* ------------- BODY ------------- */
+body {
+  font-family: $general-font-family;
+  font-size: 5rem;
+  font-weight: $normal-weight;
+  background-color: $background-color;
+}
+
+h1 {
+  color: $base-font-color;
+  font-family: $title-font-family;
+  font-size: 3rem;
+  font-weight: $bold-weight;
+  letter-spacing: -0.1rem;
+}
+
+h2 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-family: $general-font-family;
+  color: $primary-color;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+p {
+  color: $secondary-color;
+  font-family: $general-font-family;
+  font-weight: $normal-weight;
+  font-size: 1rem;
+  line-height: 1.8rem;
+}
+
+a {
+  @extend p;
+  display: block;
+  color: $primary-color;
+}
+
+a:hover {
+  @extend p;
+  color: $secondary-color;
+  text-decoration: blink;
+}
+
+
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  html { font-size: 14px; }
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  html { font-size: 16px; }
+  h1 {
+    font-size: 4rem;
+  }
+}
+

@@ -1,5 +1,7 @@
 export default {
+  scrollContainer: 'scroll',
   sectionContainer: 'section',
+  narrationList: 'narration_list',
   narrationBlock: 'narration',
   graphContainer: 'graph_section',
   graphContainerDefault: 'graph_default',

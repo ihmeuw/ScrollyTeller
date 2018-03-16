@@ -81,8 +81,12 @@ function getFilteredDataByTriggerString(trigger, data) {
  * @returns {object} - chart instance
  */
 function buildChart(graphId, sectionConfig) {
+  const svgWidth = select(`#${graphId}`).node().offsetWidth * 0.9;
+  const svgHeight = select(`#${graphId}`).node().offsetHeight * 0.9;
   const graph = new SampleChart({
     container: `#${graphId}`,
+    width: svgWidth,
+    height: svgHeight,
   });
   const filteredData = getFilteredDataByTriggerString('series1:90-17', sectionConfig.data);
 
@@ -172,6 +176,12 @@ function onScroll({ progress, trigger, graphId }) {
   }
 }
 
+function onResize({ graphElement, graphId, sectionConfig }) {
+  const svgWidth = graphElement.offsetWidth * 0.9;
+  const svgHeight = graphElement.offsetHeight * 0.9;
+  sectionConfig.graph.resize(svgWidth, svgHeight);
+}
+
 /**
  * Returns a valid ScrollyTeller section configuration object
  * @param {string} appContainerId - id of the parent container
@@ -228,6 +238,7 @@ export default function exampleChartConfig() {
      * @param {object} [sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {object} - chart instance
      */
     buildGraphFunction: buildChart,
@@ -248,6 +259,7 @@ export default function exampleChartConfig() {
      * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {void}
      */
     onScrollFunction: onScroll,
@@ -269,15 +281,29 @@ export default function exampleChartConfig() {
      * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
      * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
      * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
      * @returns {void}
      */
     onActivateNarrationFunction: onActivateNarration,
 
+    /**
+     * Called upon resize of the graph container
+     * @param {object} [params] - object containing parameters
+     * @param {HTMLElement} [params.graphElement] - the narration block DOM element that is currently active
+     * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+     * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
+     * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
+     * @param {object} [params.sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
+     * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()
+     * @param {object} [params.sectionConfig.scroller] - the scrollama object that handles activation of narration, etc
+     * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
+     * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
+     * @returns {void}
+     */
+    onResizeFunction: onResize,
+
     /** optional flags to govern spacers and css behavior */
     /** set to true to show spacer sizes for debugging */
     showSpacers: false,
-    /**  if false, you must specify your own graph css, where
-     * the graph class name is "graph_section_ + sectionIdentifier" */
-    useDefaultGraphCSS: false,
   };
 }

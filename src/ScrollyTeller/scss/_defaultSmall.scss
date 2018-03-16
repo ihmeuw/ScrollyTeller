@@ -1,0 +1,94 @@
+@import 'variables';
+
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+//html { font-size: 60% } // default font size for small screens
+
+/*  apply a natural box layout model to all elements  */
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+/*  ------------- SCROLL -------------  */
+.scroll {
+  grid-area: scroll;
+  /*  ------------- SECTION -------------  */
+  .section {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:  "graphArea"
+                          "narrationArea";
+
+    /*  ------------- NARRATION LIST -------------  */
+    .narration_list {
+      grid-area: narrationArea;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+
+      /*  ------------- NARRATION (block) -------------  */
+      .narration {
+        text-align: center;
+        opacity: 0.3;
+        margin: $narration-inner-margin;
+
+        h2 {
+          padding: 0.5rem 5% 0.5rem 5%;
+          text-transform: uppercase;
+        }
+
+        p {
+          padding: 0.5rem 5% 0.5rem 5%;
+        }
+
+        .link {
+          padding: 0.5rem 5% 0.5rem 5%;
+        }
+
+        .spacer_hide {
+          opacity: $spacer-inactive-opacity;
+        }
+
+        .spacer_show {
+          opacity: $spacer-inactive-opacity;
+          border: dotted 0.5px;
+        }
+
+        .spacer_show > h3 {
+          opacity: $spacer-inactive-opacity;
+        }
+      }
+
+      .narration.active {
+        margin: $narration-inner-margin;
+        opacity: 1;
+      }
+    }
+
+    /*  ------------- GRAPHS -------------  */
+    .graph_default
+    {
+      grid-area: graphArea;
+      position: sticky;
+      opacity: $graph-default-opacity;
+      padding: 0;
+      margin: 0;
+      top: 0;
+      height: 50vh;
+      background-color: $graph-background-color;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .graph_default.active {
+      top: 0;
+      height: 50vh;
+      position: sticky;
+      padding: 0;
+      margin: 0;
+    }
+  } // end section
+} // end scroll
+
+
