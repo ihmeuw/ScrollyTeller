@@ -12,6 +12,7 @@ import {
   fetchNarration,
   fetchDataAndProcessResults,
   buildSectionWithNarration,
+  resizeNarrationBlocks,
 } from './utils/index';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
@@ -160,8 +161,9 @@ export default class ScrollyTeller {
     this._buildResizeListeners();
 
     window.addEventListener('resize', () => {
-      forEach(this.sectionList, ({ scroller }) => {
-        scroller.resize();
+      forEach(this.sectionList, (config) => {
+        resizeNarrationBlocks(config);
+        config.scroller.resize();
       });
     });
   }
