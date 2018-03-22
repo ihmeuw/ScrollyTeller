@@ -125,10 +125,10 @@ myScrollyTellerInstance.render();
 ### Narration file/object format
 ##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
-| narrationId | spaceAboveInVh | spaceBelowInVh | h2Text | paragraphText | hRef | hRefText | trigger |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 0 | 40 | 40 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` |www.link.com|I'm a link to link.com|show_chart
-| 1 | 40 | 40 |More Narration...|Here's why this chart is important!|||show_data_1
+| narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | show_chart
+| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | show_data_1
 
  Here's a description of what each column header controls:
 
