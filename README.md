@@ -135,8 +135,9 @@ myScrollyTellerInstance.render();
 | Column Header/Property Name | Effect |
 | :---: | :---: |
 | **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
-| **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
-| **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block. Units are in viewport height ***vh***. Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block.  Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **minHeightInVh** | Specifies the minimum height of the narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
