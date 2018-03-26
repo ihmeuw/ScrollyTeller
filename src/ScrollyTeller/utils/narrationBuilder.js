@@ -42,16 +42,20 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .style('margin-bottom', vhToPx(spaceBelow))
       .style('min-height', vhToPx(minHeight));
 
+    const blockContent = blockContainer.append('div')
+      .datum(block)
+      .attr('class', css.narrationContent);
+
     if (!isEmpty(h2Text)) {
-      blockContainer.append('h2').text(h2Text);
+      blockContent.append('h2').text(h2Text);
     }
 
     if (!isEmpty(paragraphText)) {
-      blockContainer.append('p').text(paragraphText);
+      blockContent.append('p').text(paragraphText);
     }
 
     if (!isEmpty(hRefText) && !isEmpty(hRef)) {
-      blockContainer.append('div')
+      blockContent.append('div')
         .attr('class', css.linkContainer)
         .append('a')
         .attr('href', hRef)
