@@ -1,87 +1,100 @@
 import {
   get,
   isEmpty,
+  isNil,
 } from 'lodash';
-import { select } from 'd3';
+import { select, selectAll } from 'd3';
 
-function getSpacerText(config, block, narrationBlockId, location) {
-  const viewportHeightSpace = location === 'ABOVE'
-    ? block.spaceAboveInVh
-    : block.spaceBelowInVh;
 
-  if (isEmpty(viewportHeightSpace)) {
-    return '';
-  }
+function vhToPx(vh) {
+  if (isNil(vh)) return undefined;
 
-  const css = get(config, ['cssNames', 'css']);
-  const spacerClassName = config.showSpacers ? css.spacerShow : css.spacerHide;
-  const spacerText = config.showSpacers ? `
-    <h3>SPACER: ${viewportHeightSpace} vh</h3>
-    <h3>${location}: ${narrationBlockId}</h3>
-  ` : '';
-
-  return `<div class="${spacerClassName}"  style="height:${viewportHeightSpace}vh">
-    ${spacerText}
-  </div>`;
+  const { clientHeight: height } = document.documentElement;
+  const percent = parseFloat(vh) / 100;
+  return `${(height * percent)}px`;
 }
 
-function getNarrationHtmlString(narrationBlocksArray, config) {
+function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   /** build the narration as an html string */
   const names = config.cssNames;
   const css = get(config, ['cssNames', 'css']);
-  return narrationBlocksArray.reduce((narrationHtmlString, block) => {
-    /** outer sectionContainer for each part of the narration + spacerHide */
-    const narrationBlockId = `${names.narrationId(block.narrationId)}`;
-    const blockContainer = `<div 
-      class=${css.narrationBlock} 
-      id=${narrationBlockId}
-    >`;
 
-    /** spacerHide component below, with text if this.showSpacers is set to true */
-    const spacerAbove = getSpacerText(config, block, narrationBlockId, 'ABOVE');
+  narrationBlocksArray.forEach((block) => {
+    const {
+      narrationId,
+      spaceAboveInVh: spaceAbove,
+      spaceBelowInVh: spaceBelow,
+      minHeightInVh: minHeight,
+      h2Text,
+      paragraphText,
+      hRefText,
+      hRef,
+    } = block;
 
-    /** text components of the narration */
-    const h2 = isEmpty(block.h2Text) ? '' : `<h2>${block.h2Text}</h2>`;
-    const paragraph = isEmpty(block.paragraphText) ? '' : `<p>${block.paragraphText}</p>`;
+    const narrationBlockId = `${names.narrationId(narrationId)}`;
 
-    /** link component */
-    const href = (isEmpty(block.hRefText) || isEmpty(block.hRef))
-      ? ''
-      : `<div class="${css.linkContainer}">
-          <a href=${block.hRef} target="_blank">${block.hRefText}</a>
-         </div>`;
+    const blockContainer = narrationDiv
+      .append('div')
+      .datum(block)
+      .attr('class', css.narrationBlock)
+      .attr('id', narrationBlockId)
+      .style('margin-top', vhToPx(spaceAbove))
+      .style('margin-bottom', vhToPx(spaceBelow))
+      .style('min-height', vhToPx(minHeight));
 
-    /** spacerHide component below, with text if this.showSpacers is set to true */
-    const spacerBelow = getSpacerText(config, block, narrationBlockId, 'BELOW');
+    const blockContent = blockContainer.append('div')
+      .datum(block)
+      .attr('class', css.narrationContent);
 
-    /** append all to the accumulated string */
-    return narrationHtmlString.concat(
-      blockContainer,
-      spacerAbove,
-      h2,
-      paragraph,
-      href,
-      spacerBelow,
-      '</div>',
-    );
-  }, '');
+    if (!isEmpty(h2Text)) {
+      blockContent.append('h2').text(h2Text);
+    }
+
+    if (!isEmpty(paragraphText)) {
+      blockContent.append('p').text(paragraphText);
+    }
+
+    if (!isEmpty(hRefText) && !isEmpty(hRef)) {
+      blockContent.append('div')
+        .attr('class', css.linkContainer)
+        .append('a')
+        .attr('href', hRef)
+        .attr('target', '_blank')
+        .text(hRefText);
+    }
+  });
+}
+
+export function resizeNarrationBlocks(config) {
+  const { sectionIdentifier, cssNames: names } = config;
+
+  const css = get(names, ['css']);
+  const sectionId = names.sectionId(sectionIdentifier);
+
+  selectAll(`#${sectionId} .${css.narrationBlock}`)
+    .style('margin-top', ({ spaceAboveInVh: spaceAbove }) => vhToPx(spaceAbove))
+    .style('margin-bottom', ({ spaceBelowInVh: spaceBelow }) => vhToPx(spaceBelow))
+    .style('min-height', ({ minHeightInVh: minHeight }) => vhToPx(minHeight));
 }
 
 export function buildSectionWithNarration(config) {
-  const names = config.cssNames;
-  select(`.${names.scrollContainer()}`)
+  const { sectionIdentifier, cssNames: names, narration } = config;
+
+  const sectionDiv = select(`.${names.scrollContainer()}`)
     .append('div')
     .attr('class', names.sectionClass())
-    .attr('id', names.sectionId(config.sectionIdentifier));
+    .attr('id', names.sectionId(sectionIdentifier));
+
+  /** insert the graph as the first div before narration divs */
+
+  sectionDiv.append('div')
+    .attr('class', `${names.css.graphContainerDefault} ${names.graphClass(sectionIdentifier)}`)
+    .attr('id', names.graphId(sectionIdentifier));
+
+  const narrationDiv = sectionDiv.append('div')
+    .attr('class', names.narrationList());
 
   /** select the appropriate section by id, and append a properly formatted html string
    * containing the contents of each narration block (row in the narration.csv file) */
-  select(`#${names.sectionId(config.sectionIdentifier)}`)
-    .html(`<div class=${names.narrationList()}>${getNarrationHtmlString(config.narration, config)}</div>`);
-
-  /** insert the graph as the first div before narration divs */
-  select(`#${names.sectionId(config.sectionIdentifier)}`)
-    .insert('div', ':first-child')
-    .attr('class', `${names.css.graphContainerDefault} ${names.graphClass(config.sectionIdentifier)}`)
-    .attr('id', names.graphId(config.sectionIdentifier));
+  buildNarrationBlocks(narrationDiv, narration, config);
 }
