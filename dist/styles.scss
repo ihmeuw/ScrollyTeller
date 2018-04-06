@@ -1,0 +1,108 @@
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+/*  apply a natural box layout model to all elements  */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/*  ------------- SCROLL -------------  */
+.scroll {
+  grid-area: scroll;
+  /*  ------------- SECTION -------------  */ }
+  .scroll .section {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas: "graphArea" "narrationArea";
+    /*  ------------- NARRATION LIST -------------  */
+    /*  ------------- GRAPHS -------------  */ }
+    .scroll .section .narration_list {
+      grid-area: narrationArea;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      /*  ------------- NARRATION (block) -------------  */ }
+      .scroll .section .narration_list .narration {
+        text-align: center;
+        opacity: 0.3;
+        margin: 10%; }
+        .scroll .section .narration_list .narration h2 {
+          padding: 0.5rem 5% 0.5rem 5%;
+          text-transform: uppercase; }
+        .scroll .section .narration_list .narration p {
+          padding: 0.5rem 5% 0.5rem 5%; }
+        .scroll .section .narration_list .narration .link {
+          padding: 0.5rem 5% 0.5rem 5%; }
+        .scroll .section .narration_list .narration .spacer_hide {
+          opacity: 0.4; }
+        .scroll .section .narration_list .narration .spacer_show {
+          opacity: 0.4;
+          border: dotted 0.5px; }
+        .scroll .section .narration_list .narration .spacer_show > h3 {
+          opacity: 0.4; }
+      .scroll .section .narration_list .narration.active {
+        margin: 10%;
+        opacity: 1; }
+    .scroll .section .graph_default {
+      grid-area: graphArea;
+      position: sticky;
+      opacity: 0;
+      padding: 0;
+      margin: 0;
+      top: 0;
+      height: 50vh;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    .scroll .section .graph_default.active {
+      top: 0;
+      height: 50vh;
+      position: sticky;
+      padding: 0;
+      margin: 0; }
+
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  /*  ------------- SCROLL -------------  */
+  .scroll {
+    /*  ------------- SECTION -------------  */ }
+    .scroll .section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "narrationArea graphArea";
+      /*  ------------- NARRATION LIST -------------  */
+      /*  ------------- GRAPHS -------------  */ }
+      .scroll .section .narration_list {
+        padding: 2.5%;
+        margin: 2.5%;
+        /*  ------------- NARRATION (block) -------------  */ }
+      .scroll .section .graph_default {
+        top: 10vh;
+        height: 80vh;
+        padding: 1%;
+        margin: 1%; }
+      .scroll .section .graph_default.active {
+        top: 10vh;
+        height: 80vh;
+        padding: 1%;
+        margin: 1%; } }
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  /*  ------------- SCROLL -------------  */
+  .scroll {
+    /*  ------------- SECTION -------------  */ }
+    .scroll .section {
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas: "narrationArea graphArea";
+      /*  ------------- NARRATION LIST -------------  */
+      /*  ------------- GRAPHS -------------  */ }
+      .scroll .section .narration_list {
+        /*  ------------- NARRATION (block) -------------  */ } }
