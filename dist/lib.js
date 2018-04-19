@@ -38180,7 +38180,6 @@ module.exports = function(options) {
 "use strict";
 /* unused harmony export name */
 /* unused harmony export version */
-/* unused harmony export publishConfig */
 /* unused harmony export description */
 /* unused harmony export keywords */
 /* unused harmony export homepage */
@@ -38195,8 +38194,7 @@ module.exports = function(options) {
 /* unused harmony export devDependencies */
 /* unused harmony export dependencies */
 var name = "d3";
-var version = "5.0.0-rc.4";
-var publishConfig = {"tag":"next"};
+var version = "5.0.0";
 var description = "Data-Driven Documents";
 var keywords = ["dom","visualization","svg","animation","canvas"];
 var homepage = "https://d3js.org";
@@ -38208,7 +38206,7 @@ var jsdelivr = "dist/d3.min.js";
 var module = "index";
 var repository = {"type":"git","url":"https://github.com/d3/d3.git"};
 var scripts = {"pretest":"rimraf dist && mkdir dist && json2module package.json > dist/package.js && node rollup.node","test":"tape 'test/**/*-test.js'","prepublishOnly":"npm run test && rollup -c --banner \"$(preamble)\" && uglifyjs -b beautify=false,preamble=\"'$(preamble)'\" dist/d3.js -c negate_iife=false -m -o dist/d3.min.js","postpublish":"git push && git push --tags && cd ../d3.github.com && git pull && cp ../d3/dist/d3.js d3.v5.js && cp ../d3/dist/d3.min.js d3.v5.min.js && git add d3.v5.js d3.v5.min.js && git commit -m \"d3 ${npm_package_version}\" && git push && cd - && cd ../d3-bower && git pull && cp ../d3/LICENSE ../d3/README.md ../d3/dist/d3.js ../d3/dist/d3.min.js . && git add -- LICENSE README.md d3.js d3.min.js && git commit -m \"${npm_package_version}\" && git tag -am \"${npm_package_version}\" v${npm_package_version} && git push && git push --tags && cd - && zip -j dist/d3.zip -- LICENSE README.md API.md CHANGES.md dist/d3.js dist/d3.min.js"};
-var devDependencies = {"json2module":"0.0","package-preamble":"0.1","rimraf":"2","rollup":"0.55","rollup-plugin-ascii":"0.0","rollup-plugin-node-resolve":"3","tape":"4","uglify-js":"3.2"};
+var devDependencies = {"json2module":"0.0","package-preamble":"0.1","rimraf":"2","rollup":"0.57","rollup-plugin-ascii":"0.0","rollup-plugin-node-resolve":"3","tape":"4","uglify-js":"3.2"};
 var dependencies = {"d3-array":"1","d3-axis":"1","d3-brush":"1","d3-chord":"1","d3-collection":"1","d3-color":"1","d3-contour":"1","d3-dispatch":"1","d3-drag":"1","d3-dsv":"1","d3-ease":"1","d3-fetch":"1","d3-force":"1","d3-format":"1","d3-geo":"1","d3-hierarchy":"1","d3-interpolate":"1","d3-path":"1","d3-polygon":"1","d3-quadtree":"1","d3-random":"1","d3-scale":"2","d3-scale-chromatic":"1","d3-selection":"1","d3-shape":"1","d3-time":"1","d3-time-format":"2","d3-timer":"1","d3-transition":"1","d3-voronoi":"1","d3-zoom":"1"};
 
 
@@ -52558,7 +52556,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     }
 
     if (!Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["isEmpty"])(paragraphText)) {
-      blockContent.append('p').text(paragraphText);
+      blockContent.append('p').html(paragraphText);
     }
 
     if (!Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["isEmpty"])(hRefText) && !Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["isEmpty"])(hRef)) {

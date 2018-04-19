@@ -51,7 +51,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     }
 
     if (!isEmpty(paragraphText)) {
-      blockContent.append('p').text(paragraphText);
+      blockContent.append('p').html(paragraphText);
     }
 
     if (!isEmpty(hRefText) && !isEmpty(hRef)) {
