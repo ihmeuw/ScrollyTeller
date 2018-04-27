@@ -85,13 +85,13 @@ html {
       .scroll .section .graph_default {
         top: 10vh;
         height: 80vh;
-        padding: 1%;
-        margin: 1%; }
+        padding: 0;
+        margin: 0; }
       .scroll .section .graph_default.active {
         top: 10vh;
         height: 80vh;
-        padding: 1%;
-        margin: 1%; } }
+        padding: 0;
+        margin: 0; } }
 
 /* override for large screens (full monitor sizes)
  * 64em is also 1028px (if basefont is 16px) */
