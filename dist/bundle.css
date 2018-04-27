@@ -1,0 +1,290 @@
+@import url(https://fonts.googleapis.com/css?family=Merriweather+Sans);@import url(https://fonts.googleapis.com/css?family=Merriweather);/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1,
+.title, h2, h3, h4, h5, h6, p, a, a:hover, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+body {
+  line-height: 1; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none; }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+
+/* standard fonts for this story, to be adhered to for consistency */
+html {
+  font-size: 11px; }
+
+/* ------------- BODY ------------- */
+body {
+  font-family: "Merriweather", serif;
+  font-size: 5rem;
+  font-weight: 300;
+  background-color: white; }
+
+h1, .title {
+  color: #30231d;
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.1rem; }
+
+h2 {
+  font-size: 2rem;
+  line-height: 2.5rem;
+  font-family: "Merriweather", serif;
+  color: #93291b; }
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 2rem; }
+
+p, a, a:hover {
+  color: #50413c;
+  font-family: "Merriweather", serif;
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.8rem; }
+
+a {
+  display: block;
+  color: #93291b; }
+
+a:hover {
+  color: #50413c;
+  text-decoration: blink; }
+
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  html {
+    font-size: 14px; }
+  h1, .title {
+    font-size: 4rem; } }
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  html {
+    font-size: 16px; }
+  h1, .title {
+    font-size: 4rem; } }
+
+/* app specific css (specific to this example) */
+/*  ------------- TITLE -------------  */
+#app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 8rem auto 3rem;
+  grid-template-areas: "title" "scroll" "footer";
+  background-color: white; }
+
+/*  ------------- TITLE -------------  */
+.title {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  grid-area: title; }
+
+/* chart specific css (inside svg container) */
+svg {
+  overflow: hidden; }
+
+.axis text {
+  fill: #30231d;
+  stroke: none;
+  font-family: "Merriweather Sans", sans-serif; }
+
+.axis .tick {
+  fill: none;
+  stroke: #30231d; }
+
+.axis path {
+  fill: none;
+  stroke: #30231d; }
+
+.inner-axis text {
+  fill: none;
+  stroke: none; }
+
+.inner-axis .tick {
+  fill: none;
+  stroke: #50413c;
+  stroke-opacity: .1; }
+
+.inner-axis path {
+  fill: none;
+  stroke: none; }
+
+.y-title, .x-title {
+  color: #50413c;
+  font-size: 0.2em;
+  font-weight: 200;
+  line-height: 20px;
+  letter-spacing: -1px;
+  margin-bottom: 5%; }
+
+.line {
+  fill: none;
+  stroke: blue;
+  stroke-width: 2px; }
+
+.dashed {
+  fill: none;
+  stroke: #50413c;
+  stroke-width: 4px;
+  stroke-dasharray: 4 4; }
+
+/* ScrollyTeller css */
+/* Prevent adjustments of font size after orientation changes in IE on Windows Phone and in iOS.  */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%; }
+
+/*  apply a natural box layout model to all elements  */
+* {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/*  ------------- SCROLL -------------  */
+.scroll {
+  grid-area: scroll;
+  /*  ------------- SECTION -------------  */ }
+  .scroll .section {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas: "graphArea" "narrationArea";
+    /*  ------------- NARRATION LIST -------------  */
+    /*  ------------- GRAPHS -------------  */ }
+    .scroll .section .narration_list {
+      grid-area: narrationArea;
+      justify-content: center;
+      padding: 0;
+      margin: 0;
+      /*  ------------- NARRATION (block) -------------  */ }
+      .scroll .section .narration_list .narration {
+        text-align: center;
+        opacity: 0.3;
+        margin: 10%; }
+        .scroll .section .narration_list .narration h2 {
+          padding: 0.5rem 5% 0.5rem 5%;
+          text-transform: uppercase; }
+        .scroll .section .narration_list .narration p, .scroll .section .narration_list .narration a {
+          padding: 0.5rem 5% 0.5rem 5%; }
+        .scroll .section .narration_list .narration .link {
+          padding: 0.5rem 5% 0.5rem 5%; }
+        .scroll .section .narration_list .narration .spacer_hide {
+          opacity: 0.4; }
+        .scroll .section .narration_list .narration .spacer_show {
+          opacity: 0.4;
+          border: dotted 0.5px; }
+        .scroll .section .narration_list .narration .spacer_show > h3 {
+          opacity: 0.4; }
+      .scroll .section .narration_list .narration.active {
+        margin: 10%;
+        opacity: 1; }
+    .scroll .section .graph_default {
+      grid-area: graphArea;
+      position: sticky;
+      opacity: 0;
+      padding: 0;
+      margin: 0;
+      top: 0;
+      height: 50vh;
+      background-color: gray;
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    .scroll .section .graph_default.active {
+      top: 0;
+      height: 50vh;
+      position: sticky;
+      padding: 0;
+      margin: 0; }
+
+/* override for medium screens (tablet sized)
+ * 35em is also 560px (if basefont is 16px) */
+@media only screen and (min-width: 35em) {
+  /*  ------------- SCROLL -------------  */
+  .scroll {
+    /*  ------------- SECTION -------------  */ }
+    .scroll .section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "narrationArea graphArea";
+      /*  ------------- NARRATION LIST -------------  */
+      /*  ------------- GRAPHS -------------  */ }
+      .scroll .section .narration_list {
+        padding: 2.5%;
+        margin: 2.5%;
+        /*  ------------- NARRATION (block) -------------  */ }
+      .scroll .section .graph_default {
+        top: 10vh;
+        height: 80vh;
+        padding: 0;
+        margin: 0; }
+      .scroll .section .graph_default.active {
+        top: 10vh;
+        height: 80vh;
+        padding: 0;
+        margin: 0; } }
+
+/* override for large screens (full monitor sizes)
+ * 64em is also 1028px (if basefont is 16px) */
+@media only screen and (min-width: 64em) {
+  /*  ------------- SCROLL -------------  */
+  .scroll {
+    /*  ------------- SECTION -------------  */ }
+    .scroll .section {
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas: "narrationArea graphArea";
+      /*  ------------- NARRATION LIST -------------  */
+      /*  ------------- GRAPHS -------------  */ }
+      .scroll .section .narration_list {
+        /*  ------------- NARRATION (block) -------------  */ } }
+
+/* specialized css for each graph */
+/* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
+.graph_default.graph_section_example {
+  background-color: lightgray; }
+
+.graph_default.graph_section_example.active {
+  background-color: lightgray; }
+svg.transitioning {
+  pointer-events: none; }
