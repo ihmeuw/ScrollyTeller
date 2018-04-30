@@ -47,7 +47,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .attr('class', css.narrationContent);
 
     if (!isEmpty(h2Text)) {
-      blockContent.append('h2').text(h2Text);
+      blockContent.append('h2').html(h2Text);
     }
 
     if (!isEmpty(paragraphText)) {
@@ -60,7 +60,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
         .append('a')
         .attr('href', hRef)
         .attr('target', '_blank')
-        .text(hRefText);
+        .html(hRefText);
     }
   });
 }
@@ -86,7 +86,6 @@ export function buildSectionWithNarration(config) {
     .attr('id', names.sectionId(sectionIdentifier));
 
   /** insert the graph as the first div before narration divs */
-
   sectionDiv.append('div')
     .attr('class', `${names.css.graphContainerDefault} ${names.graphClass(sectionIdentifier)}`)
     .attr('id', names.graphId(sectionIdentifier));
