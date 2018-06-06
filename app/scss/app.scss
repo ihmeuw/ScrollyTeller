@@ -18,3 +18,13 @@
   @extend h1;
   grid-area: title;
 } // end title
+
+.intro {
+  grid-area: title;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.center {
+  text-align: center;
+}
