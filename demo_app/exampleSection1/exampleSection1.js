@@ -93,13 +93,13 @@ export default {
    *  2) array of narration objects,
    *  3) a promise to return an array of narration objects in the appropriate form
    * See README for the specfication of the narration objects */
-  narration: 'app/exampleSection1/data/narrationExampleSection1.csv',
+  narration: 'demo_app/exampleSection1/data/narrationExampleSection1.csv',
 
   /** narration as array example */
   // narration: [ {}, ],
 
   /** narration as promise example */
-  // narration: d3promise.csv('app/exampleSection1/data/narrationExampleSection1.csv'),
+  // narration: d3promise.csv('demo_app/exampleSection1/data/narrationExampleSection1.csv'),
 
   /** data can be either of the following 4 options:
    *  1) a string representing an absolute file path to a file of the following types:
@@ -108,11 +108,11 @@ export default {
    *  3) a promise to return an array of narration objects in the appropriate form
    *  4) undefined
    */
-  // data: 'app/exampleSection1/data/dataBySeries.csv',
+  // data: 'demo_app/exampleSection1/data/dataBySeries.csv',
   /** data as array example */
   // data: [ {}, ],
-  /** data as promise example */
-  data: 'app/exampleSection1/data/dataBySeries.csv',
+  /** data from path example */
+  data: 'demo_app/exampleSection1/data/dataBySeries.csv',
 
   /**
    * Optional method to reshape the data passed into ScrollyTeller, or resolved by the data promise
@@ -120,7 +120,6 @@ export default {
    * @returns {object|array} -  an object or array of data of user-defined shape
    */
   reshapeDataFunction: function processData(results) {
-    /** using d3promise to convert d3.csv calls to promises */
     const parseTime = timeParse('%y');
     /** parse results and convert dates to years, close to number */
     const dataProcessed = results.map((datum) => {

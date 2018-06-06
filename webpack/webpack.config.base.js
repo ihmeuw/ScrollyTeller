@@ -21,12 +21,12 @@ export default new Config().merge({
     rules: [
       {
         test: /\.js$/,
-        include: [ `${baseDir}/app` ],
+        include: [ `${baseDir}/demo_app` ],
         use: 'babel-loader'
       },
       {
         test: /\.jsx$/,
-        include: [ `${baseDir}/app` ],
+        include: [ `${baseDir}/demo_app` ],
         use: 'babel-loader'
       },
       {

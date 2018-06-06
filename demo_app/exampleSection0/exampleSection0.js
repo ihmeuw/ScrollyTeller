@@ -12,7 +12,7 @@ export default {
    *  2) array of narration objects,
    *  3) a promise to return an array of narration objects in the appropriate form
    * See README for the specfication of the narration objects */
-  narration: 'app/exampleSection0/data/narrationExampleSection0.csv',
+  narration: 'demo_app/exampleSection0/data/narrationExampleSection0.csv',
 
   /** data can be either of the following 4 options:
    *  1) a string representing an absolute file path to a file of the following types:
@@ -21,11 +21,11 @@ export default {
    *  3) a promise to return an array of narration objects in the appropriate form
    *  4) undefined
    */
-  // data: 'app/exampleSection0/data/dataBySeries.csv',
+  // data: 'demo_app/exampleSection0/data/dataBySeries.csv',
   /** data as array example */
   // data: [ {}, ],
   /** data as promise example */
-  // data: d3promise.csv('app/exampleSection0/data/dataBySeries.csv'),
+  // data: d3promise.csv('demo_app/exampleSection0/data/dataBySeries.csv'),
 
   /** optional function to reshape data after queries or parsing from a file */
   reshapeDataFunction:
