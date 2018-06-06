@@ -1,3 +1,4 @@
+/* global document window */
 import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
 import myExampleSection0 from './exampleSection0/exampleSection0';
@@ -29,6 +30,7 @@ export default class App {
   }
 }
 
-$(document).ready(() => {
-  new App();
+document.addEventListener('DOMContentLoaded', () => {
+  window.app = new App();
 });
+
