@@ -73,8 +73,8 @@ const myAppId = 'myAppId';
 const myExampleSection0Name = 'myExampleSection0';
 const myExampleSection0 = {
     sectionIdentifier: myExampleSection0Name,
-    narration: 'app/99_example_section_chart/data/narrationSectionChart.csv',
-    data: 'app/99_example_section_chart/data/dataBySeries.csv',
+    narration: 'app/exampleSection0/data/narrationSectionChart.csv',
+    data: 'app/exampleSection0/data/dataBySeries.csv',
     reshapeDataFunction:
       function processDataFunction(data) { return data; },
 
@@ -118,7 +118,7 @@ const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
 myScrollyTellerInstance.render();
 ```
 
-##### See ```app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```app/01_example_section_simple/SimpleSection.js``` and ```app/99_example_section_chart/ExampleChartSection.js```.
+##### See ```app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```app/exampleSection0/exampleSection0.js``` and ```app/99_example_section_chart/exampleSection1.js```.
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
