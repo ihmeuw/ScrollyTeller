@@ -11,6 +11,7 @@ import {
 import { select, timeParse } from 'd3';
 import * as d3promise from 'd3.promise';
 import SampleChart from './components/template.chart';
+import './data/narrationExampleSection1.csv';
 
 /**
  * Helper function to convert a user specified 'trigger' (set in the narration.csv file) to

@@ -74,6 +74,14 @@ export default new Config().merge({
             outputPath: 'images/',
           }
         }
+      },
+      {
+        test: /\.(csv|tsv)/,
+        use: {
+          loader: 'csv-loader',
+          options: {
+          }
+        }
       }
     ]
   },

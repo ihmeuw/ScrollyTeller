@@ -1,4 +1,5 @@
 import { select } from 'd3';
+import './data/narrationExampleSection0.csv';
 
 /** section configuration object with identifier, narration, and data (for the graph)  */
 export default {
