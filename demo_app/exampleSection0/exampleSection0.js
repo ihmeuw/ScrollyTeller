@@ -1,7 +1,50 @@
+/* globals PR */
 import { select } from 'd3';
 import './data/narrationExampleSection0.csv';
 
-/** section configuration object with identifier, narration, and data (for the graph)  */
+const onActivateNarrationSnippet =
+  `{ // SECTION CONFIGURATION OBJECT 
+    // ... other properties
+    onActivateNarrationFunction: function ({ trigger, graphId }) {
+        switch (trigger) {
+          // switch statement to handle graph-related triggers
+          case 'graph:show':
+            // ...code to show the graph 
+            select(\`#\${graphId}\`).style('opacity', 1);
+            break;
+          case 'graph:transparent':
+            // ...code to make the graph transparent
+            select(\`#\${graphId}\`).style('opacity', 0.5);
+            break;
+          case 'graph:hide':
+            // ...code to hide the graph
+            select(\`#\${graphId}\`).style('opacity', 0);
+            break;
+          default:
+            break;
+      },
+  } // SECTION CONFIGURATION OBJECT`;
+
+const onScrollSnippet =
+  `{ // SECTION CONFIGURATION OBJECT 
+    // ... other properties
+    onScrollFunction: function ({ progress, trigger, graphId }) {
+      /** use trigger specified in the narration csv file to trigger actions */
+      switch (trigger) {
+        case 'graph:fadein':
+          /** set graph opacity based on progress to fade graph in */
+          select(\`#\${graphId}\`).style('opacity', progress);
+          break;
+        case 'graph:fadeout':
+          /** set graph opacity based on progress to fade graph out */
+          select(\`#\${graphId}\`).style('opacity', 1 - progress);
+          break;
+        default:
+          break;
+      },
+  } // SECTION CONFIGURATION OBJECT`;
+
+  /** section configuration object with identifier, narration, and data (for the graph)  */
 export default {
   /** identifier used to delineate different sections.  Should be unique from other sections
    * identifiers */
@@ -126,6 +169,7 @@ export default {
    */
   onActivateNarrationFunction:
     function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+      /** handle graph related triggers */
       switch (trigger) {
         case 'graph:show':
           select(`#${graphId}`).style('opacity', 1);
@@ -138,6 +182,25 @@ export default {
           select(`#${graphId}`).style('opacity', 0);
           break;
         default:
+          break;
+      }
+
+      /** handle code related triggers */
+      switch (trigger) {
+        case 'code:onActivate': {
+          select(`#${graphId}`)
+            .html(`<pre class="prettyprint lang-js">${onActivateNarrationSnippet}</pre>`);
+          PR.prettyPrint(); // call pretty print to reformat the code snippet
+          break;
+        }
+        case 'code:onScroll': {
+          select(`#${graphId}`)
+            .html(`<pre class="prettyprint lang-js">${onScrollSnippet}</pre>`);
+          PR.prettyPrint(); // call pretty print to reformat the code snippet
+          break;
+        }
+        default:
+          select(`#${graphId}`).html('');
           break;
       }
     },
