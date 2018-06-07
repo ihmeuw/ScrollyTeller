@@ -50,6 +50,9 @@ a:hover {
   text-decoration: blink;
 }
 
+strong, b {
+  font-weight: bold;
+}
 
 /* override for medium screens (tablet sized)
  * 35em is also 560px (if basefont is 16px) */

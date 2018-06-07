@@ -91,11 +91,11 @@ export default {
     function onScroll({ progress, trigger, graphId }) {
       /** use trigger specified in the narration csv file to trigger actions */
       switch (trigger) {
-        case 'unhide':
+        case 'graph:fadein':
           /** set graph opacity based on progress to fade graph in */
           select(`#${graphId}`).style('opacity', progress);
           break;
-        case 'hide':
+        case 'graph:fadeout':
           /** set graph opacity based on progress to fade graph out */
           select(`#${graphId}`).style('opacity', 1 - progress);
           break;
@@ -126,6 +126,20 @@ export default {
    */
   onActivateNarrationFunction:
     function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+      switch (trigger) {
+        case 'graph:show':
+          select(`#${graphId}`).style('opacity', 1);
+          break;
+        case 'graph:transparent':
+          select(`#${graphId}`).style('opacity', 0.5);
+          break;
+        case 'graph:hide':
+          /** set graph opacity based on progress to fade graph out */
+          select(`#${graphId}`).style('opacity', 0);
+          break;
+        default:
+          break;
+      }
     },
 
   /** optional flags to govern spacers and css behavior */
