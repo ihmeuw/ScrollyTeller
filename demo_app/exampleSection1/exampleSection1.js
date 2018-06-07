@@ -192,27 +192,22 @@ export default {
    */
   onScrollFunction: function onScroll({ progress, trigger, graphId }) {
     const myGraph = select(`#${graphId}`);
-    const classNames = myGraph.nodes()[0].className.split(' ');
-    if (!findIndex(classNames, 'graph-scroll-fixed')) {
-      myGraph.style('opacity', 0);
-    } else {
-      /** use trigger specified in the narration csv file to trigger actions */
-      switch (trigger) {
-        case 'unhide':
-          /** set graph opacity based on progress to fade graph in */
-          myGraph.style('opacity', progress);
-          break;
-        case 'hide':
-          /** set graph opacity based on progress to fade graph out */
-          myGraph.style('opacity', 1 - progress);
-          break;
-        case 'opacityzero':
-          /** set opacity to zero (after fadeout */
-          myGraph.style('opacity', 0);
-          break;
-        default:
-          break;
-      }
+    /** use trigger specified in the narration csv file to trigger actions */
+    switch (trigger) {
+      case 'unhide':
+        /** set graph opacity based on progress to fade graph in */
+        myGraph.style('opacity', progress);
+        break;
+      case 'hide':
+        /** set graph opacity based on progress to fade graph out */
+        myGraph.style('opacity', 1 - progress);
+        break;
+      case 'opacityzero':
+        /** set opacity to zero (after fadeout */
+        myGraph.style('opacity', 0);
+        break;
+      default:
+        break;
     }
   },
 
