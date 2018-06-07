@@ -44,9 +44,6 @@ export default class ScrollyTeller {
 
   _assignConfigVariablesToSectionConfigs() {
     forEach(this.sectionList, (section) => {
-      section.showSpacers = isUndefined(section.showSpacers)
-        ? true
-        : section.showSpacers;
       section.appContainerId = this.appContainerId;
       section.cssNames = this.cssNames;
     });

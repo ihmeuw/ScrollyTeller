@@ -137,10 +137,6 @@ export const exampleConfigObject = {
        * @returns {void}
        */
       onActivateNarrationFunction({ index, progress, trigger, direction, graphId, sectionConfig }) {},
-
-      /** optional flags to govern spacers and css behavior */
-      /** set to true to show spacer sizes for debugging */
-      showSpacers: true,
     },
   },
   /** another section object like the one above can be added here... */

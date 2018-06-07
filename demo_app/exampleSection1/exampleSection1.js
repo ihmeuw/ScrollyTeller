@@ -252,8 +252,4 @@ export default {
     const svgHeight = graphElement.offsetHeight * 0.9;
     sectionConfig.graph.resize(svgWidth, svgHeight);
   },
-
-  /** optional flags to govern spacers and css behavior */
-  /** set to true to show spacer sizes for debugging */
-  showSpacers: false,
 };
