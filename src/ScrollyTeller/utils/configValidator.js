@@ -55,11 +55,11 @@ export const exampleConfigObject = {
        *  2) array of narration objects,
        *  3) a promise to return an array of narration objects in the appropriate form
        * See README for the specfication of the narration objects */
-      narration: 'app/99_example_section_chart/data/narrationSectionChart.csv',
+      narration: 'demo_app/exampleSection1/data/narrationExampleSection1.csv',
       /** narration as array example */
       // narration: [ {}, ],
       /** narration as promise example */
-      // narration: d3promise.csv('app/99_example_section_chart/data/narrationSectionChart.csv'),
+      // narration: d3promise.csv('demo_app/exampleSection1/data/narrationExampleSection1.csv'),
 
       /** data can be either of the following 4 options:
        *  1) a string representing an absolute file path to a file of the following types:
@@ -68,11 +68,11 @@ export const exampleConfigObject = {
        *  3) a promise to return an array of narration objects in the appropriate form
        *  4) undefined
        */
-      data: 'app/99_example_section_chart/data/dataBySeries.csv',
+      data: 'demo_app/exampleSection1/data/dataBySeries.csv',
       /** data as array example */
       // data: [ {}, ],
       /** data as promise example */
-      // data: d3promise.csv('app/99_example_section_chart/data/dataBySeries.csv'),
+      // data: d3promise.csv('demo_app/exampleSection1/data/dataBySeries.csv'),
 
       /** optional function to reshape data after queries or parsing from a file
        * sectionConfig.data will be overwritten by this data array */
@@ -137,10 +137,6 @@ export const exampleConfigObject = {
        * @returns {void}
        */
       onActivateNarrationFunction({ index, progress, trigger, direction, graphId, sectionConfig }) {},
-
-      /** optional flags to govern spacers and css behavior */
-      /** set to true to show spacer sizes for debugging */
-      showSpacers: true,
     },
   },
   /** another section object like the one above can be added here... */

@@ -13,8 +13,8 @@
 | Term | Description |
 | :---: | :---: |
 | **Narration** | The scrolling text content that 'narrates' a data story. |
-| **Narration Block** | A group of text, links, and spacers contained in a ```<div>```. Actions can be triggered when each narration block comes into view. |
-| **Narration Block Contents** | Each narration block contains: ```<h2>``` text (title), ```<p>``` text (subtitle), and an ```<a href=...>``` (link) with some text.  For convenience, each narration block also contains **spacers** whose height is customizeable to control the pacing of the story. |
+| **Narration Block** | A group of text and links, contained in a ```<div>```. Actions can be triggered when each narration block comes into view. |
+| **Narration Block Contents** | Each narration block contains: ```<h2>``` text (title), ```<p>``` text (subtitle), and an ```<a href=...>``` (link) with some text.  The height of each narration block can also be controlled to change the pacing of the story. |
 | **Section** | A group of narration blocks with a corresponding **graph** element. A story can be one or multiple sections. |
 | **Graph** | A ```<div>``` element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
 | **Scrollama** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. |
@@ -65,7 +65,6 @@ myScrollyTellerInstance.render();
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
-| ```showSpacers``` | **Optional** Boolean. Set to true if undefined. Set to true to show spacers in the web page for debugging purposes, or false to hide spacers in production. |
 
 ##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
 ```javascript
@@ -73,8 +72,8 @@ const myAppId = 'myAppId';
 const myExampleSection0Name = 'myExampleSection0';
 const myExampleSection0 = {
     sectionIdentifier: myExampleSection0Name,
-    narration: 'app/99_example_section_chart/data/narrationSectionChart.csv',
-    data: 'app/99_example_section_chart/data/dataBySeries.csv',
+    narration: 'demo_app/exampleSection0/data/narrationSectionChart.csv',
+    data: 'demo_app/exampleSection0/data/dataBySeries.csv',
     reshapeDataFunction:
       function processDataFunction(data) { return data; },
 
@@ -96,7 +95,6 @@ const myExampleSection0 = {
       function onResize({ graphElement, graphId, sectionConfig }) {
         sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
       },
-    showSpacers: true,
   };
  
 /** Now add the section configuration to the overall ScrollyTeller config */
@@ -105,7 +103,7 @@ const myScrollyTellerConfig = {
   sectionList: {
     [myExampleSection0Name]: myExampleSection0,
     /** add another section here... */
-  }, 
+  },
 };
 ```
 
@@ -118,7 +116,7 @@ const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
 myScrollyTellerInstance.render();
 ```
 
-##### See ```app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```app/01_example_section_simple/SimpleSection.js``` and ```app/99_example_section_chart/ExampleChartSection.js```.
+##### See ```demo_app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```demo_app/exampleSection0/exampleSection0.js``` and ```demo_app/99_example_section_chart/exampleSection1.js```.
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
@@ -135,8 +133,8 @@ myScrollyTellerInstance.render();
 | Column Header/Property Name | Effect |
 | :---: | :---: |
 | **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
-| **spaceAboveInVh** | Specifies the size of a hidden spacer ***above*** any text in each narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
-| **spaceBelowInVh** | Specifies the size of a hidden spacer ***below*** any text in each narration block.  Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  Spacers can be shown by setting the ```showSpacers``` argument to true in the ScrollyTeller constructor. |
+| **spaceAboveInVh** | Specifies the size of the margin ***above*** any text in each narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
+| **spaceBelowInVh** | Specifies the size the margin ***below*** any text in each narration block.  Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  |
 | **minHeightInVh** | Specifies the minimum height of the narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |

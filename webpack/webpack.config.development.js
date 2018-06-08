@@ -9,7 +9,7 @@ import {
 
 export default new Config().extend('./webpack/webpack.config.base.js').merge({
   entry: {
-    bundle: ['babel-polyfill', './app/app.js'],
+    bundle: ['babel-polyfill', './demo_app/app.js'],
   },
   filename: __filename,
   devtool: 'inline-source-map',

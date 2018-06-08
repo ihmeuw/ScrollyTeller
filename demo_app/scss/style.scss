@@ -13,5 +13,9 @@
 @import '../../src/ScrollyTeller/scss/style.scss';
 
 /* specialized css for each graph */
-@import '../99_example_section_chart/scss/exampleChartSectionGraph.scss';
+@import '../exampleSection0/scss/exampleSection0';
+@import '../exampleSection1/scss/exampleSection1';
+
+/* pretty print for code */
+@import 'sunburstPrettifyTheme';
 

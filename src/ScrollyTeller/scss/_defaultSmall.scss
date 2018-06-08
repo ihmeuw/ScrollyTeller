@@ -43,19 +43,6 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
         .link {
           padding: 0.5rem 5% 0.5rem 5%;
         }
-
-        .spacer_hide {
-          opacity: $spacer-inactive-opacity;
-        }
-
-        .spacer_show {
-          opacity: $spacer-inactive-opacity;
-          border: dotted 0.5px;
-        }
-
-        .spacer_show > h3 {
-          opacity: $spacer-inactive-opacity;
-        }
       }
 
       .narration.active {

@@ -1,0 +1,46 @@
+@import '../../scss/variables';
+
+/* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
+.graph_default.graph_section_myExampleSection0,
+.graph_default.graph_section_myExampleSection0.active
+{
+  background: #00A150;
+}
+
+/*  ------------- FOR NARRATION CONTENT WITH ID = outline -------------  */
+#section_myExampleSection0 {
+  #narration_outline {
+    .narration-content {
+      border: #30231d;
+      border-width: medium;
+      border-style: dashed;
+      padding: 10px;
+      
+      h2 {
+        padding: 3px;
+        margin: 5px;
+        border: $primary-color;
+        border-width: medium;
+        border-style: dashed;
+      }
+      p {
+        padding: 3px;
+        margin: 5px;
+        border: $secondary-color;
+        border-width: medium;
+        border-style: dashed;
+      }
+      
+      div.link {
+        p {
+          border: none;
+        }
+        padding: 3px;
+        margin: 5px;
+        border: $primary-color;
+        border-width: medium;
+        border-style: dashed;
+      }
+    }
+  }
+}

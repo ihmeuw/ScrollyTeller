@@ -21,12 +21,12 @@ export default new Config().merge({
     rules: [
       {
         test: /\.js$/,
-        include: [ `${baseDir}/app` ],
+        include: [ `${baseDir}/demo_app` ],
         use: 'babel-loader'
       },
       {
         test: /\.jsx$/,
-        include: [ `${baseDir}/app` ],
+        include: [ `${baseDir}/demo_app` ],
         use: 'babel-loader'
       },
       {
@@ -72,6 +72,14 @@ export default new Config().merge({
           options: {
             name: '[name].[ext]',
             outputPath: 'images/',
+          }
+        }
+      },
+      {
+        test: /\.(csv|tsv)/,
+        use: {
+          loader: 'csv-loader',
+          options: {
           }
         }
       }

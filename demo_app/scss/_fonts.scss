@@ -50,6 +50,13 @@ a:hover {
   text-decoration: blink;
 }
 
+strong, b {
+  font-weight: bold;
+}
+
+.prettyprint {
+  @extend p;
+}
 
 /* override for medium screens (tablet sized)
  * 35em is also 560px (if basefont is 16px) */
