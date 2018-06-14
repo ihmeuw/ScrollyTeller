@@ -1,10 +1,11 @@
 /* globals PR */
 import { select } from 'd3';
+import { forIn } from 'lodash';
 import './data/narrationExampleSection0.csv';
 
 const snippets = {
   onActivate:
-  `{ // SECTION CONFIGURATION OBJECT 
+    `{ // SECTION CONFIGURATION OBJECT 
     // ... other properties
     onActivateNarrationFunction: function ({ trigger, graphId }) {
         const [first, second] = trigger.split(':');
@@ -66,6 +67,8 @@ export default {
   /** data as promise example */
   // data: d3promise.csv('demo_app/exampleSection0/data/dataBySeries.csv'),
 
+  convertTriggerToObject: true,
+
   /** optional function to reshape data after queries or parsing from a file */
   reshapeDataFunction:
     function reshapeData(data) {
@@ -99,12 +102,11 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {object} - chart instance
    */
-  buildGraphFunction:
-    function buildGraph({ graphId, sectionConfig }) {
-      // build graph
-      // render using any initial data (sectionConfig.data) here
-      // return the result to store in sectionConfig.graph
-    },
+  buildGraphFunction: function buildGraph({ graphId, sectionConfig }) {
+    // build graph
+    // render using any initial data (sectionConfig.data) here
+    // return the result to store in sectionConfig.graph
+  },
 
   /**
    * Called upon scrolling of the section. See argument list below, this function is called as:
@@ -125,21 +127,15 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction:
-    function onScroll({ progress, trigger, graphId }) {
-      /** use trigger specified in the narration csv file to trigger actions */
-      switch (trigger) {
-        case 'graph:fadein':
-          /** set graph opacity based on progress to fade graph in */
-          select(`#${graphId}`).style('opacity', progress);
-          break;
-        case 'graph:fadeout':
-          /** set graph opacity based on progress to fade graph out */
-          select(`#${graphId}`).style('opacity', 1 - progress);
-          break;
-        default:
-      }
-    },
+  onScrollFunction: function onScroll({ state, graphId }) {
+    if (state.style) {
+      const myGraph = select(`#${graphId}`);
+
+      forIn(state.style, (value, key) => {
+        myGraph.style(key, value);
+      });
+    }
+  },
 
   /**
    * Called when a narration block is activated.
@@ -161,29 +157,21 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onActivateNarrationFunction:
-    function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+  onActivateNarrationFunction: function onActivateNarration({ state, graphId }) {
+    if (state.style) {
+      const myGraph = select(`#${graphId}`);
 
-      const [first, second] = trigger.split(':');
+      forIn(state.style, (value, key) => {
+        myGraph.style(key, value);
+      });
+    }
 
-      switch (first) {
-        case 'opacity':
-          select(`#${graphId}`).style('opacity', +second);
-          break;
-        case 'backgroundColor':
-          select(`#${graphId}`).style('background', second);
-          break;
-        default:
-      }
-
-      switch (first) {
-        case 'code':
-          select(`#${graphId}`)
-            .html(`<pre class="prettyprint lang-js">${snippets[second]}</pre>`);
-          PR.prettyPrint();
-          break;
-        default:
-          select(`#${graphId}`).html('');
-      }
-    },
+    if (state.code) {
+      select(`#${graphId}`)
+        .html(`<pre class="prettyprint lang-js">${snippets[state.code]}</pre>`);
+      PR.prettyPrint();
+    } else {
+      select(`#${graphId}`).html('');
+    }
+  },
 };

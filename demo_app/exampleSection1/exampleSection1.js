@@ -7,6 +7,8 @@ import {
   toArray,
   isEmpty,
   reduce,
+  entries,
+  forIn,
 } from 'lodash';
 import { select, timeParse } from 'd3';
 import * as d3promise from 'd3.promise';
@@ -14,20 +16,16 @@ import SampleChart from './components/template.chart';
 import './data/narrationExampleSection1.csv';
 
 /**
- * Helper function to convert a user specified 'trigger' (set in the narration.csv file) to
- * to a data shape using the following specification:
- * series:yearstart-yearend,series:yearstart-yearend
- * @param {string} trigger representing the data requested
+ * @param {object} filter representing the data requested
  * @param {object} data - data to parse
  * @returns {array} of data specified by the trigger string
  */
-function getFilteredDataByTriggerString(trigger, data) {
-  /** assume trigger is formatted as follows:
-   * series:yearstart-yearend,series:yearstart-yearend
-   */
-  const seriesYearRangeArray = trigger.split(',');
+function getFilteredData(filter, data) {
+  const seriesYearRangeArray = entries(filter);
+
   const allDataFiltered = reduce(seriesYearRangeArray, (accum, seriesYearRange) => {
-    const [series, yearRange] = seriesYearRange.split(':');
+    const [series, yearRange] = seriesYearRange;
+
     if (!isEmpty(series) && !isEmpty(yearRange)) {
       // TODO: check that years are in valid range?
       const dataSeries = get(data, series, undefined);
@@ -65,20 +63,12 @@ function getFilteredDataByTriggerString(trigger, data) {
  * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
  * @returns {void}
  */
-function onActivateNarration({ trigger, sectionConfig }) {
-  switch (trigger) {
-    case 'unhide':
-    case 'hide':
-    case 'opacityzero':
-      break; // do nothing for unhide, hide, opacity zero
-    default: {
-      const filteredData = getFilteredDataByTriggerString(trigger, sectionConfig.data);
-      if (!isEmpty(filteredData)) {
-        filteredData.forEach((datum) => {
-          sectionConfig.graph.update(datum);
-        });
-      }
-    }
+function onActivateNarration({ state, sectionConfig }) {
+  const filteredData = getFilteredData(state.data, sectionConfig.data);
+  if (!isEmpty(filteredData)) {
+    filteredData.forEach((datum) => {
+      sectionConfig.graph.update(datum);
+    });
   }
 }
 
@@ -114,6 +104,8 @@ export default {
   // data: [ {}, ],
   /** data from path example */
   data: 'demo_app/exampleSection1/data/dataBySeries.csv',
+
+  convertTriggerToObject: true,
 
   /**
    * Optional method to reshape the data passed into ScrollyTeller, or resolved by the data promise
@@ -160,7 +152,7 @@ export default {
       width: svgWidth,
       height: svgHeight,
     });
-    const filteredData = getFilteredDataByTriggerString('series1:90-17', sectionConfig.data);
+    const filteredData = getFilteredData({ series1: '90-17' }, sectionConfig.data);
 
     if (!isEmpty(filteredData)) {
       filteredData.forEach((datum) => {
@@ -190,24 +182,13 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction: function onScroll({ progress, trigger, graphId }) {
-    const myGraph = select(`#${graphId}`);
-    /** use trigger specified in the narration csv file to trigger actions */
-    switch (trigger) {
-      case 'unhide':
-        /** set graph opacity based on progress to fade graph in */
-        myGraph.style('opacity', progress);
-        break;
-      case 'hide':
-        /** set graph opacity based on progress to fade graph out */
-        myGraph.style('opacity', 1 - progress);
-        break;
-      case 'opacityzero':
-        /** set opacity to zero (after fadeout */
-        myGraph.style('opacity', 0);
-        break;
-      default:
-        break;
+  onScrollFunction: function onScroll({ progress, trigger, state, graphId }) {
+    if (state.style) {
+      const myGraph = select(`#${graphId}`);
+
+      forIn(state.style, (value, key) => {
+        myGraph.style(key, value);
+      });
     }
   },
 
