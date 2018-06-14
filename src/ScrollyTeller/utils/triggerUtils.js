@@ -1,4 +1,4 @@
-import { set, reduce, split, slice, includes, replace, isString } from 'lodash';
+import { set, reduce, split, slice, replace, isString } from 'lodash';
 
 function replaceMap(string, replacements) {
   if (!isString(string)) {
@@ -29,10 +29,7 @@ export function getStateFromTrigger(sectionConfig, triggerString, attributes, st
 
     if (value === undefined) {
       results._otherTriggers = results._otherTriggers || [];
-
-      if (!includes(results._otherTriggers, key)) {
-        results._otherTriggers.push(key);
-      }
+      results._otherTriggers.push(key);
 
       return results;
     }
