@@ -106,6 +106,9 @@ export default class ScrollyTeller {
           }
         })
         .onStepProgress(({ element, index, direction }) => {
+          /** recalculate scroll progress due to intersection observer bug in Chrome
+           *  https://github.com/russellgoldenberg/scrollama/issues/64
+           *  TODO: revert back to using scrollama progress if/when issue is resolved */
           const progress = calcScrollProgress(element, offset);
           const { trigger = '' } = narration[index];
 
