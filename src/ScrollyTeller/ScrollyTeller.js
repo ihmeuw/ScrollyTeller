@@ -13,7 +13,8 @@ import {
   fetchDataAndProcessResults,
   buildSectionWithNarration,
   resizeNarrationBlocks,
-} from './utils/index';
+  calcScrollProgress,
+} from './utils';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
 
@@ -76,12 +77,14 @@ export default class ScrollyTeller {
       const sectionId = names.sectionId(sectionIdentifier);
       const graphId = names.graphId(sectionIdentifier);
 
+      const offset = 0.5;
+
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
           graphic: `#${graphId}`,
-          offset: 0.5,
+          offset,
           progress: true,
         })
         .onStepEnter(({ element, index, direction }) => {
