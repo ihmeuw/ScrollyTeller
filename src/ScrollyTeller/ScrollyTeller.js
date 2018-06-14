@@ -105,8 +105,10 @@ export default class ScrollyTeller {
             select(`#${graphId}`).classed('active', false);
           }
         })
-        .onStepProgress(({ element, index, direction, progress }) => {
+        .onStepProgress(({ element, index, direction }) => {
+          const progress = calcScrollProgress(element, offset);
           const { trigger = '' } = narration[index];
+
           onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
         });
     });
