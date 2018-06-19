@@ -65,6 +65,10 @@ myScrollyTellerInstance.render();
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
+| ```convertTriggerToObject``` | **Optional**: Option to covert trigger string for narration steps to an object and create sate object, default is false.  |
+| ```triggerListSeparator``` | **Optional**: Character used to split trigger string into multiple triggers, default is `;`.  |
+| ```triggerKeyValueSeparator``` | **Optional**: Character used create key value paris when converting to an object or creating state, default is `:`.  |
+
 
 ##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
 ```javascript
@@ -139,7 +143,7 @@ myScrollyTellerInstance.render();
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
-| **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage. |
+| **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
@@ -205,7 +209,8 @@ function buildGraphFunction(graphId, sectionConfig) {
  * @param {number} [params.index] - index of the active narration object
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
- * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+ * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
  * @param {string} [params.direction] - the direction the event happened in (up or down)
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
@@ -250,7 +255,8 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {number} [params.index] - index of the active narration object
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
- * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+ * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
  * @param {string} [params.direction] - the direction the event happened in (up or down)
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
