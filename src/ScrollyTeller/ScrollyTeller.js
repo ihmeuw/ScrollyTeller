@@ -9,6 +9,8 @@ import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
 import {
   validateScrollyTellerConfig,
+  getNarrationState,
+  getStateFromTrigger,
   fetchNarration,
   fetchDataAndProcessResults,
   buildSectionWithNarration,
@@ -70,6 +72,7 @@ export default class ScrollyTeller {
         sectionIdentifier,
         onScrollFunction = noop,
         onActivateNarrationFunction = noop,
+        convertTriggerToObject = false,
       } = sectionConfig;
 
       sectionConfig.scroller = scrollama();
@@ -88,13 +91,29 @@ export default class ScrollyTeller {
           progress: true,
         })
         .onStepEnter(({ element, index, direction }) => {
-          const { trigger = '' } = narration[index];
           const progress = 0;
+
+          const trigger = (convertTriggerToObject)
+            ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
+            : narration[index].trigger || '';
+
+          const state = (convertTriggerToObject)
+            ? getNarrationState(sectionConfig, index, progress)
+            : undefined;
 
           select(element).classed('active', true);
           select(`#${graphId}`).classed('active', true);
 
-          onActivateNarrationFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
+          onActivateNarrationFunction({
+            index,
+            progress,
+            element,
+            trigger,
+            state,
+            direction,
+            graphId,
+            sectionConfig,
+          });
         })
         .onStepExit(({ index, element, direction }) => {
           select(element).classed('active', false);
@@ -110,9 +129,25 @@ export default class ScrollyTeller {
            *  https://github.com/russellgoldenberg/scrollama/issues/64
            *  TODO: revert back to using scrollama progress if/when issue is resolved */
           const progress = calcScrollProgress(element, offset);
-          const { trigger = '' } = narration[index];
 
-          onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig });
+          const trigger = (convertTriggerToObject)
+            ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
+            : narration[index].trigger || '';
+
+          const state = (convertTriggerToObject)
+            ? getNarrationState(sectionConfig, index, progress)
+            : undefined;
+
+          onScrollFunction({
+            index,
+            progress,
+            element,
+            trigger,
+            state,
+            direction,
+            graphId,
+            sectionConfig,
+          });
         });
     });
   }
