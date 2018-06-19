@@ -9,13 +9,14 @@ import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
 import {
   validateScrollyTellerConfig,
+  getNarrationState,
+  getStateFromTrigger,
   fetchNarration,
   fetchDataAndProcessResults,
   buildSectionWithNarration,
   resizeNarrationBlocks,
-} from './utils/index';
-  getNarrationState,
-  getStateFromTrigger,
+  calcScrollProgress,
+} from './utils';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
 
@@ -79,12 +80,14 @@ export default class ScrollyTeller {
       const sectionId = names.sectionId(sectionIdentifier);
       const graphId = names.graphId(sectionIdentifier);
 
+      const offset = 0.5;
+
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
           graphic: `#${graphId}`,
-          offset: 0.5,
+          offset,
           progress: true,
         })
         .onStepEnter(({ element, index, direction }) => {
@@ -121,7 +124,12 @@ export default class ScrollyTeller {
             select(`#${graphId}`).classed('active', false);
           }
         })
-        .onStepProgress(({ element, index, direction, progress }) => {
+        .onStepProgress(({ element, index, direction }) => {
+          /** recalculate scroll progress due to intersection observer bug in Chrome
+           *  https://github.com/russellgoldenberg/scrollama/issues/64
+           *  TODO: revert back to using scrollama progress if/when issue is resolved */
+          const progress = calcScrollProgress(element, offset);
+
           const trigger = (convertTriggerToObject)
             ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
             : narration[index].trigger || '';

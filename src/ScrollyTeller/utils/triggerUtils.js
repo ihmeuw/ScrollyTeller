@@ -9,7 +9,7 @@ function replaceMap(string, replacements) {
 
   if (matches) {
     return reduce(matches, (result, match) => {
-      return replace(result, match, replacements[`$${match}`]);
+      return replace(result, match, replacements[match.substring(1)]);
     }, string);
   }
 
