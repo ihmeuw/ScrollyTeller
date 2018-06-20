@@ -188,9 +188,9 @@ export default class ScrollyTeller {
           offset: TRIGGER_OFFSET,
           progress: true,
         })
-        .onStepEnter(payload => this._handleOnStepEnter(sectionConfig, payload))
-        .onStepExit(payload => this._handleOnStepExit(sectionConfig, payload))
-        .onStepProgress(payload => this._handleOnStepProgress(sectionConfig, payload));
+        .onStepEnter((payload) => { this._handleOnStepEnter(sectionConfig, payload); })
+        .onStepExit((payload) => { this._handleOnStepExit(sectionConfig, payload); })
+        .onStepProgress((payload) => { this._handleOnStepProgress(sectionConfig, payload); });
     });
   }
 
@@ -260,8 +260,8 @@ export default class ScrollyTeller {
     // Find the DOM element to which we'll scroll.
     const selectorString = (
       narrationId !== undefined
-      ? this.cssNames.narrationId(narrationId)
-      : this.cssNames.sectionId(sectionIdentifier)
+        ? this.cssNames.narrationId(narrationId)
+        : this.cssNames.sectionId(sectionIdentifier)
     );
     const element = document.getElementById(selectorString);
     // Find the sectionConfig.
@@ -274,15 +274,16 @@ export default class ScrollyTeller {
     // Set a flag to prevent trigger callbacks from executing during scrolling.
     this._triggersDisabled = true;
     // Scroll the page (asynchronously).
-    await new Promise(resolve => scrollIntoView(element, options, resolve));
+    await new Promise((resolve) => { scrollIntoView(element, options, resolve); });
     // Re-enable trigger callbacks.
     this._triggersDisabled = false;
 
     // Find the index of the current narration block.
     const index = (
       narrationId !== undefined
-      ? sectionConfig.narration.findIndex(block => block.narrationId == narrationId)
-      : 0
+        // eslint-disable-next-line eqeqeq
+        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
+        : 0
     );
     // Compute the direction of scrolling.
     const direction = window.pageYOffset < previousYOffset ? 'up' : 'down';
