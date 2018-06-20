@@ -105,7 +105,6 @@ export const exampleConfigObject = {
        * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
        * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
        * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
-       * @param {string} [params.direction] - the direction the event happened in (up or down)
        * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
        * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
        * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -115,7 +114,7 @@ export const exampleConfigObject = {
        * @param {object} [params.sectionConfig.cssNames] - the CSSNames object containing some useful functions for getting the css identifiers of narrations, graph, and the section
        * @returns {void}
        */
-      onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig }) {},
+      onScrollFunction({ index, progress, element, trigger, graphId, sectionConfig }) {},
 
       /**
        * Called when a narration block is activated.

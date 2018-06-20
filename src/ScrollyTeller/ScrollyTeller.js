@@ -124,7 +124,7 @@ export default class ScrollyTeller {
             select(`#${graphId}`).classed('active', false);
           }
         })
-        .onStepProgress(({ element, index, direction }) => {
+        .onStepProgress(({ element, index }) => {
           /** recalculate scroll progress due to intersection observer bug in Chrome
            *  https://github.com/russellgoldenberg/scrollama/issues/64
            *  TODO: revert back to using scrollama progress if/when issue is resolved */
@@ -144,7 +144,6 @@ export default class ScrollyTeller {
             element,
             trigger,
             state,
-            direction,
             graphId,
             sectionConfig,
           });
