@@ -36319,16 +36319,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_element_resize_detector___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_element_resize_detector__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3__ = __webpack_require__(220);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils__ = __webpack_require__(853);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scrollama__ = __webpack_require__(866);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scrollama___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_scrollama__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__utils_CSSNames__ = __webpack_require__(306);
-/* global window */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scroll_into_view__ = __webpack_require__(866);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_scroll_into_view___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_scroll_into_view__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_scrollama__ = __webpack_require__(867);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_scrollama___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_scrollama__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_CSSNames__ = __webpack_require__(306);
+/* global window, document */
 
 
 
 
 
 
+
+
+// How far from the top of the viewport to trigger a step.
+const TRIGGER_OFFSET = 0.5;
 
 class ScrollyTeller {
   /**
@@ -36345,12 +36351,14 @@ class ScrollyTeller {
     /** if cssNames is unassigned,
      * use the default CSSNames constructor to create a new one */
     if (Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["isUndefined"])(config.cssNames) || (config.cssNames.constructor.name !== 'CSSNames')) {
-      this.cssNames = new __WEBPACK_IMPORTED_MODULE_5__utils_CSSNames__["a" /* default */]();
+      this.cssNames = new __WEBPACK_IMPORTED_MODULE_6__utils_CSSNames__["a" /* default */]();
     } else {
       this.cssNames = config.cssNames;
     }
 
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
+
+    this._triggersDisabled = false;
   }
 
   /** 'PRIVATE' METHODS * */
@@ -36372,92 +36380,129 @@ class ScrollyTeller {
     });
   }
 
+  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onActivateNarrationFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
+      convertTriggerToObject = false,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    const progress = 0;
+
+    const trigger = (convertTriggerToObject)
+      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
+      : narration[index].trigger || '';
+
+    const state = (convertTriggerToObject)
+      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
+      : undefined;
+
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', true);
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`).classed('active', true);
+
+    onActivateNarrationFunction({
+      index,
+      progress,
+      element,
+      trigger,
+      state,
+      direction,
+      graphId,
+      sectionConfig,
+    });
+  }
+
+  _handleOnStepExit(sectionConfig, { index, element, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', false);
+
+    if ((index === narration.length - 1 && direction === 'down')
+      || (index === 0 && direction === 'up')
+    ) {
+      Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`).classed('active', false);
+    }
+  }
+
+  _handleOnStepProgress(sectionConfig, { element, index }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onScrollFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
+      convertTriggerToObject = false,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    /** recalculate scroll progress due to intersection observer bug in Chrome
+     *  https://github.com/russellgoldenberg/scrollama/issues/64
+     *  TODO: revert back to using scrollama progress if/when issue is resolved */
+    const progress = Object(__WEBPACK_IMPORTED_MODULE_3__utils__["b" /* calcScrollProgress */])(element, TRIGGER_OFFSET);
+
+    const trigger = (convertTriggerToObject)
+      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
+      : narration[index].trigger || '';
+
+    const state = (convertTriggerToObject)
+      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
+      : undefined;
+
+    onScrollFunction({
+      index,
+      progress,
+      element,
+      trigger,
+      state,
+      graphId,
+      sectionConfig,
+    });
+  }
+
   _buildScrollamaContainers() {
     Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["forEach"])(this.sectionList, (sectionConfig) => {
       const css = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(sectionConfig, ['cssNames', 'css']);
 
       const {
-        narration,
         cssNames: names,
         sectionIdentifier,
-        onScrollFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
-        onActivateNarrationFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
-        convertTriggerToObject = false,
       } = sectionConfig;
 
-      sectionConfig.scroller = __WEBPACK_IMPORTED_MODULE_4_scrollama___default()();
+      sectionConfig.scroller = __WEBPACK_IMPORTED_MODULE_5_scrollama___default()();
 
       const sectionId = names.sectionId(sectionIdentifier);
       const graphId = names.graphId(sectionIdentifier);
-
-      const offset = 0.5;
 
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
           graphic: `#${graphId}`,
-          offset,
+          offset: TRIGGER_OFFSET,
           progress: true,
         })
-        .onStepEnter(({ element, index, direction }) => {
-          const progress = 0;
-
-          const trigger = (convertTriggerToObject)
-            ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
-            : narration[index].trigger || '';
-
-          const state = (convertTriggerToObject)
-            ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
-            : undefined;
-
-          Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', true);
-          Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`).classed('active', true);
-
-          onActivateNarrationFunction({
-            index,
-            progress,
-            element,
-            trigger,
-            state,
-            direction,
-            graphId,
-            sectionConfig,
-          });
-        })
-        .onStepExit(({ index, element, direction }) => {
-          Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', false);
-
-          if ((index === narration.length - 1 && direction === 'down')
-            || (index === 0 && direction === 'up')
-          ) {
-            Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`).classed('active', false);
-          }
-        })
-        .onStepProgress(({ element, index }) => {
-          /** recalculate scroll progress due to intersection observer bug in Chrome
-           *  https://github.com/russellgoldenberg/scrollama/issues/64
-           *  TODO: revert back to using scrollama progress if/when issue is resolved */
-          const progress = Object(__WEBPACK_IMPORTED_MODULE_3__utils__["b" /* calcScrollProgress */])(element, offset);
-
-          const trigger = (convertTriggerToObject)
-            ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
-            : narration[index].trigger || '';
-
-          const state = (convertTriggerToObject)
-            ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
-            : undefined;
-
-          onScrollFunction({
-            index,
-            progress,
-            element,
-            trigger,
-            state,
-            graphId,
-            sectionConfig,
-          });
-        });
+        .onStepEnter((payload) => { this._handleOnStepEnter(sectionConfig, payload); })
+        .onStepExit((payload) => { this._handleOnStepExit(sectionConfig, payload); })
+        .onStepProgress((payload) => { this._handleOnStepProgress(sectionConfig, payload); });
     });
   }
 
@@ -36515,6 +36560,48 @@ class ScrollyTeller {
         config.scroller.resize();
       });
     });
+  }
+
+  /**
+   * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
+   * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
+   * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
+   * @returns {void}
+   */
+  async scrollTo(sectionIdentifier, narrationId, options) {
+    // Find the DOM element to which we'll scroll.
+    const selectorString = (
+      narrationId !== undefined
+        ? this.cssNames.narrationId(narrationId)
+        : this.cssNames.sectionId(sectionIdentifier)
+    );
+    const element = document.getElementById(selectorString);
+    // Find the sectionConfig.
+    const sectionConfig = this.sectionList[sectionIdentifier];
+    // Get the page position, so we can determine which direction we've scrolled.
+    const previousYOffset = window.pageYOffset;
+
+    // Remove CSS class 'active' on all elements within the ScrollyTeller container element.
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(this.appContainerId).selectAll('.active').classed('active', false);
+    // Set a flag to prevent trigger callbacks from executing during scrolling.
+    this._triggersDisabled = true;
+    // Scroll the page (asynchronously).
+    await new Promise((resolve) => { __WEBPACK_IMPORTED_MODULE_4_scroll_into_view___default()(element, options, resolve); });
+    // Re-enable trigger callbacks.
+    this._triggersDisabled = false;
+
+    // Find the index of the current narration block.
+    const index = (
+      narrationId !== undefined
+        // eslint-disable-next-line eqeqeq
+        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
+        : 0
+    );
+    // Compute the direction of scrolling.
+    const direction = window.pageYOffset < previousYOffset ? 'up' : 'down';
+    // Manually activate triggers for the current narration (since they won't have fired on scroll).
+    this._handleOnStepEnter(sectionConfig, { element, index, direction });
+    this._handleOnStepProgress(sectionConfig, { element, index });
   }
 }
 /* harmony export (immutable) */ __webpack_exports__["default"] = ScrollyTeller;
@@ -52737,6 +52824,217 @@ function getNarrationState(sectionConfig, activeIndex, currentProgress) {
 
 /***/ }),
 /* 866 */
+/***/ (function(module, exports) {
+
+var COMPLETE = 'complete',
+    CANCELED = 'canceled';
+
+function raf(task){
+    if('requestAnimationFrame' in window){
+        return window.requestAnimationFrame(task);
+    }
+
+    setTimeout(task, 16);
+}
+
+function setElementScroll(element, x, y){
+    if(element.self === element){
+        element.scrollTo(x, y);
+    }else{
+        element.scrollLeft = x;
+        element.scrollTop = y;
+    }
+}
+
+function getTargetScrollLocation(target, parent, align){
+    var targetPosition = target.getBoundingClientRect(),
+        parentPosition,
+        x,
+        y,
+        differenceX,
+        differenceY,
+        targetWidth,
+        targetHeight,
+        leftAlign = align && align.left != null ? align.left : 0.5,
+        topAlign = align && align.top != null ? align.top : 0.5,
+        leftOffset = align && align.leftOffset != null ? align.leftOffset : 0,
+        topOffset = align && align.topOffset != null ? align.topOffset : 0,
+        leftScalar = leftAlign,
+        topScalar = topAlign;
+
+    if(parent.self === parent){
+        targetWidth = Math.min(targetPosition.width, parent.innerWidth);
+        targetHeight = Math.min(targetPosition.height, parent.innerHeight);
+        x = targetPosition.left + parent.pageXOffset - parent.innerWidth * leftScalar + targetWidth * leftScalar;
+        y = targetPosition.top + parent.pageYOffset - parent.innerHeight * topScalar + targetHeight * topScalar;
+        x -= leftOffset;
+        y -= topOffset;
+        differenceX = x - parent.pageXOffset;
+        differenceY = y - parent.pageYOffset;
+    }else{
+        targetWidth = targetPosition.width;
+        targetHeight = targetPosition.height;
+        parentPosition = parent.getBoundingClientRect();
+        var offsetLeft = targetPosition.left - (parentPosition.left - parent.scrollLeft);
+        var offsetTop = targetPosition.top - (parentPosition.top - parent.scrollTop);
+        x = offsetLeft + (targetWidth * leftScalar) - parent.clientWidth * leftScalar;
+        y = offsetTop + (targetHeight * topScalar) - parent.clientHeight * topScalar;
+        x = Math.max(Math.min(x, parent.scrollWidth - parent.clientWidth), 0);
+        y = Math.max(Math.min(y, parent.scrollHeight - parent.clientHeight), 0);
+        x -= leftOffset;
+        y -= topOffset;
+        differenceX = x - parent.scrollLeft;
+        differenceY = y - parent.scrollTop;
+    }
+
+    return {
+        x: x,
+        y: y,
+        differenceX: differenceX,
+        differenceY: differenceY
+    };
+}
+
+function animate(parent){
+    var scrollSettings = parent._scrollSettings;
+    if(!scrollSettings){
+        return;
+    }
+
+    var location = getTargetScrollLocation(scrollSettings.target, parent, scrollSettings.align),
+        time = Date.now() - scrollSettings.startTime,
+        timeValue = Math.min(1 / scrollSettings.time * time, 1);
+
+    if(
+        time > scrollSettings.time &&
+        scrollSettings.endIterations > 3
+    ){
+        setElementScroll(parent, location.x, location.y);
+        parent._scrollSettings = null;
+        return scrollSettings.end(COMPLETE);
+    }
+
+    scrollSettings.endIterations++;
+
+    var easeValue = 1 - scrollSettings.ease(timeValue);
+
+    setElementScroll(parent,
+        location.x - location.differenceX * easeValue,
+        location.y - location.differenceY * easeValue
+    );
+
+    // At the end of animation, loop synchronously
+    // to try and hit the taget location.
+    if(time >= scrollSettings.time){
+        return animate(parent);
+    }
+
+    raf(animate.bind(null, parent));
+}
+function transitionScrollTo(target, parent, settings, callback){
+    var idle = !parent._scrollSettings,
+        lastSettings = parent._scrollSettings,
+        now = Date.now(),
+        endHandler;
+
+    if(lastSettings){
+        lastSettings.end(CANCELED);
+    }
+
+    function end(endType){
+        parent._scrollSettings = null;
+        if(parent.parentElement && parent.parentElement._scrollSettings){
+            parent.parentElement._scrollSettings.end(endType);
+        }
+        callback(endType);
+        parent.removeEventListener('touchstart', endHandler, { passive: true });
+    }
+
+    parent._scrollSettings = {
+        startTime: lastSettings ? lastSettings.startTime : Date.now(),
+        endIterations: 0,
+        target: target,
+        time: settings.time + (lastSettings ? now - lastSettings.startTime : 0),
+        ease: settings.ease,
+        align: settings.align,
+        end: end
+    };
+
+    endHandler = end.bind(null, CANCELED);
+    parent.addEventListener('touchstart', endHandler, { passive: true });
+
+    if(idle){
+        animate(parent);
+    }
+}
+
+function defaultIsScrollable(element){
+    return (
+        'pageXOffset' in element ||
+        (
+            element.scrollHeight !== element.clientHeight ||
+            element.scrollWidth !== element.clientWidth
+        ) &&
+        getComputedStyle(element).overflow !== 'hidden'
+    );
+}
+
+function defaultValidTarget(){
+    return true;
+}
+
+module.exports = function(target, settings, callback){
+    if(!target){
+        return;
+    }
+
+    if(typeof settings === 'function'){
+        callback = settings;
+        settings = null;
+    }
+
+    if(!settings){
+        settings = {};
+    }
+
+    settings.time = isNaN(settings.time) ? 1000 : settings.time;
+    settings.ease = settings.ease || function(v){return 1 - Math.pow(1 - v, v / 2);};
+
+    var parent = target.parentElement,
+        parents = 0;
+
+    function done(endType){
+        parents--;
+        if(!parents){
+            callback && callback(endType);
+        }
+    }
+
+    var validTarget = settings.validTarget || defaultValidTarget;
+    var isScrollable = settings.isScrollable;
+
+    while(parent){
+        if(validTarget(parent, parents) && (isScrollable ? isScrollable(parent, defaultIsScrollable) : defaultIsScrollable(parent))){
+            parents++;
+            transitionScrollTo(target, parent, settings, done);
+        }
+
+        parent = parent.parentElement;
+
+        if(!parent){
+            return;
+        }
+
+        if(parent.tagName === 'BODY'){
+            parent = parent.ownerDocument;
+            parent = parent.defaultView || parent.ownerWindow;
+        }
+    }
+};
+
+
+/***/ }),
+/* 867 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function (global, factory) {
