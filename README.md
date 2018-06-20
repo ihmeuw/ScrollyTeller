@@ -91,16 +91,16 @@ const myExampleSection0 = {
       function onScroll({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
       },
 
-    onActivateNarrationFunction: 
+    onActivateNarrationFunction:
       function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
       },
-      
-    onResizeFunction: 
+
+    onResizeFunction:
       function onResize({ graphElement, graphId, sectionConfig }) {
         sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
       },
   };
- 
+
 /** Now add the section configuration to the overall ScrollyTeller config */
 const myScrollyTellerConfig = {
   appContainerId: myAppId,
@@ -231,12 +231,12 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
   const { className: activeNarrationClass, id: activeNarrationId } = element;
 
   /** retrieving the expected css naming conventions in the HTML built by ScrollyTeller */
-  const { 
-    cssNames, 
-    sectionIdentifier, 
+  const {
+    cssNames,
+    sectionIdentifier,
     appContainerId // the id of the container <div> that holds all sections
   } = sectionConfig
-  
+
   const mySectionId = cssNames.sectionId(sectionIdentifier);
   const mySectionClass = cssNames.sectionClass();
   const globalNarrationClass = cssNames.narrationClass();
@@ -294,7 +294,7 @@ function onScrollFunction({ index, progress, element, trigger, direction, graphI
 * Called when the graph container is resized.
 ```javascript
 /**
- * Called when the graph container is resized 
+ * Called when the graph container is resized
  * @param {object} [params] - object containing parameters
  * @param {number} [params.index] - index of the active narration object
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block

@@ -5,7 +5,7 @@ import './data/narrationExampleSection0.csv';
 
 const snippets = {
   onActivate:
-    `{ // SECTION CONFIGURATION OBJECT 
+    `{ // SECTION CONFIGURATION OBJECT
     // ... other properties
     onActivateNarrationFunction: function ({ trigger, graphId }) {
         const [first, second] = trigger.split(':');
@@ -22,7 +22,7 @@ const snippets = {
       },
   } // SECTION CONFIGURATION OBJECT`,
   onScroll:
-    `{ // SECTION CONFIGURATION OBJECT 
+    `{ // SECTION CONFIGURATION OBJECT
       // ... other properties
       onScrollFunction: function ({ progress, trigger, graphId }) {
         /** use trigger specified in the narration csv file to trigger actions */
