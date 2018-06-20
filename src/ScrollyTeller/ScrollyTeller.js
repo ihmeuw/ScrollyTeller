@@ -1,4 +1,4 @@
-/* global window */
+/* global window, document */
 import {
   get,
   forEach,
@@ -17,6 +17,7 @@ import {
   resizeNarrationBlocks,
   calcScrollProgress,
 } from './utils';
+import scrollIntoView from 'scroll-into-view';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
 
@@ -247,5 +248,40 @@ export default class ScrollyTeller {
         config.scroller.resize();
       });
     });
+  }
+
+  async scrollTo(sectionIdentifier, narrationId, options) {
+    // Find the DOM element to which we'll scroll.
+    const selectorString = (
+      narrationId !== undefined
+      ? this.cssNames.narrationId(narrationId)
+      : this.cssNames.sectionId(sectionIdentifier)
+    );
+    const element = document.getElementById(selectorString);
+    // Find the sectionConfig.
+    const sectionConfig = this.sectionList[sectionIdentifier];
+    // Get the page position, so we can determine which direction we've scrolled.
+    const previousYOffset = window.pageYOffset;
+
+    // Remove CSS class 'active' on all elements within the ScrollyTeller container element.
+    select(this.appContainerId).selectAll('.active').classed('active', false);
+    // Set a flag to prevent trigger callbacks from executing during scrolling.
+    this._triggersDisabled = true;
+    // Scroll the page (asynchronously).
+    await new Promise(resolve => scrollIntoView(element, options, resolve));
+    // Re-enable trigger callbacks.
+    this._triggersDisabled = false;
+
+    // Find the index of the current narration block.
+    const index = (
+      narrationId !== undefined
+      ? sectionConfig.narration.findIndex(block => block.narrationId == narrationId)
+      : 0
+    );
+    // Compute the direction of scrolling.
+    const direction = window.pageYOffset < previousYOffset ? 'up' : 'down';
+    // Manually activate triggers for the current narration (since they won't have fired on scroll).
+    this._handleOnStepEnter(sectionConfig, { element, index, direction });
+    this._handleOnStepProgress(sectionConfig, { element, index });
   }
 }
