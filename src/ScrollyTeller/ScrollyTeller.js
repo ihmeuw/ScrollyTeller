@@ -44,6 +44,8 @@ export default class ScrollyTeller {
     }
 
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
+
+    this._triggersDisabled = false;
   }
 
   /** 'PRIVATE' METHODS * */
@@ -66,6 +68,9 @@ export default class ScrollyTeller {
   }
 
   _handleOnStepEnter(sectionConfig, { element, index, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
     const {
       narration,
       cssNames: names,
@@ -102,6 +107,9 @@ export default class ScrollyTeller {
   }
 
   _handleOnStepExit(sectionConfig, { index, element, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
     const {
       narration,
       cssNames: names,
@@ -120,6 +128,9 @@ export default class ScrollyTeller {
   }
 
   _handleOnStepProgress(sectionConfig, { element, index }) {
+    if (this._triggersDisabled) {
+      return;
+    }
     const {
       narration,
       cssNames: names,
