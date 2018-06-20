@@ -250,6 +250,12 @@ export default class ScrollyTeller {
     });
   }
 
+  /**
+   * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
+   * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
+   * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
+   * @returns {Promise<void>}
+   */
   async scrollTo(sectionIdentifier, narrationId, options) {
     // Find the DOM element to which we'll scroll.
     const selectorString = (
