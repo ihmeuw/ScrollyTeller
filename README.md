@@ -88,19 +88,19 @@ const myExampleSection0 = {
       },
 
     onScrollFunction:
-      function onScroll({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+      function onScroll({ index, progress, element, trigger, graphId, sectionConfig }) {
       },
 
-    onActivateNarrationFunction: 
+    onActivateNarrationFunction:
       function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
       },
-      
-    onResizeFunction: 
+
+    onResizeFunction:
       function onResize({ graphElement, graphId, sectionConfig }) {
         sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
       },
   };
- 
+
 /** Now add the section configuration to the overall ScrollyTeller config */
 const myScrollyTellerConfig = {
   appContainerId: myAppId,
@@ -231,12 +231,12 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
   const { className: activeNarrationClass, id: activeNarrationId } = element;
 
   /** retrieving the expected css naming conventions in the HTML built by ScrollyTeller */
-  const { 
-    cssNames, 
-    sectionIdentifier, 
+  const {
+    cssNames,
+    sectionIdentifier,
     appContainerId // the id of the container <div> that holds all sections
   } = sectionConfig
-  
+
   const mySectionId = cssNames.sectionId(sectionIdentifier);
   const mySectionClass = cssNames.sectionClass();
   const globalNarrationClass = cssNames.narrationClass();
@@ -257,7 +257,6 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
  * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
- * @param {string} [params.direction] - the direction the event happened in (up or down)
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
  * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -268,7 +267,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
-function onScrollFunction({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+function onScrollFunction({ index, progress, element, trigger, graphId, sectionConfig }) {
   const myGraphDiv = select(`#${graphId}`);
   /** use trigger specified in the narration csv file to trigger actions */
   switch (trigger) {
@@ -294,7 +293,7 @@ function onScrollFunction({ index, progress, element, trigger, direction, graphI
 * Called when the graph container is resized.
 ```javascript
 /**
- * Called when the graph container is resized 
+ * Called when the graph container is resized
  * @param {object} [params] - object containing parameters
  * @param {number} [params.index] - index of the active narration object
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block

@@ -5,7 +5,7 @@ import './data/narrationExampleSection0.csv';
 
 const snippets = {
   onActivate:
-    `{ // SECTION CONFIGURATION OBJECT 
+    `{ // SECTION CONFIGURATION OBJECT
     // ... other properties
     onActivateNarrationFunction: function ({ trigger, graphId }) {
         const [first, second] = trigger.split(':');
@@ -22,7 +22,7 @@ const snippets = {
       },
   } // SECTION CONFIGURATION OBJECT`,
   onScroll:
-    `{ // SECTION CONFIGURATION OBJECT 
+    `{ // SECTION CONFIGURATION OBJECT
       // ... other properties
       onScrollFunction: function ({ progress, trigger, graphId }) {
         /** use trigger specified in the narration csv file to trigger actions */
@@ -116,7 +116,6 @@ export default {
    * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
-   * @param {string} [params.direction] - the direction the event happened in (up or down)
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
