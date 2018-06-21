@@ -17,8 +17,12 @@ import {
   resizeNarrationBlocks,
   calcScrollProgress,
 } from './utils';
+import scrollIntoView from 'scroll-into-view';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
+
+// How far from the top of the viewport to trigger a step.
+const TRIGGER_OFFSET = 0.5;
 
 export default class ScrollyTeller {
   /**
@@ -41,6 +45,8 @@ export default class ScrollyTeller {
     }
 
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
+
+    this._triggersDisabled = false;
   }
 
   /** 'PRIVATE' METHODS * */
@@ -62,17 +68,111 @@ export default class ScrollyTeller {
     });
   }
 
+  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onActivateNarrationFunction = noop,
+      convertTriggerToObject = false,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    const progress = 0;
+
+    const trigger = (convertTriggerToObject)
+      ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
+      : narration[index].trigger || '';
+
+    const state = (convertTriggerToObject)
+      ? getNarrationState(sectionConfig, index, progress)
+      : undefined;
+
+    select(element).classed('active', true);
+    select(`#${graphId}`).classed('active', true);
+
+    onActivateNarrationFunction({
+      index,
+      progress,
+      element,
+      trigger,
+      state,
+      direction,
+      graphId,
+      sectionConfig,
+    });
+  }
+
+  _handleOnStepExit(sectionConfig, { index, element, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    select(element).classed('active', false);
+
+    if ((index === narration.length - 1 && direction === 'down')
+      || (index === 0 && direction === 'up')
+    ) {
+      select(`#${graphId}`).classed('active', false);
+    }
+  }
+
+  _handleOnStepProgress(sectionConfig, { element, index }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onScrollFunction = noop,
+      convertTriggerToObject = false,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+
+    /** recalculate scroll progress due to intersection observer bug in Chrome
+     *  https://github.com/russellgoldenberg/scrollama/issues/64
+     *  TODO: revert back to using scrollama progress if/when issue is resolved */
+    const progress = calcScrollProgress(element, TRIGGER_OFFSET);
+
+    const trigger = (convertTriggerToObject)
+      ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
+      : narration[index].trigger || '';
+
+    const state = (convertTriggerToObject)
+      ? getNarrationState(sectionConfig, index, progress)
+      : undefined;
+
+    onScrollFunction({
+      index,
+      progress,
+      element,
+      trigger,
+      state,
+      graphId,
+      sectionConfig,
+    });
+  }
+
   _buildScrollamaContainers() {
     forEach(this.sectionList, (sectionConfig) => {
       const css = get(sectionConfig, ['cssNames', 'css']);
 
       const {
-        narration,
         cssNames: names,
         sectionIdentifier,
-        onScrollFunction = noop,
-        onActivateNarrationFunction = noop,
-        convertTriggerToObject = false,
       } = sectionConfig;
 
       sectionConfig.scroller = scrollama();
@@ -80,74 +180,17 @@ export default class ScrollyTeller {
       const sectionId = names.sectionId(sectionIdentifier);
       const graphId = names.graphId(sectionIdentifier);
 
-      const offset = 0.5;
-
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
           graphic: `#${graphId}`,
-          offset,
+          offset: TRIGGER_OFFSET,
           progress: true,
         })
-        .onStepEnter(({ element, index, direction }) => {
-          const progress = 0;
-
-          const trigger = (convertTriggerToObject)
-            ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
-            : narration[index].trigger || '';
-
-          const state = (convertTriggerToObject)
-            ? getNarrationState(sectionConfig, index, progress)
-            : undefined;
-
-          select(element).classed('active', true);
-          select(`#${graphId}`).classed('active', true);
-
-          onActivateNarrationFunction({
-            index,
-            progress,
-            element,
-            trigger,
-            state,
-            direction,
-            graphId,
-            sectionConfig,
-          });
-        })
-        .onStepExit(({ index, element, direction }) => {
-          select(element).classed('active', false);
-
-          if ((index === narration.length - 1 && direction === 'down')
-            || (index === 0 && direction === 'up')
-          ) {
-            select(`#${graphId}`).classed('active', false);
-          }
-        })
-        .onStepProgress(({ element, index }) => {
-          /** recalculate scroll progress due to intersection observer bug in Chrome
-           *  https://github.com/russellgoldenberg/scrollama/issues/64
-           *  TODO: revert back to using scrollama progress if/when issue is resolved */
-          const progress = calcScrollProgress(element, offset);
-
-          const trigger = (convertTriggerToObject)
-            ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
-            : narration[index].trigger || '';
-
-          const state = (convertTriggerToObject)
-            ? getNarrationState(sectionConfig, index, progress)
-            : undefined;
-
-          onScrollFunction({
-            index,
-            progress,
-            element,
-            trigger,
-            state,
-            graphId,
-            sectionConfig,
-          });
-        });
+        .onStepEnter((payload) => { this._handleOnStepEnter(sectionConfig, payload); })
+        .onStepExit((payload) => { this._handleOnStepExit(sectionConfig, payload); })
+        .onStepProgress((payload) => { this._handleOnStepProgress(sectionConfig, payload); });
     });
   }
 
@@ -205,5 +248,54 @@ export default class ScrollyTeller {
         config.scroller.resize();
       });
     });
+  }
+
+  /**
+   * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
+   * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
+   * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
+   * @returns {Promise<void>}
+   */
+  async scrollTo(sectionIdentifier, narrationId, options) {
+    const { appContainerId, cssNames, sectionList } = this;
+
+    // Find the sectionConfig.
+    const sectionConfig = sectionList[sectionIdentifier];
+
+    // Find the index of the target narration block to scroll to.
+    const index = (
+      narrationId !== undefined
+        // eslint-disable-next-line eqeqeq
+        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
+        : 0
+    );
+    // get the target narration block element from the section config.
+    const targetNarrationBlock = sectionConfig.narration[index];
+
+    // create a selector for the target narration block and select that element
+    const targetNarrationSelector = [
+      `#${cssNames.sectionId(sectionIdentifier)}`,
+      `.${cssNames.narrationList()}`,
+      `#${cssNames.narrationId(targetNarrationBlock.narrationId)}`,
+    ].join(' ');
+    const element = select(targetNarrationSelector).node();
+
+    // Get the page position, so we can determine which direction we've scrolled.
+    const startingYOffset = window.pageYOffset;
+
+    // Remove CSS class 'active' on all elements within the ScrollyTeller container element.
+    select(`#${appContainerId}`).selectAll('.active').classed('active', false);
+    // Set a flag to prevent trigger callbacks from executing during scrolling.
+    this._triggersDisabled = true;
+    // Scroll the page (asynchronously).
+    await new Promise((resolve) => { scrollIntoView(element, options, resolve); });
+    // Re-enable trigger callbacks.
+    this._triggersDisabled = false;
+
+    // Compute the direction of scrolling.
+    const direction = window.pageYOffset < startingYOffset ? 'up' : 'down';
+    // Manually activate triggers for the current narration (since they won't have fired on scroll).
+    this._handleOnStepEnter(sectionConfig, { element, index, direction });
+    this._handleOnStepProgress(sectionConfig, { element, index });
   }
 }

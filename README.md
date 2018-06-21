@@ -21,7 +21,7 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Building a scrolling data story using ScrollyTeller
-##### ScrollyTeller contains two methods: a constructor method ```ScrollyTeller(config)``` that takes a configuration object, and a ```render()``` method that returns a Promise to build all HTML. The pseudo code below shows how a to create a ```ScrollyTeller``` instance from a configuration object, and then render the HTML.  The configuration object is described in much more detail below.
+##### A `ScrollyTeller` object is created with the constructor `ScrollyTeller`, which takes a configuration object as argument. To actually set up the story, including loading data, building the HTML, and setting up event listeners, call the asynchronous method `render`. The pseudo code below shows how a to create a `ScrollyTeller` instance from a configuration object and then render the HTML. The configuration object is described in much more detail below.
 ```javascript
 const myAppId = 'myAppId';
 const myScrollyTellerConfig = {
@@ -145,6 +145,19 @@ myScrollyTellerInstance.render();
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
 | **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
 
+----------------------------------------------------------------------------------------------------------------------------------
+### Auto-scrolling to a specific section or narration block
+The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to a specific section or narration block. It disabled triggers during scrolling, only firing triggers for the target section or narration block. This functionality can be useful for hooking up with navigation controls. Note that this method is asynchronous, so if you need to script any actions following the scroll, you should await resolution of the Promise it returns.
+
+```javascript
+/**
+ * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
+ * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
+ * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
+ * @returns {Promise<void>}
+ */
+async scrollTo(sectionIdentifier, narrationId, options) { ... }
+```
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
