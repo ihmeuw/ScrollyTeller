@@ -21,7 +21,7 @@
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Building a scrolling data story using ScrollyTeller
-##### ScrollyTeller contains two methods: a constructor method ```ScrollyTeller(config)``` that takes a configuration object, and a ```render()``` method that returns a Promise to build all HTML. The pseudo code below shows how a to create a ```ScrollyTeller``` instance from a configuration object, and then render the HTML.  The configuration object is described in much more detail below.
+##### A `ScrollyTeller` object is created with the constructor `ScrollyTeller`, which takes a configuration object as argument. To actually set up the story, including loading data, building the HTML, and setting up event listeners, call the asynchronous method `render`. The pseudo code below shows how a to create a `ScrollyTeller` instance from a configuration object and then render the HTML. The configuration object is described in much more detail below.
 ```javascript
 const myAppId = 'myAppId';
 const myScrollyTellerConfig = {
