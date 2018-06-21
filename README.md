@@ -146,6 +146,19 @@ myScrollyTellerInstance.render();
 | **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
 
 ----------------------------------------------------------------------------------------------------------------------------------
+### Auto-scrolling to a specific section or narration block
+The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to a specific section or narration block. It disabled triggers during scrolling, only firing triggers for the target section or narration block. This functionality can be useful for hooking up with navigation controls. Note that this method is asynchronous, so if you need to script any actions following the scroll, you should await resolution of the Promise it returns.
+
+```javascript
+/**
+ * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
+ * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
+ * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
+ * @returns {Promise<void>}
+ */
+async scrollTo(sectionIdentifier, narrationId, options) { ... }
+```
+----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
 * (uses lodash toNumber() and groupBy() functions to manipulate data)
