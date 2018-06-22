@@ -36324,7 +36324,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_scrollama__ = __webpack_require__(867);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_scrollama___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_scrollama__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__utils_CSSNames__ = __webpack_require__(306);
-/* global window, document */
+/* global window */
 
 
 
@@ -36566,23 +36566,37 @@ class ScrollyTeller {
    * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
    * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
    * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
-   * @returns {void}
+   * @returns {Promise<void>}
    */
   async scrollTo(sectionIdentifier, narrationId, options) {
-    // Find the DOM element to which we'll scroll.
-    const selectorString = (
-      narrationId !== undefined
-        ? this.cssNames.narrationId(narrationId)
-        : this.cssNames.sectionId(sectionIdentifier)
-    );
-    const element = document.getElementById(selectorString);
+    const { appContainerId, cssNames, sectionList } = this;
+
     // Find the sectionConfig.
-    const sectionConfig = this.sectionList[sectionIdentifier];
+    const sectionConfig = sectionList[sectionIdentifier];
+
+    // Find the index of the target narration block to scroll to.
+    const index = (
+      narrationId !== undefined
+        // eslint-disable-next-line eqeqeq
+        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
+        : 0
+    );
+    // get the target narration block element from the section config.
+    const targetNarrationBlock = sectionConfig.narration[index];
+
+    // create a selector for the target narration block and select that element
+    const targetNarrationSelector = [
+      `#${cssNames.sectionId(sectionIdentifier)}`,
+      `.${cssNames.narrationList()}`,
+      `#${cssNames.narrationId(targetNarrationBlock.narrationId)}`,
+    ].join(' ');
+    const element = Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(targetNarrationSelector).node();
+
     // Get the page position, so we can determine which direction we've scrolled.
-    const previousYOffset = window.pageYOffset;
+    const startingYOffset = window.pageYOffset;
 
     // Remove CSS class 'active' on all elements within the ScrollyTeller container element.
-    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(this.appContainerId).selectAll('.active').classed('active', false);
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${appContainerId}`).selectAll('.active').classed('active', false);
     // Set a flag to prevent trigger callbacks from executing during scrolling.
     this._triggersDisabled = true;
     // Scroll the page (asynchronously).
@@ -36590,15 +36604,8 @@ class ScrollyTeller {
     // Re-enable trigger callbacks.
     this._triggersDisabled = false;
 
-    // Find the index of the current narration block.
-    const index = (
-      narrationId !== undefined
-        // eslint-disable-next-line eqeqeq
-        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
-        : 0
-    );
     // Compute the direction of scrolling.
-    const direction = window.pageYOffset < previousYOffset ? 'up' : 'down';
+    const direction = window.pageYOffset < startingYOffset ? 'up' : 'down';
     // Manually activate triggers for the current narration (since they won't have fired on scroll).
     this._handleOnStepEnter(sectionConfig, { element, index, direction });
     this._handleOnStepProgress(sectionConfig, { element, index });
