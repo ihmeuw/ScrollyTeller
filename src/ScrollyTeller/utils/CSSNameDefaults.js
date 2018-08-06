@@ -4,7 +4,7 @@ export default {
   narrationList: 'narration_list',
   narrationBlock: 'narration',
   narrationContent: 'narration-content',
-  graphContainer: 'graph_section',
+  graphContainer: 'graph',
   graphContainerDefault: 'graph_default',
   linkContainer: 'link',
 };
