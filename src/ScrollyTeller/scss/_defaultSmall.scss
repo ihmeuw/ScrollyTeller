@@ -7,6 +7,15 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 /*  apply a natural box layout model to all elements  */
 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
 
+.flex_vertical_column_all_centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 /*  ------------- SCROLL -------------  */
 .scroll {
   grid-area: scroll;
@@ -52,23 +61,34 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     }
 
     /*  ------------- GRAPHS -------------  */
-    .graph_default
-    {
+    .graph_container {
+      @extend .flex_vertical_column_all_centered;
       grid-area: graphArea;
       position: sticky;
-      opacity: $graph-default-opacity;
       padding: 0;
       margin: 0;
       top: 0;
       height: 50vh;
-      background-color: $graph-background-color;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      opacity: 1;
+      
+      .graph_title {
+        font-size: 1.5rem;
+      }
+      
+      .graph_caption {
+        font-size: 1rem;
+      }
+      
+      .graph_default {
+        @extend .flex_vertical_column_all_centered;
+        opacity: $graph-default-opacity;
+        background-color: $graph-background-color;
+        width: 100%;
+        height: 100%;
+      }
     }
-
-    .graph_default.active {
+    
+    .graph_container.active {
       top: 0;
       height: 50vh;
       position: sticky;

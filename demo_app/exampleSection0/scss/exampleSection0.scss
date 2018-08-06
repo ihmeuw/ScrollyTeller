@@ -1,10 +1,22 @@
 @import '../../scss/variables';
 
+.dashed {
+  border: black;
+  border-style: dashed;
+  border-width: medium;
+}
+
 /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
-.graph_default.graph_section_myExampleSection0,
-.graph_default.graph_section_myExampleSection0.active
-{
-  background: #00A150;
+.scroll {
+  .section {
+    .graph_container {
+      .graph_default.graph_myExampleSection0,
+      .graph_default.graph_myExampleSection0.active {
+        width: 80%;
+        height: 80%;
+      }
+    }
+  }
 }
 
 /*  ------------- FOR NARRATION CONTENT WITH ID = outline -------------  */

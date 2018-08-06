@@ -28,18 +28,18 @@
     } // end narration
 
     /*  ------------- GRAPHS -------------  */
-    .graph_default {
+    .graph_container {
       top: 10vh;
       height: 80vh;
       padding: $graph-area-padding;
       margin: $graph-area-margin;
-    }
-
-    .graph_default.active {
+    } // end graph_container
+    
+    .graph_container.active {
       top: 10vh;
       height: 80vh;
       padding: $graph-area-padding;
       margin: $graph-area-margin;
-    }// end narration_list
+    } // end graph_container.active
   } // end section
 } // end scroll
