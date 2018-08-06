@@ -6,12 +6,10 @@ import myExampleSection1 from './exampleSection1/exampleSection1';
 
 export default class App {
   constructor() {
-    /** The id of the <div> that will contain all of the page content */
-    const appContainerId = 'app';
-
     /** ScrollyTeller */
     const myScrollyTellerConfig = {
-      appContainerId: appContainerId,
+      /** The id of the <div> that will contain all of the page content */
+      appContainerId: 'app',
       /** build a list of story sections, keyed by sectionIdentifier.
        * Each section object should be a valid section configuration with
        * the properties defined in the next section */
