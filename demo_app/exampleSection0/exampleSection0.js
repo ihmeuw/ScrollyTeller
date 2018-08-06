@@ -157,14 +157,6 @@ export default {
    * @returns {void}
    */
   onActivateNarrationFunction: function onActivateNarration({ state, graphId }) {
-    if (state.style) {
-      const myGraph = select(`#${graphId}`);
-
-      forIn(state.style, (value, key) => {
-        myGraph.style(key, value);
-      });
-    }
-
     if (state.code) {
       select(`#${graphId}`)
         .html(`<pre class="prettyprint lang-js">${snippets[state.code]}</pre>`);
