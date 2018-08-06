@@ -86,7 +86,11 @@ export function buildSectionWithNarration(config) {
     .attr('id', names.sectionId(sectionIdentifier));
 
   /** insert the graph as the first div before narration divs */
-  sectionDiv.append('div')
+  sectionDiv
+    .append('div')
+    .attr('id', names.graphContainerId(sectionIdentifier))
+    .classed(names.graphContainerClass(), true)
+    .append('div')
     .attr('class', `${names.css.graphContainerDefault} ${names.graphClass(sectionIdentifier)}`)
     .attr('id', names.graphId(sectionIdentifier));
 
