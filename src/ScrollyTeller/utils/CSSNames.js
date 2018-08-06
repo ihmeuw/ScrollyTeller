@@ -45,13 +45,35 @@ export default class CSSNames {
   /**
    * Returns the graph id associated with this section based on the sectionIdentifier
    * @param {string} sectionIdentifier - id of the section
-   * @returns {string} representing the class name of the div containing the section
+   * @returns {string} representing the id the graph div for this section
    * */
   graphId(sectionIdentifier) {
     return `${this.css.graphContainer}_${sectionIdentifier}`;
   }
 
+  /**
+   * Returns the classname of the div for this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} representing the classname of the graph div for this section
+   * */
   graphClass(sectionIdentifier) {
     return `${this.css.graphContainer}_${sectionIdentifier}`;
+  }
+
+  /**
+   * Returns the id of the graph container associated with this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} representing the id of the div containing the graph
+   * */
+  graphContainerId(sectionIdentifier) {
+    return `${this.graphId(sectionIdentifier)}_container`;
+  }
+
+  /**
+   * Returns the classname of all graph containers
+   * @returns {string} representing the class name of the div containing the section
+   * */
+  graphContainerClass() {
+    return `${this.css.graphContainer}_container`;
   }
 }
