@@ -9,6 +9,14 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
+.flex_vertical_column_all_centered, .scroll .section .graph_container, .scroll .section .graph_container .graph_default {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  text-align: center; }
+
 /*  ------------- SCROLL -------------  */
 .scroll {
   grid-area: scroll;
@@ -40,19 +48,24 @@ html {
       .scroll .section .narration_list .narration.active {
         margin: 10%;
         opacity: 1; }
-    .scroll .section .graph_default {
+    .scroll .section .graph_container {
       grid-area: graphArea;
       position: sticky;
-      opacity: 0;
       padding: 0;
       margin: 0;
       top: 0;
       height: 50vh;
-      background-color: gray;
-      display: flex;
-      align-items: center;
-      justify-content: center; }
-    .scroll .section .graph_default.active {
+      opacity: 1; }
+      .scroll .section .graph_container .graph_title {
+        font-size: 1.5rem; }
+      .scroll .section .graph_container .graph_caption {
+        font-size: 1rem; }
+      .scroll .section .graph_container .graph_default {
+        opacity: 0;
+        background-color: gray;
+        width: 100%;
+        height: 100%; }
+    .scroll .section .graph_container.active {
       top: 0;
       height: 50vh;
       position: sticky;
@@ -75,12 +88,12 @@ html {
         padding: 2.5%;
         margin: 2.5%;
         /*  ------------- NARRATION (block) -------------  */ }
-      .scroll .section .graph_default {
+      .scroll .section .graph_container {
         top: 10vh;
         height: 80vh;
         padding: 0;
         margin: 0; }
-      .scroll .section .graph_default.active {
+      .scroll .section .graph_container.active {
         top: 10vh;
         height: 80vh;
         padding: 0;
