@@ -8,14 +8,17 @@ import {
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
 import {
-  validateScrollyTellerConfig,
+  buildSectionWithNarration,
+  calcScrollProgress,
+  fetchDataAndProcessResults,
+  fetchNarration,
   getNarrationState,
   getStateFromTrigger,
-  fetchNarration,
-  fetchDataAndProcessResults,
-  buildSectionWithNarration,
   resizeNarrationBlocks,
-  calcScrollProgress,
+  updateCaption,
+  updateGraphStyles,
+  updateTitle,
+  validateScrollyTellerConfig,
 } from './utils';
 import scrollIntoView from 'scroll-into-view';
 import scrollama from 'scrollama';
@@ -81,6 +84,7 @@ export default class ScrollyTeller {
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
 
     const progress = 0;
 
@@ -93,7 +97,28 @@ export default class ScrollyTeller {
       : undefined;
 
     select(element).classed('active', true);
-    select(`#${graphId}`).classed('active', true);
+    const graphContainer = select(`#${graphContainerId}`).classed('active', true);
+    const graph = select(`#${graphId}`);
+
+    updateTitle({
+      graphContainer,
+      index,
+      narration,
+      state,
+    });
+
+    updateCaption({
+      graphContainer,
+      index,
+      narration,
+      state,
+    });
+
+    updateGraphStyles({
+      graph,
+      graphContainer,
+      state,
+    });
 
     onActivateNarrationFunction({
       index,
@@ -103,6 +128,7 @@ export default class ScrollyTeller {
       state,
       direction,
       graphId,
+      graphContainerId,
       sectionConfig,
     });
   }
@@ -117,14 +143,13 @@ export default class ScrollyTeller {
       sectionIdentifier,
     } = sectionConfig;
 
-    const graphId = names.graphId(sectionIdentifier);
-
     select(element).classed('active', false);
 
     if ((index === narration.length - 1 && direction === 'down')
       || (index === 0 && direction === 'up')
     ) {
-      select(`#${graphId}`).classed('active', false);
+      const graphContainerId = `#${names.graphContainerId(sectionIdentifier)}`;
+      select(graphContainerId).classed('active', false);
     }
   }
 
@@ -141,6 +166,7 @@ export default class ScrollyTeller {
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
 
     /** recalculate scroll progress due to intersection observer bug in Chrome
      *  https://github.com/russellgoldenberg/scrollama/issues/64
@@ -155,6 +181,12 @@ export default class ScrollyTeller {
       ? getNarrationState(sectionConfig, index, progress)
       : undefined;
 
+    updateGraphStyles({
+      graph: select(`#${graphId}`),
+      graphContainer: select(`#${graphContainerId}`),
+      state,
+    });
+
     onScrollFunction({
       index,
       progress,
@@ -162,6 +194,7 @@ export default class ScrollyTeller {
       trigger,
       state,
       graphId,
+      graphContainerId,
       sectionConfig,
     });
   }
@@ -178,13 +211,13 @@ export default class ScrollyTeller {
       sectionConfig.scroller = scrollama();
 
       const sectionId = names.sectionId(sectionIdentifier);
-      const graphId = names.graphId(sectionIdentifier);
+      const graphContainerId = names.graphContainerId(sectionIdentifier);
 
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
-          graphic: `#${graphId}`,
+          graphic: `#${graphContainerId}`,
           offset: TRIGGER_OFFSET,
           progress: true,
         })
@@ -203,6 +236,7 @@ export default class ScrollyTeller {
       } = sectionConfig;
 
       const graphId = names.graphId(sectionIdentifier);
+      const graphContainerId = names.graphContainerId(sectionIdentifier);
 
       sectionConfig.elementResizeDetector = elementResizeDetectorMaker({
         strategy: 'scroll',
@@ -210,9 +244,14 @@ export default class ScrollyTeller {
 
       sectionConfig.elementResizeDetector
         .listenTo(
-          select(`#${graphId}`).node(),
+          select(`#${graphContainerId}`).node(),
           (element) => {
-            onResizeFunction({ graphElement: element, graphId, sectionConfig });
+            onResizeFunction({
+              graphElement: element,
+              graphContainerId,
+              graphId,
+              sectionConfig,
+            });
           },
         );
     });
