@@ -92,11 +92,25 @@ export function updateGraphStyles({
     });
   }
 
+  // apply title classes
+  if (state.titleClass) {
+    const [className, trueFalse] = state.titleClass.split('|');
+    graphContainer.select('div.graph_title text')
+      .classed(className, trueFalse !== 'remove');
+  }
+
   // apply caption styles
   if (state.captionStyle) {
     const caption = graphContainer.select('div.graph_caption text');
     forIn(state.captionStyle, (value, key) => {
       caption.style(key, value);
     });
+  }
+
+  // apply caption classes
+  if (state.captionClass) {
+    const [className, trueFalse] = state.captionClass.split('|');
+    graphContainer.select('div.graph_caption text')
+      .classed(className, trueFalse !== 'remove');
   }
 }
