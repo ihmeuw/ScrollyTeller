@@ -116,6 +116,7 @@ export default {
    * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -126,14 +127,7 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction: function onScroll({ state, graphId }) {
-    if (state.style) {
-      const myGraph = select(`#${graphId}`);
-
-      forIn(state.style, (value, key) => {
-        myGraph.style(key, value);
-      });
-    }
+  onScrollFunction: function onScroll({ state, graphId, graphContainerId }) {
   },
 
   /**
@@ -146,6 +140,7 @@ export default {
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
    * @param {string} [params.direction] - the direction the event happened in (up or down)
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
