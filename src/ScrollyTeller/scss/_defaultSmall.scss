@@ -68,7 +68,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
       margin: 0;
       top: 0;
       height: 50vh;
-      opacity: 1;
+      opacity: $graph-container-default-opacity;
       
       .graph_title {
         font-size: 1.5rem;
