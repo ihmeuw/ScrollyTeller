@@ -10,7 +10,7 @@ export function updateCaption({
   const graphCaption = get(narration, [index, 'graphCaption'], '');
 
   let caption = graphContainer.select('div.graph_caption text');
-  if (caption === '') {
+  if (graphCaption === '') {
     captionContainer.remove();
     return;
   }
