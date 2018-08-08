@@ -52936,7 +52936,7 @@ function updateCaption({
   const graphCaption = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(narration, [index, 'graphCaption'], '');
 
   let caption = graphContainer.select('div.graph_caption text');
-  if (caption === '') {
+  if (graphCaption === '') {
     captionContainer.remove();
     return;
   }
