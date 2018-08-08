@@ -36398,26 +36398,25 @@ class ScrollyTeller {
 
   _buildGraphs() {
     Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["forEach"])(this.sectionList, (config) => {
+      const { _, state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
+
+      const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
+      this._updateTitleAndCaption({
+        graphContainer: Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${containerId}`),
+        index: 0,
+        narration: config.narration,
+        state,
+      });
+
       config.graph = config.buildGraphFunction(this._graphIdForSection(config), config);
     });
   }
 
-  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
-    if (this._triggersDisabled) {
-      return;
-    }
+  _triggerState({ sectionConfig, index, progress }) {
     const {
       narration,
-      cssNames: names,
-      sectionIdentifier,
-      onActivateNarrationFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
       convertTriggerToObject = false,
     } = sectionConfig;
-
-    const graphId = names.graphId(sectionIdentifier);
-    const graphContainerId = names.graphContainerId(sectionIdentifier);
-
-    const progress = 0;
 
     const trigger = (convertTriggerToObject)
       ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
@@ -36427,10 +36426,12 @@ class ScrollyTeller {
       ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
       : undefined;
 
-    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', true);
-    const graphContainer = Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphContainerId}`).classed('active', true);
-    const graph = Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`);
+    return { trigger, state };
+  }
 
+  _updateTitleAndCaption({
+    graphContainer, index, narration, state
+  }) {
     Object(__WEBPACK_IMPORTED_MODULE_3__utils__["j" /* updateTitle */])({
       graphContainer,
       index,
@@ -36444,6 +36445,31 @@ class ScrollyTeller {
       narration,
       state,
     });
+  }
+
+  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onActivateNarrationFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
+
+    const progress = 0;
+
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
+
+    Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(element).classed('active', true);
+    const graphContainer = Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphContainerId}`).classed('active', true);
+    const graph = Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`);
+
+    this._updateTitleAndCaption({ graphContainer, index, narration, state });
 
     Object(__WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */])({
       graph,
@@ -36489,11 +36515,9 @@ class ScrollyTeller {
       return;
     }
     const {
-      narration,
       cssNames: names,
       sectionIdentifier,
       onScrollFunction = __WEBPACK_IMPORTED_MODULE_0_lodash__["noop"],
-      convertTriggerToObject = false,
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
@@ -36504,13 +36528,7 @@ class ScrollyTeller {
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
     const progress = Object(__WEBPACK_IMPORTED_MODULE_3__utils__["b" /* calcScrollProgress */])(element, TRIGGER_OFFSET);
 
-    const trigger = (convertTriggerToObject)
-      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
-      : narration[index].trigger || '';
-
-    const state = (convertTriggerToObject)
-      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
-      : undefined;
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
     Object(__WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */])({
       graph: Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`),
@@ -53000,12 +53018,26 @@ function updateGraphStyles({
     });
   }
 
+  // apply title classes
+  if (state.titleClass) {
+    const [className, trueFalse] = state.titleClass.split('|');
+    graphContainer.select('div.graph_title text')
+      .classed(className, trueFalse !== 'remove');
+  }
+
   // apply caption styles
   if (state.captionStyle) {
     const caption = graphContainer.select('div.graph_caption text');
     Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["forIn"])(state.captionStyle, (value, key) => {
       caption.style(key, value);
     });
+  }
+
+  // apply caption classes
+  if (state.captionClass) {
+    const [className, trueFalse] = state.captionClass.split('|');
+    graphContainer.select('div.graph_caption text')
+      .classed(className, trueFalse !== 'remove');
   }
 }
 
