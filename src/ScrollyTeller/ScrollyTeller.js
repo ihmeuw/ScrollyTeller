@@ -67,26 +67,25 @@ export default class ScrollyTeller {
 
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
+      const { _, state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
+
+      const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
+      this._updateTitleAndCaption({
+        graphContainer: select(`#${containerId}`),
+        index: 0,
+        narration: config.narration,
+        state,
+      });
+
       config.graph = config.buildGraphFunction(this._graphIdForSection(config), config);
     });
   }
 
-  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
-    if (this._triggersDisabled) {
-      return;
-    }
+  _triggerState({ sectionConfig, index, progress }) {
     const {
       narration,
-      cssNames: names,
-      sectionIdentifier,
-      onActivateNarrationFunction = noop,
       convertTriggerToObject = false,
     } = sectionConfig;
-
-    const graphId = names.graphId(sectionIdentifier);
-    const graphContainerId = names.graphContainerId(sectionIdentifier);
-
-    const progress = 0;
 
     const trigger = (convertTriggerToObject)
       ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
@@ -96,10 +95,12 @@ export default class ScrollyTeller {
       ? getNarrationState(sectionConfig, index, progress)
       : undefined;
 
-    select(element).classed('active', true);
-    const graphContainer = select(`#${graphContainerId}`).classed('active', true);
-    const graph = select(`#${graphId}`);
+    return { trigger, state };
+  }
 
+  _updateTitleAndCaption({
+    graphContainer, index, narration, state
+  }) {
     updateTitle({
       graphContainer,
       index,
@@ -113,6 +114,31 @@ export default class ScrollyTeller {
       narration,
       state,
     });
+  }
+
+  _handleOnStepEnter(sectionConfig, { element, index, direction }) {
+    if (this._triggersDisabled) {
+      return;
+    }
+    const {
+      narration,
+      cssNames: names,
+      sectionIdentifier,
+      onActivateNarrationFunction = noop,
+    } = sectionConfig;
+
+    const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
+
+    const progress = 0;
+
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
+
+    select(element).classed('active', true);
+    const graphContainer = select(`#${graphContainerId}`).classed('active', true);
+    const graph = select(`#${graphId}`);
+
+    this._updateTitleAndCaption({ graphContainer, index, narration, state });
 
     updateGraphStyles({
       graph,
@@ -158,11 +184,9 @@ export default class ScrollyTeller {
       return;
     }
     const {
-      narration,
       cssNames: names,
       sectionIdentifier,
       onScrollFunction = noop,
-      convertTriggerToObject = false,
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
@@ -173,13 +197,7 @@ export default class ScrollyTeller {
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
     const progress = calcScrollProgress(element, TRIGGER_OFFSET);
 
-    const trigger = (convertTriggerToObject)
-      ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
-      : narration[index].trigger || '';
-
-    const state = (convertTriggerToObject)
-      ? getNarrationState(sectionConfig, index, progress)
-      : undefined;
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
     updateGraphStyles({
       graph: select(`#${graphId}`),
