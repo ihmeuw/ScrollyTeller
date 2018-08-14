@@ -6,5 +6,7 @@ export default {
   narrationContent: 'narration-content',
   graphContainer: 'graph',
   graphContainerDefault: 'graph_default',
+  graphTitleClass: 'graph_title',
+  graphCaptionClass: 'graph_caption',
   linkContainer: 'link',
 };

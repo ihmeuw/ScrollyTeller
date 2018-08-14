@@ -61,6 +61,16 @@ export default class CSSNames {
   }
 
   /**
+   * Returns a space separated string of all of the class names for the graph in this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} a space separated string of all of the class names for the graph in
+   *                    this section
+   * */
+  graphClassNames(sectionIdentifier) {
+    return `${this.css.graphContainerDefault} ${this.graphClass(sectionIdentifier)}`;
+  }
+
+  /**
    * Returns the id of the graph container associated with this section
    * @param {string} sectionIdentifier - id of the section
    * @returns {string} representing the id of the div containing the graph
@@ -75,5 +85,33 @@ export default class CSSNames {
    * */
   graphContainerClass() {
     return `${this.css.graphContainer}_container`;
+  }
+
+  /**
+   * Returns a space separated string of all of the class names for the graph container
+   * in this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} a space separated string of all of the class names for the
+   *                    graph container in this section
+   * */
+  graphContainerClassNames(sectionIdentifier) {
+    return this.graphContainerClass(sectionIdentifier);
+  }
+
+
+  /**
+   * Get the title class
+   * @return {CSSNames.graphTitleClass} - the title class name from the scrollyteller configuration
+   */
+  graphTitleClass() {
+    return this.css.graphTitleClass;
+  }
+
+  /**
+   * Get the caption class
+   * @return {CSSNames.graphCaptionClass} - the caption class name from the scrollyteller configuration
+   */
+  graphCaptionClass() {
+    return this.css.graphCaptionClass;
   }
 }
