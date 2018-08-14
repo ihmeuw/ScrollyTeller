@@ -1,4 +1,5 @@
-import { forIn, get } from 'lodash';
+import { get } from 'lodash';
+import 'd3-selection-multi';
 
 export function updateCaption({
   graphContainer,
@@ -24,9 +25,7 @@ export function updateCaption({
   caption.html(graphCaption);
 
   // apply styles or other attributes
-  forIn(state.captionStyle, (value, key) => {
-    caption.style(key, value);
-  });
+  caption.styles(state.captionStyle);
 }
 
 export function updateTitle({
@@ -40,6 +39,7 @@ export function updateTitle({
 
   if (graphTitle === '') {
     titleContainer.remove();
+    return;
   }
 
   let title = graphContainer.select('div.graph_title text');
@@ -52,9 +52,7 @@ export function updateTitle({
   title.html(graphTitle);
 
   // apply styles or other attributes
-  forIn(state.titleStyle, (value, key) => {
-    title.style(key, value);
-  });
+  title.styles(state.titleStyle);
 }
 
 export function updateGraphStyles({
@@ -63,9 +61,7 @@ export function updateGraphStyles({
   state,
 }) {
   // graph style
-  forIn(state.graphStyle, (value, key) => {
-    graph.style(key, value);
-  });
+  graph.styles(state.graphStyle);
 
   // graph class name
   if (state.graphClass) {
@@ -74,9 +70,7 @@ export function updateGraphStyles({
   }
 
   // graph container style
-  forIn(state.containerStyle, (value, key) => {
-    graphContainer.style(key, value);
-  });
+  graphContainer.styles(state.containerStyle);
 
   // graph container class
   if (state.containerClass) {
@@ -87,9 +81,7 @@ export function updateGraphStyles({
   // apply title styles
   if (state.titleStyle) {
     const title = graphContainer.select('div.graph_title text');
-    forIn(state.titleStyle, (value, key) => {
-      title.style(key, value);
-    });
+    title.styles(state.titleStyle);
   }
 
   // apply title classes
@@ -102,9 +94,7 @@ export function updateGraphStyles({
   // apply caption styles
   if (state.captionStyle) {
     const caption = graphContainer.select('div.graph_caption text');
-    forIn(state.captionStyle, (value, key) => {
-      caption.style(key, value);
-    });
+    caption.styles(state.captionStyle);
   }
 
   // apply caption classes
