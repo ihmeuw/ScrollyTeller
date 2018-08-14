@@ -67,7 +67,7 @@ export default class ScrollyTeller {
 
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
-      const { _, state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
+      const { state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
 
       const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
       this._updateTitleAndCaption({
