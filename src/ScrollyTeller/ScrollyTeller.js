@@ -73,6 +73,7 @@ export default class ScrollyTeller {
       this._updateTitleAndCaption({
         graphContainer: select(`#${containerId}`),
         index: 0,
+        names: config.cssNames,
         narration: config.narration,
         state,
       });
@@ -99,11 +100,12 @@ export default class ScrollyTeller {
   }
 
   _updateTitleAndCaption({
-    graphContainer, index, narration, state
+    graphContainer, index, names, narration, state
   }) {
     updateTitle({
       graphContainer,
       index,
+      names,
       narration,
       state,
     });
@@ -111,6 +113,7 @@ export default class ScrollyTeller {
     updateCaption({
       graphContainer,
       index,
+      names,
       narration,
       state,
     });
@@ -138,11 +141,19 @@ export default class ScrollyTeller {
     const graphContainer = select(`#${graphContainerId}`).classed('active', true);
     const graph = select(`#${graphId}`);
 
-    this._updateTitleAndCaption({ graphContainer, index, narration, state });
+    this._updateTitleAndCaption({
+      graphContainer,
+      index,
+      names,
+      narration,
+      state,
+    });
 
     updateGraphStyles({
       graph,
       graphContainer,
+      names,
+      sectionIdentifier,
       state,
     });
 
@@ -202,6 +213,8 @@ export default class ScrollyTeller {
     updateGraphStyles({
       graph: select(`#${graphId}`),
       graphContainer: select(`#${graphContainerId}`),
+      names,
+      sectionIdentifier,
       state,
     });
 

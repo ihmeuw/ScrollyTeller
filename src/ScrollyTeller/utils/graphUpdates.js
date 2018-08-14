@@ -4,13 +4,15 @@ import 'd3-selection-multi';
 export function updateCaption({
   graphContainer,
   index,
+  names,
   narration,
   state,
 }) {
-  const captionContainer = graphContainer.select('.graph_caption');
+  const captionClass = names.graphCaptionClass();
+  const captionContainer = graphContainer.select(`.${captionClass}`);
   const graphCaption = get(narration, [index, 'graphCaption'], '');
 
-  let caption = graphContainer.select('div.graph_caption text');
+  let caption = graphContainer.select(`.${captionClass} text`);
   if (graphCaption === '') {
     captionContainer.remove();
     return;
@@ -18,23 +20,24 @@ export function updateCaption({
 
   if (caption.empty()) {
     caption = graphContainer.append('div')
-      .classed('graph_caption', true)
+      .classed(captionClass, true)
       .append('text');
   }
 
-  caption.html(graphCaption);
-
   // apply styles or other attributes
-  caption.styles(state.captionStyle);
+  caption.styles(state.captionStyle)
+    .html(graphCaption);
 }
 
 export function updateTitle({
   graphContainer,
   index,
+  names,
   narration,
   state,
 }) {
-  const titleContainer = graphContainer.select('.graph_title');
+  const titleClass = names.graphTitleClass();
+  const titleContainer = graphContainer.select(`.${titleClass}`);
   const graphTitle = get(narration, [index, 'graphTitle'], '');
 
   if (graphTitle === '') {
@@ -42,65 +45,64 @@ export function updateTitle({
     return;
   }
 
-  let title = graphContainer.select('div.graph_title text');
+  let title = graphContainer.select(`.${titleClass} text`);
   if (title.empty()) {
     title = graphContainer.insert('div', ':first-child')
-      .classed('graph_title', true)
+      .classed(titleClass, true)
       .append('text');
   }
 
-  title.html(graphTitle);
-
   // apply styles or other attributes
-  title.styles(state.titleStyle);
+  title.styles(state.titleStyle)
+    .html(graphTitle);
+
 }
 
 export function updateGraphStyles({
   graph,
   graphContainer,
+  names,
+  sectionIdentifier,
   state,
 }) {
-  // graph style
-  graph.styles(state.graphStyle);
+  // graph style and classes
+  graph.styles(state.graphStyle)
+    .attr(
+      'class',
+      [names.graphClassNames(sectionIdentifier),
+        ...(state.graphClass ? state.graphClass.split(' ') : ''),
+      ].join(' '),
+    );
 
-  // graph class name
-  if (state.graphClass) {
-    const [className, trueFalse] = state.graphClass.split('|');
-    graph.classed(className, trueFalse !== 'remove');
-  }
+  // graph container style and classses
+  graphContainer.styles(state.containerStyle)
+    .attr(
+      'class',
+      [names.graphContainerClassNames(sectionIdentifier),
+        'active',
+        ...(state.containerClass ? state.containerClass.split(' ') : ''),
+      ].join(' '),
+    );
 
-  // graph container style
-  graphContainer.styles(state.containerStyle);
+  // caption styles and classes
+  graphContainer.select(`.${names.graphCaptionClass()}`)
+    .attr(
+      'class',
+      [names.graphCaptionClass(),
+        ...(state.captionClass ? state.captionClass.split(' ') : ''),
+      ].join(' '),
+    )
+    .select('text')
+    .styles(state.captionStyle);
 
-  // graph container class
-  if (state.containerClass) {
-    const [className, trueFalse] = state.containerClass.split('|');
-    graphContainer.classed(className, trueFalse !== 'remove');
-  }
-
-  // apply title styles
-  if (state.titleStyle) {
-    const title = graphContainer.select('div.graph_title text');
-    title.styles(state.titleStyle);
-  }
-
-  // apply title classes
-  if (state.titleClass) {
-    const [className, trueFalse] = state.titleClass.split('|');
-    graphContainer.select('div.graph_title text')
-      .classed(className, trueFalse !== 'remove');
-  }
-
-  // apply caption styles
-  if (state.captionStyle) {
-    const caption = graphContainer.select('div.graph_caption text');
-    caption.styles(state.captionStyle);
-  }
-
-  // apply caption classes
-  if (state.captionClass) {
-    const [className, trueFalse] = state.captionClass.split('|');
-    graphContainer.select('div.graph_caption text')
-      .classed(className, trueFalse !== 'remove');
-  }
+  // title styles and classes
+  graphContainer.select(`.${names.graphTitleClass()}`)
+    .attr(
+      'class',
+      [names.graphTitleClass(),
+        ...(state.titleClass ? state.titleClass.split(' ') : ''),
+      ].join(' '),
+    )
+    .select('text')
+    .styles(state.titleStyle);
 }
