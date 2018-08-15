@@ -36405,7 +36405,7 @@ class ScrollyTeller {
    * @param {object} config object containing configuration
    */
   constructor(config) {
-    Object(__WEBPACK_IMPORTED_MODULE_3__utils__["k" /* validateScrollyTellerConfig */])(config);
+    __WEBPACK_IMPORTED_MODULE_3__utils__["k" /* validateScrollyTellerConfig */](config);
 
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
@@ -36460,11 +36460,11 @@ class ScrollyTeller {
     } = sectionConfig;
 
     const trigger = (convertTriggerToObject)
-      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */])(sectionConfig, narration[index].trigger, { index, progress })
+      ? __WEBPACK_IMPORTED_MODULE_3__utils__["f" /* getStateFromTrigger */](sectionConfig, narration[index].trigger, { index, progress })
       : narration[index].trigger || '';
 
     const state = (convertTriggerToObject)
-      ? Object(__WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */])(sectionConfig, index, progress)
+      ? __WEBPACK_IMPORTED_MODULE_3__utils__["e" /* getNarrationState */](sectionConfig, index, progress)
       : undefined;
 
     return { trigger, state };
@@ -36473,7 +36473,7 @@ class ScrollyTeller {
   _updateTitleAndCaption({
     graphContainer, index, names, narration, state
   }) {
-    Object(__WEBPACK_IMPORTED_MODULE_3__utils__["j" /* updateTitle */])({
+    __WEBPACK_IMPORTED_MODULE_3__utils__["j" /* updateTitle */]({
       graphContainer,
       index,
       names,
@@ -36481,7 +36481,7 @@ class ScrollyTeller {
       state,
     });
 
-    Object(__WEBPACK_IMPORTED_MODULE_3__utils__["h" /* updateCaption */])({
+    __WEBPACK_IMPORTED_MODULE_3__utils__["h" /* updateCaption */]({
       graphContainer,
       index,
       names,
@@ -36520,7 +36520,7 @@ class ScrollyTeller {
       state,
     });
 
-    Object(__WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */])({
+    __WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */]({
       graph,
       graphContainer,
       names,
@@ -36577,11 +36577,11 @@ class ScrollyTeller {
     /** recalculate scroll progress due to intersection observer bug in Chrome
      *  https://github.com/russellgoldenberg/scrollama/issues/64
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
-    const progress = Object(__WEBPACK_IMPORTED_MODULE_3__utils__["b" /* calcScrollProgress */])(element, TRIGGER_OFFSET);
+    const progress = __WEBPACK_IMPORTED_MODULE_3__utils__["b" /* calcScrollProgress */](element, TRIGGER_OFFSET);
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
-    Object(__WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */])({
+    __WEBPACK_IMPORTED_MODULE_3__utils__["i" /* updateGraphStyles */]({
       graph: Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`),
       graphContainer: Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphContainerId}`),
       names,
@@ -36675,8 +36675,8 @@ class ScrollyTeller {
    * @returns {Promise<void>} that is resolved when everything is built
    */
   async render() {
-    await Object(__WEBPACK_IMPORTED_MODULE_3__utils__["d" /* fetchNarration */])(this.sectionList);
-    await Object(__WEBPACK_IMPORTED_MODULE_3__utils__["c" /* fetchDataAndProcessResults */])(this.sectionList);
+    await __WEBPACK_IMPORTED_MODULE_3__utils__["d" /* fetchNarration */](this.sectionList);
+    await __WEBPACK_IMPORTED_MODULE_3__utils__["c" /* fetchDataAndProcessResults */](this.sectionList);
     /** then build the html we need along with the graph scroll objects for each section */
     this._buildSections();
     this._buildScrollamaContainers();
@@ -36685,7 +36685,7 @@ class ScrollyTeller {
 
     window.addEventListener('resize', () => {
       Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["forEach"])(this.sectionList, (config) => {
-        Object(__WEBPACK_IMPORTED_MODULE_3__utils__["g" /* resizeNarrationBlocks */])(config);
+        __WEBPACK_IMPORTED_MODULE_3__utils__["g" /* resizeNarrationBlocks */](config);
         config.scroller.resize();
       });
     });
