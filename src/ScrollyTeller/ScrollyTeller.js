@@ -263,7 +263,7 @@ export default class ScrollyTeller {
 
       sectionConfig.elementResizeDetector
         .listenTo(
-          select(`#${graphContainerId}`).node(),
+          select(`#${graphId}`).node(),
           (element) => {
             onResizeFunction({
               graphElement: element,
