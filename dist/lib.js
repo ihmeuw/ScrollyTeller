@@ -52993,10 +52993,10 @@ function updateCaption({
   const graphCaption = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(narration, [index, 'graphCaption'], '');
 
   let caption = graphContainer.select(`.${captionClass} text`);
-  if (graphCaption === '') {
-    captionContainer.remove();
-    return;
-  }
+  // if (graphCaption === '') {
+  //   captionContainer.remove();
+  //   return;
+  // }
 
   if (caption.empty()) {
     caption = graphContainer.append('div')
@@ -53020,10 +53020,10 @@ function updateTitle({
   const titleContainer = graphContainer.select(`.${titleClass}`);
   const graphTitle = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(narration, [index, 'graphTitle'], '');
 
-  if (graphTitle === '') {
-    titleContainer.remove();
-    return;
-  }
+  // if (graphTitle === '') {
+  //   titleContainer.remove();
+  //   return;
+  // }
 
   let title = graphContainer.select(`.${titleClass} text`);
   if (title.empty()) {
