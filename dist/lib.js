@@ -36646,7 +36646,7 @@ class ScrollyTeller {
 
       sectionConfig.elementResizeDetector
         .listenTo(
-          Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphContainerId}`).node(),
+          Object(__WEBPACK_IMPORTED_MODULE_2_d3__["a" /* select */])(`#${graphId}`).node(),
           (element) => {
             onResizeFunction({
               graphElement: element,
@@ -52989,14 +52989,9 @@ function updateCaption({
   state,
 }) {
   const captionClass = names.graphCaptionClass();
-  const captionContainer = graphContainer.select(`.${captionClass}`);
   const graphCaption = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(narration, [index, 'graphCaption'], '');
 
   let caption = graphContainer.select(`.${captionClass} text`);
-  // if (graphCaption === '') {
-  //   captionContainer.remove();
-  //   return;
-  // }
 
   if (caption.empty()) {
     caption = graphContainer.append('div')
@@ -53017,13 +53012,7 @@ function updateTitle({
   state,
 }) {
   const titleClass = names.graphTitleClass();
-  const titleContainer = graphContainer.select(`.${titleClass}`);
   const graphTitle = Object(__WEBPACK_IMPORTED_MODULE_0_lodash__["get"])(narration, [index, 'graphTitle'], '');
-
-  // if (graphTitle === '') {
-  //   titleContainer.remove();
-  //   return;
-  // }
 
   let title = graphContainer.select(`.${titleClass} text`);
   if (title.empty()) {
