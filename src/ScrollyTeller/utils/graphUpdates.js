@@ -9,14 +9,9 @@ export function updateCaption({
   state,
 }) {
   const captionClass = names.graphCaptionClass();
-  const captionContainer = graphContainer.select(`.${captionClass}`);
   const graphCaption = get(narration, [index, 'graphCaption'], '');
 
   let caption = graphContainer.select(`.${captionClass} text`);
-  if (graphCaption === '') {
-    captionContainer.remove();
-    return;
-  }
 
   if (caption.empty()) {
     caption = graphContainer.append('div')
@@ -37,13 +32,7 @@ export function updateTitle({
   state,
 }) {
   const titleClass = names.graphTitleClass();
-  const titleContainer = graphContainer.select(`.${titleClass}`);
   const graphTitle = get(narration, [index, 'graphTitle'], '');
-
-  if (graphTitle === '') {
-    titleContainer.remove();
-    return;
-  }
 
   let title = graphContainer.select(`.${titleClass} text`);
   if (title.empty()) {
