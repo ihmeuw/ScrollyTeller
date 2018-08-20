@@ -171,6 +171,7 @@ export default {
    * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -182,13 +183,6 @@ export default {
    * @returns {void}
    */
   onScrollFunction: function onScroll({ progress, trigger, state, graphId }) {
-    if (state.style) {
-      const myGraph = select(`#${graphId}`);
-
-      forIn(state.style, (value, key) => {
-        myGraph.style(key, value);
-      });
-    }
   },
 
   /**
@@ -201,6 +195,7 @@ export default {
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
    * @param {string} [params.direction] - the direction the event happened in (up or down)
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -219,6 +214,8 @@ export default {
    * @param {HTMLElement} [params.graphElement] - the narration block DOM element that is currently active
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
+   * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
    * @param {object} [params.sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
    * @param {object} [params.sectionConfig.data] - the data that was passed in or resolved by the promise and processed by reshapeDataFunction()

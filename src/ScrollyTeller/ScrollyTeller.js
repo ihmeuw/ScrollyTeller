@@ -7,16 +7,7 @@ import {
 } from 'lodash';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3';
-import {
-  validateScrollyTellerConfig,
-  getNarrationState,
-  getStateFromTrigger,
-  fetchNarration,
-  fetchDataAndProcessResults,
-  buildSectionWithNarration,
-  resizeNarrationBlocks,
-  calcScrollProgress,
-} from './utils';
+import * as utils from './utils';
 import scrollIntoView from 'scroll-into-view';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
@@ -31,7 +22,7 @@ export default class ScrollyTeller {
    * @param {object} config object containing configuration
    */
   constructor(config) {
-    validateScrollyTellerConfig(config);
+    utils.validateScrollyTellerConfig(config);
 
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
@@ -64,7 +55,55 @@ export default class ScrollyTeller {
 
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
+      const { state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
+
+      const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
+      this._updateTitleAndCaption({
+        graphContainer: select(`#${containerId}`),
+        index: 0,
+        names: config.cssNames,
+        narration: config.narration,
+        state,
+      });
+
       config.graph = config.buildGraphFunction(this._graphIdForSection(config), config);
+    });
+  }
+
+  _triggerState({ sectionConfig, index, progress }) {
+    const {
+      narration,
+      convertTriggerToObject = false,
+    } = sectionConfig;
+
+    const trigger = (convertTriggerToObject)
+      ? utils.getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
+      : narration[index].trigger || '';
+
+    const state = (convertTriggerToObject)
+      ? utils.getNarrationState(sectionConfig, index, progress)
+      : undefined;
+
+    return { trigger, state };
+  }
+
+  _updateTitleAndCaption({
+    graphContainer, index, names, narration, state
+  }) {
+    utils.updateTitle({
+      graphContainer,
+      index,
+      names,
+      narration,
+      state,
+    });
+
+    utils.updateCaption({
+      graphContainer,
+      index,
+      names,
+      narration,
+      state,
     });
   }
 
@@ -77,23 +116,34 @@ export default class ScrollyTeller {
       cssNames: names,
       sectionIdentifier,
       onActivateNarrationFunction = noop,
-      convertTriggerToObject = false,
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
 
     const progress = 0;
 
-    const trigger = (convertTriggerToObject)
-      ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
-      : narration[index].trigger || '';
-
-    const state = (convertTriggerToObject)
-      ? getNarrationState(sectionConfig, index, progress)
-      : undefined;
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
     select(element).classed('active', true);
-    select(`#${graphId}`).classed('active', true);
+    const graphContainer = select(`#${graphContainerId}`).classed('active', true);
+    const graph = select(`#${graphId}`);
+
+    this._updateTitleAndCaption({
+      graphContainer,
+      index,
+      names,
+      narration,
+      state,
+    });
+
+    utils.updateGraphStyles({
+      graph,
+      graphContainer,
+      names,
+      sectionIdentifier,
+      state,
+    });
 
     onActivateNarrationFunction({
       index,
@@ -103,6 +153,7 @@ export default class ScrollyTeller {
       state,
       direction,
       graphId,
+      graphContainerId,
       sectionConfig,
     });
   }
@@ -117,14 +168,13 @@ export default class ScrollyTeller {
       sectionIdentifier,
     } = sectionConfig;
 
-    const graphId = names.graphId(sectionIdentifier);
-
     select(element).classed('active', false);
 
     if ((index === narration.length - 1 && direction === 'down')
       || (index === 0 && direction === 'up')
     ) {
-      select(`#${graphId}`).classed('active', false);
+      const graphContainerId = `#${names.graphContainerId(sectionIdentifier)}`;
+      select(graphContainerId).classed('active', false);
     }
   }
 
@@ -133,27 +183,28 @@ export default class ScrollyTeller {
       return;
     }
     const {
-      narration,
       cssNames: names,
       sectionIdentifier,
       onScrollFunction = noop,
-      convertTriggerToObject = false,
     } = sectionConfig;
 
     const graphId = names.graphId(sectionIdentifier);
+    const graphContainerId = names.graphContainerId(sectionIdentifier);
 
     /** recalculate scroll progress due to intersection observer bug in Chrome
      *  https://github.com/russellgoldenberg/scrollama/issues/64
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
-    const progress = calcScrollProgress(element, TRIGGER_OFFSET);
+    const progress = utils.calcScrollProgress(element, TRIGGER_OFFSET);
 
-    const trigger = (convertTriggerToObject)
-      ? getStateFromTrigger(sectionConfig, narration[index].trigger, { index, progress })
-      : narration[index].trigger || '';
+    const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
-    const state = (convertTriggerToObject)
-      ? getNarrationState(sectionConfig, index, progress)
-      : undefined;
+    utils.updateGraphStyles({
+      graph: select(`#${graphId}`),
+      graphContainer: select(`#${graphContainerId}`),
+      names,
+      sectionIdentifier,
+      state,
+    });
 
     onScrollFunction({
       index,
@@ -162,6 +213,7 @@ export default class ScrollyTeller {
       trigger,
       state,
       graphId,
+      graphContainerId,
       sectionConfig,
     });
   }
@@ -178,13 +230,13 @@ export default class ScrollyTeller {
       sectionConfig.scroller = scrollama();
 
       const sectionId = names.sectionId(sectionIdentifier);
-      const graphId = names.graphId(sectionIdentifier);
+      const graphContainerId = names.graphContainerId(sectionIdentifier);
 
       sectionConfig.scroller
         .setup({
           step: `#${sectionId} .${css.narrationBlock}`,
           container: `#${sectionId}`,
-          graphic: `#${graphId}`,
+          graphic: `#${graphContainerId}`,
           offset: TRIGGER_OFFSET,
           progress: true,
         })
@@ -203,6 +255,7 @@ export default class ScrollyTeller {
       } = sectionConfig;
 
       const graphId = names.graphId(sectionIdentifier);
+      const graphContainerId = names.graphContainerId(sectionIdentifier);
 
       sectionConfig.elementResizeDetector = elementResizeDetectorMaker({
         strategy: 'scroll',
@@ -212,7 +265,12 @@ export default class ScrollyTeller {
         .listenTo(
           select(`#${graphId}`).node(),
           (element) => {
-            onResizeFunction({ graphElement: element, graphId, sectionConfig });
+            onResizeFunction({
+              graphElement: element,
+              graphContainerId,
+              graphId,
+              sectionConfig,
+            });
           },
         );
     });
@@ -223,7 +281,7 @@ export default class ScrollyTeller {
       .append('div')
       .attr('class', this.cssNames.scrollContainer());
 
-    forEach(this.sectionList, buildSectionWithNarration);
+    forEach(this.sectionList, utils.buildSectionWithNarration);
   }
 
   /** 'PUBLIC' METHODS * */
@@ -234,8 +292,8 @@ export default class ScrollyTeller {
    * @returns {Promise<void>} that is resolved when everything is built
    */
   async render() {
-    await fetchNarration(this.sectionList);
-    await fetchDataAndProcessResults(this.sectionList);
+    await utils.fetchNarration(this.sectionList);
+    await utils.fetchDataAndProcessResults(this.sectionList);
     /** then build the html we need along with the graph scroll objects for each section */
     this._buildSections();
     this._buildScrollamaContainers();
@@ -244,7 +302,7 @@ export default class ScrollyTeller {
 
     window.addEventListener('resize', () => {
       forEach(this.sectionList, (config) => {
-        resizeNarrationBlocks(config);
+        utils.resizeNarrationBlocks(config);
         config.scroller.resize();
       });
     });

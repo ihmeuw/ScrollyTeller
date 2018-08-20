@@ -1,6 +1,11 @@
 /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
-.graph_default.graph_section_myExampleSection1,
-.graph_default.graph_section_myExampleSection1.active
-{
-  background-color: lightgray;
+.scroll {
+  .section {
+    .graph_container {
+      .graph_default.graph_myExampleSection1,
+      .graph_default.graph_myExampleSection1.active {
+        background-color: lightgray;
+      }
+    }
+  }
 }

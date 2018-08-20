@@ -45,13 +45,73 @@ export default class CSSNames {
   /**
    * Returns the graph id associated with this section based on the sectionIdentifier
    * @param {string} sectionIdentifier - id of the section
-   * @returns {string} representing the class name of the div containing the section
+   * @returns {string} representing the id the graph div for this section
    * */
   graphId(sectionIdentifier) {
     return `${this.css.graphContainer}_${sectionIdentifier}`;
   }
 
+  /**
+   * Returns the classname of the div for this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} representing the classname of the graph div for this section
+   * */
   graphClass(sectionIdentifier) {
     return `${this.css.graphContainer}_${sectionIdentifier}`;
+  }
+
+  /**
+   * Returns a space separated string of all of the class names for the graph in this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} a space separated string of all of the class names for the graph in
+   *                    this section
+   * */
+  graphClassNames(sectionIdentifier) {
+    return `${this.css.graphContainerDefault} ${this.graphClass(sectionIdentifier)}`;
+  }
+
+  /**
+   * Returns the id of the graph container associated with this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} representing the id of the div containing the graph
+   * */
+  graphContainerId(sectionIdentifier) {
+    return `${this.graphId(sectionIdentifier)}_container`;
+  }
+
+  /**
+   * Returns the classname of all graph containers
+   * @returns {string} representing the class name of the div containing the section
+   * */
+  graphContainerClass() {
+    return `${this.css.graphContainer}_container`;
+  }
+
+  /**
+   * Returns a space separated string of all of the class names for the graph container
+   * in this section
+   * @param {string} sectionIdentifier - id of the section
+   * @returns {string} a space separated string of all of the class names for the
+   *                    graph container in this section
+   * */
+  graphContainerClassNames(sectionIdentifier) {
+    return this.graphContainerClass(sectionIdentifier);
+  }
+
+
+  /**
+   * Get the title class
+   * @return {CSSNames.graphTitleClass} - the title class name from the scrollyteller configuration
+   */
+  graphTitleClass() {
+    return this.css.graphTitleClass;
+  }
+
+  /**
+   * Get the caption class
+   * @return {CSSNames.graphCaptionClass} - the caption class name from the scrollyteller configuration
+   */
+  graphCaptionClass() {
+    return this.css.graphCaptionClass;
   }
 }

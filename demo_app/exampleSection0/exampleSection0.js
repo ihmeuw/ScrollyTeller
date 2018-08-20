@@ -4,39 +4,27 @@ import { forIn } from 'lodash';
 import './data/narrationExampleSection0.csv';
 
 const snippets = {
-  onActivate:
+  scrollyTellerIsAwesome:
     `{ // SECTION CONFIGURATION OBJECT
     // ... other properties
-    onActivateNarrationFunction: function ({ trigger, graphId }) {
-        const [first, second] = trigger.split(':');
-
-        switch (first) {
-          case 'opacity':
-            select(\`#\${graphId}\`).style('opacity', +second);
-            break;
-          case 'backgroundColor':
-            select(\`#\${graphId}\`).style('background', second);
-            break;
-          default:
-        }
-      },
+    onActivateNarrationFunction: function ({ trigger, state, graphId }) {
+      console.log('The text based trigger is: ', trigger);
+      
+      if (state.percentOfScrollyTellerThatIsAwesome < 100) {
+        console.log('Wrong! 100% of ScrollyTeller is awesome!!!');
+      }
+    },
   } // SECTION CONFIGURATION OBJECT`,
   onScroll:
     `{ // SECTION CONFIGURATION OBJECT
       // ... other properties
-      onScrollFunction: function ({ progress, trigger, graphId }) {
-        /** use trigger specified in the narration csv file to trigger actions */
-        switch (trigger) {
-          case 'graph:fadein':
-            /** set graph opacity based on progress to fade graph in */
-            select(\`#\${graphId}\`).style('opacity', progress);
-            break;
-          case 'graph:fadeout':
-            /** set graph opacity based on progress to fade graph out */
-            select(\`#\${graphId}\`).style('opacity', 1 - progress);
-            break;
-          default:
-        },
+      onScrollFunction: function ({ progress, trigger, state, graphId }) {
+        console.log('My progress (0-1) is: ', progress);
+        
+        if (state.xStart && state.xEnd) {
+          const currentX = (state.xEnd - state.xStart) * progress;
+          // ... render the graph up to the current x value
+        }
     } // SECTION CONFIGURATION OBJECT`,
 };
 
@@ -116,6 +104,7 @@ export default {
    * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -126,14 +115,7 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction: function onScroll({ state, graphId }) {
-    if (state.style) {
-      const myGraph = select(`#${graphId}`);
-
-      forIn(state.style, (value, key) => {
-        myGraph.style(key, value);
-      });
-    }
+  onScrollFunction: function onScroll({ state, graphId, graphContainerId }) {
   },
 
   /**
@@ -146,6 +128,7 @@ export default {
    * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
    * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
    * @param {string} [params.direction] - the direction the event happened in (up or down)
+   * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
    * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
    * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -157,14 +140,6 @@ export default {
    * @returns {void}
    */
   onActivateNarrationFunction: function onActivateNarration({ state, graphId }) {
-    if (state.style) {
-      const myGraph = select(`#${graphId}`);
-
-      forIn(state.style, (value, key) => {
-        myGraph.style(key, value);
-      });
-    }
-
     if (state.code) {
       select(`#${graphId}`)
         .html(`<pre class="prettyprint lang-js">${snippets[state.code]}</pre>`);

@@ -16,6 +16,7 @@
 | **Narration Block** | A group of text and links, contained in a ```<div>```. Actions can be triggered when each narration block comes into view. |
 | **Narration Block Contents** | Each narration block contains: ```<h2>``` text (title), ```<p>``` text (subtitle), and an ```<a href=...>``` (link) with some text.  The height of each narration block can also be controlled to change the pacing of the story. |
 | **Section** | A group of narration blocks with a corresponding **graph** element. A story can be one or multiple sections. |
+| **Graph Container** | A ```<div>``` element to hold a title, caption, and a graph, chart, or any other graphic to be triggered. |
 | **Graph** | A ```<div>``` element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
 | **Scrollama** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. |
 
@@ -62,8 +63,8 @@ myScrollyTellerInstance.render();
 | ```data``` | **Optional**: user defined data.  Data can be either of the following 4 options: 1) a URL string with the absolute file path to a file of type  'csv', 'tsv', 'json', 'html', 'txt', 'xml', 2) an array of data objects, 3) a promise to return an array of data objects, or  4) undefined |
 | ```reshapeDataFunction``` | **Optional**: Called AFTER data is fetched as ```reshapeDataFunction(data)```  This method can be used to filter or reshape data after the datahas been fetched or parsed from a file. It should return the reshaped data, which will overwrite the ```data``` proprerty for this section. |
 | ```buildGraphFunction``` | **Optional**: called as ```buildGraphFunction(graphId, sectionConfig)``` AFTER the data is fetched and reshaped by ```reshapeDataFunction```.  This method should build an instance of the graph and return that instance, which will be stored as a property on this section configuration object within ScrollyTeller.  The ```sectionConfig``` object will be passed as an arguments to the onScrollFunction and onActivateNarration functions for later access to the ```data``` and ```graph``` properties. |
-| ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
-| ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
+| ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
+| ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
 | ```convertTriggerToObject``` | **Optional**: Option to covert trigger string for narration steps to an object and create sate object, default is false.  |
 | ```triggerListSeparator``` | **Optional**: Character used to split trigger string into multiple triggers, default is `;`.  |
@@ -88,15 +89,15 @@ const myExampleSection0 = {
       },
 
     onScrollFunction:
-      function onScroll({ index, progress, element, trigger, graphId, sectionConfig }) {
+      function onScroll({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig }) {
       },
 
     onActivateNarrationFunction:
-      function onActivateNarration({ index, progress, element, trigger, direction, graphId, sectionConfig }) {
+      function onActivateNarration({ index, progress, element, trigger, direction, graphContainerId, graphId, sectionConfig }) {
       },
 
     onResizeFunction:
-      function onResize({ graphElement, graphId, sectionConfig }) {
+      function onResize({ graphElement, graphId, graphContainerId, sectionConfig }) {
         sectionConfig.graph.resize(graphElement.offsetWidth, graphElement.offsetHeight);
       },
   };
@@ -127,10 +128,10 @@ myScrollyTellerInstance.render();
 ### Narration file/object format
 ##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
-| narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | show_chart
-| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | show_data_1
+| narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |  :---: |
+| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | show_chart | This is a Graph Title | This is a graph caption
+| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | show_data_1 | This is a Graph Title | This is a graph caption
 
  Here's a description of what each column header controls:
 
@@ -144,6 +145,8 @@ myScrollyTellerInstance.render();
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
 | **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
+| **graphTitle** | **Optional**  User customizable graph title that is placed in the ```<div class=graph_container>``` container.  |
+| **graphCaption** | **Optional**  User customizable graph caption that is placed in the ```<div class=graph_container>``` container.  |
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Auto-scrolling to a specific section or narration block
@@ -225,6 +228,7 @@ function buildGraphFunction(graphId, sectionConfig) {
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
  * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
  * @param {string} [params.direction] - the direction the event happened in (up or down)
+ * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
  * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -270,6 +274,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
  * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
+ * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
  * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -280,8 +285,8 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
-function onScrollFunction({ index, progress, element, trigger, graphId, sectionConfig }) {
-  const myGraphDiv = select(`#${graphId}`);
+function onScrollFunction({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig }) {
+  const myGraphDiv = select(`#${graphContainerId}`);
   /** use trigger specified in the narration csv file to trigger actions */
   switch (trigger) {
     case 'unhide':
@@ -303,7 +308,7 @@ function onScrollFunction({ index, progress, element, trigger, graphId, sectionC
 ```
 
 #### ```onResizeFunction```
-* Called when the graph container is resized.
+* Called when the graph container (graph_container div, not the graph itself) is resized.
 ```javascript
 /**
  * Called when the graph container is resized
@@ -313,6 +318,7 @@ function onScrollFunction({ index, progress, element, trigger, graphId, sectionC
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string} [params.trigger] - the trigger attribute for narration block that is currently active
  * @param {string} [params.direction] - the direction the event happened in (up or down)
+ * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
  * @param {string} [params.sectionConfig.sectionIdentifier] - the identifier for this section
@@ -323,7 +329,7 @@ function onScrollFunction({ index, progress, element, trigger, graphId, sectionC
  * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
-function onResizeFunction({  graphElement, graphId, sectionConfig }) {
+function onResizeFunction({  graphElement, graphContainerId, graphId, sectionConfig }) {
   sectionConfig.graph.resize(
     {
       width: graphElement.offsetWidth * 0.95,
