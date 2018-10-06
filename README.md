@@ -173,7 +173,7 @@ async scrollTo(sectionIdentifier, narrationId, options) { ... }
  * @returns {object|array} - an object or array of data of user-defined shape
  */
 function reshapeDataFunction(results) {
-  /** using d3promise to convert d3.csv calls to promises */
+  /** using d3 to convert d3.csv calls to promises */
   const parseTime = timeParse('%y');
   /** parse results and convert dates to years, close to number */
   const dataProcessed = results.map((datum) => {
