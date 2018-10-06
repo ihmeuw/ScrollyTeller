@@ -1,4 +1,4 @@
-import { set, reduce, split, slice, replace, isString } from 'lodash';
+import { set, reduce, split, slice, replace, isString } from 'lodash-es';
 
 function replaceMap(string, replacements) {
   if (!isString(string)) {

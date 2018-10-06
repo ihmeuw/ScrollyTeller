@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 import 'd3-selection-multi';
 
 export function updateCaption({
