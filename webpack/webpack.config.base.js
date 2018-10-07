@@ -39,8 +39,9 @@ export default new Config().merge({
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { sourceMap },
+            options: { sourceMap, importLoaders: 1 },
           },
+          'postcss-loader'
         ],
       },
       {
@@ -49,12 +50,13 @@ export default new Config().merge({
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { sourceMap },
+            options: { sourceMap, importLoaders: 1 },
           },
           {
             loader: 'sass-loader',
             options: { sourceMap },
           },
+          'postcss-loader',
         ],
       },
       {
@@ -63,7 +65,7 @@ export default new Config().merge({
           MiniCssExtractPlugin.loader,
           {
             loader: 'css-loader',
-            options: { sourceMap },
+            options: { sourceMap, importLoaders: 1 },
           },
           {
             loader: 'less-loader',
@@ -72,6 +74,7 @@ export default new Config().merge({
               sourceMap,
             },
           },
+          'postcss-loader',
         ],
       },
       {
