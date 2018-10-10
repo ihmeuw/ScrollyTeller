@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Config, { environment } from 'webpack-config';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const baseDir = environment.valueOf('dir');
 const env = environment.valueOf('env');
@@ -19,7 +20,8 @@ export default new Config().merge({
     }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env),
-    })
+    }),
+    // new BundleAnalyzerPlugin(), // un-comment to check bundle stats
   ],
   module: {
     rules: [
@@ -52,11 +54,11 @@ export default new Config().merge({
             loader: 'css-loader',
             options: { sourceMap, importLoaders: 1 },
           },
+          'postcss-loader',
           {
             loader: 'sass-loader',
             options: { sourceMap },
           },
-          'postcss-loader',
         ],
       },
       {
@@ -67,6 +69,7 @@ export default new Config().merge({
             loader: 'css-loader',
             options: { sourceMap, importLoaders: 1 },
           },
+          'postcss-loader',
           {
             loader: 'less-loader',
             options: {
@@ -74,7 +77,6 @@ export default new Config().merge({
               sourceMap,
             },
           },
-          'postcss-loader',
         ],
       },
       {
