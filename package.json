@@ -58,8 +58,8 @@
     "postcss-loader": "^3.0.0",
     "resolve-url-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
-    "style-loader": "^0.23.1",
     "webpack": "^4.20.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.2",
     "webpack-config": "^7.5.0",
     "webpack-notifier": "^1.7.0"
