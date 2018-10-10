@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import {
   get,
   map,
@@ -7,7 +8,13 @@ import {
   isString,
 } from 'lodash-es';
 import { getFileExtensionFromURLString } from './configValidator';
-import { csv, json, tsv, txt, xml, html } from 'd3-fetch';
+import {
+  csv,
+  json,
+  tsv,
+  xml,
+  html,
+} from 'd3-fetch';
 
 function convertURLToPromise(config, propertyName) {
   const urlPromiseOrArray = get(config, propertyName);
@@ -15,7 +22,7 @@ function convertURLToPromise(config, propertyName) {
     /** which function? csv, html, json? */
     const fileExtension = getFileExtensionFromURLString(urlPromiseOrArray);
     const promiseFunction = get({
-      csv, json, tsv, txt, xml, html,
+      csv, json, tsv, xml, html,
     }, fileExtension);
     /** if we found a function, return, otherwise throw exception */
     if (isFunction(promiseFunction)) {
