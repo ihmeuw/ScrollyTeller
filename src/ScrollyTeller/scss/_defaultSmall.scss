@@ -63,6 +63,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     .graph_container {
       @extend .flex_vertical_column_all_centered;
       grid-area: graphArea;
+      position: fixed; // ie doesn't support sticky, so used fixed
       position: sticky;
       padding: 0;
       margin: 0;
@@ -90,6 +91,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     .graph_container.active {
       top: 0;
       height: 50vh;
+      position: fixed; // ie doesn't support sticky, so used fixed
       position: sticky;
       padding: 0;
       margin: 0;
