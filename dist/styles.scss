@@ -5,31 +5,46 @@ html {
 
 /*  apply a natural box layout model to all elements  */
 * {
-  -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
 .flex_vertical_column_all_centered, .scroll .section .graph_container, .scroll .section .graph_container .graph_default {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   justify-items: center;
-  justify-content: center; }
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
 
 /*  ------------- SCROLL -------------  */
 .scroll {
   grid-area: scroll;
   /*  ------------- SECTION -------------  */ }
   .scroll .section {
+    display: -ms-grid;
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 50% 50%;
-    grid-template-areas: "graphArea" "narrationArea";
+        -ms-grid-columns: 1fr;
+        grid-template-columns: 1fr;
+        -ms-grid-rows: 50% 50%;
+        grid-template-rows: 50% 50%;
+        grid-template-areas: "graphArea" "narrationArea";
     /*  ------------- NARRATION LIST -------------  */
     /*  ------------- GRAPHS -------------  */ }
     .scroll .section .narration_list {
+      -ms-grid-row: 2;
+      -ms-grid-column: 1;
       grid-area: narrationArea;
-      justify-content: center;
+      -webkit-box-pack: center;
+          -ms-flex-pack: center;
+              justify-content: center;
       padding: 0;
       margin: 0;
       /*  ------------- NARRATION (block) -------------  */ }
@@ -48,13 +63,31 @@ html {
         margin: 10%;
         opacity: 1; }
     .scroll .section .graph_container {
+      -ms-grid-row: 1;
+      -ms-grid-column: 1;
       grid-area: graphArea;
+      position: fixed;
+      position: -webkit-sticky;
       position: sticky;
       padding: 0;
       margin: 0;
       top: 0;
       height: 50vh;
       opacity: 0; }
+    @media only screen and (min-width: 35em) {
+    .scroll .section .narration_list {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1; }
+    .scroll .section .graph_container {
+    -ms-grid-row: 1;
+    -ms-grid-column: 2; } }
+    @media only screen and (min-width: 64em) {
+    .scroll .section .narration_list {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1; }
+    .scroll .section .graph_container {
+    -ms-grid-row: 1;
+    -ms-grid-column: 2; } }
       .scroll .section .graph_container .graph_title {
         font-size: 1.5rem; }
       .scroll .section .graph_container .graph_caption {
@@ -67,6 +100,8 @@ html {
     .scroll .section .graph_container.active {
       top: 0;
       height: 50vh;
+      position: fixed;
+      position: -webkit-sticky;
       position: sticky;
       padding: 0;
       margin: 0; }
@@ -78,9 +113,11 @@ html {
   .scroll {
     /*  ------------- SECTION -------------  */ }
     .scroll .section {
+      display: -ms-grid;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas: "narrationArea graphArea";
+          -ms-grid-columns: 1fr 1fr;
+          grid-template-columns: 1fr 1fr;
+          grid-template-areas: "narrationArea graphArea";
       /*  ------------- NARRATION LIST -------------  */
       /*  ------------- GRAPHS -------------  */ }
       .scroll .section .narration_list {
@@ -105,8 +142,9 @@ html {
   .scroll {
     /*  ------------- SECTION -------------  */ }
     .scroll .section {
-      grid-template-columns: 1fr 2fr;
-      grid-template-areas: "narrationArea graphArea";
+          -ms-grid-columns: 1fr 2fr;
+          grid-template-columns: 1fr 2fr;
+          grid-template-areas: "narrationArea graphArea";
       /*  ------------- NARRATION LIST -------------  */
       /*  ------------- GRAPHS -------------  */ }
       .scroll .section .narration_list {
