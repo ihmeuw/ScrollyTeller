@@ -9,6 +9,7 @@ import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3-selection';
 import * as utils from './utils';
 import scrollIntoView from 'scroll-into-view';
+import 'intersection-observer';
 import scrollama from 'scrollama';
 import CSSNames from './utils/CSSNames';
 
