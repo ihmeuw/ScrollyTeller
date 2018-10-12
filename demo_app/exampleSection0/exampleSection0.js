@@ -1,6 +1,5 @@
 /* globals PR */
-import { select } from 'd3';
-import { forIn } from 'lodash';
+import { select } from 'd3-selection';
 import './data/narrationExampleSection0.csv';
 
 const snippets = {
@@ -36,7 +35,7 @@ export default {
 
   /** narration can be either of the following 3 options:
    *  1) a string representing an absolute file path to a file of the following types:
-   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3.promise
+   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3-fetch
    *  2) array of narration objects,
    *  3) a promise to return an array of narration objects in the appropriate form
    * See README for the specfication of the narration objects */
@@ -44,7 +43,7 @@ export default {
 
   /** data can be either of the following 4 options:
    *  1) a string representing an absolute file path to a file of the following types:
-   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3.promise
+   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3-fetch
    *  2) array of data objects
    *  3) a promise to return an array of narration objects in the appropriate form
    *  4) undefined
@@ -53,7 +52,7 @@ export default {
   /** data as array example */
   // data: [ {}, ],
   /** data as promise example */
-  // data: d3promise.csv('demo_app/exampleSection0/data/dataBySeries.csv'),
+  // data: d3.csv('demo_app/exampleSection0/data/dataBySeries.csv'),
 
   convertTriggerToObject: true,
 

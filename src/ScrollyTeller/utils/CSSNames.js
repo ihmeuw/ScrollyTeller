@@ -1,5 +1,5 @@
 import CSS from './CSSNameDefaults';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 export default class CSSNames {
   constructor(scrollyTellerCSS) {

@@ -5,9 +5,8 @@ import {
 } from 'webpack-config';
 
 export default new Config().extend('./webpack/webpack.config.base.js').merge({
-  devtool: 'cheap-module-source-map',
   entry: {
-    lib: ['babel-polyfill', './src/ScrollyTeller/ScrollyTeller.js'],
+    lib: ['./src/ScrollyTeller/ScrollyTeller.js'],
     css: ['./src/ScrollyTeller/cssImport.js'],
   },
   output: {

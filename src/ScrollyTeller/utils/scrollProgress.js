@@ -1,4 +1,4 @@
-import { clamp } from 'lodash';
+import { clamp } from 'lodash-es';
 
 export function calcScrollProgress(element, offset) {
   const {

@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import {
   get,
   map,
@@ -5,21 +6,27 @@ import {
   isFunction,
   toArray,
   isString,
-} from 'lodash';
+} from 'lodash-es';
+import { getFileExtensionFromURLString } from './configValidator';
 import {
-  getFileExtensionFromURLString,
-} from './configValidator';
-import * as d3promise from 'd3.promise';
+  csv,
+  json,
+  tsv,
+  xml,
+  html,
+} from 'd3-fetch';
 
 function convertURLToPromise(config, propertyName) {
   const urlPromiseOrArray = get(config, propertyName);
   if (isString(urlPromiseOrArray)) {
     /** which function? csv, html, json? */
     const fileExtension = getFileExtensionFromURLString(urlPromiseOrArray);
-    const d3PromiseFunction = get(d3promise, fileExtension);
+    const promiseFunction = get({
+      csv, json, tsv, xml, html,
+    }, fileExtension);
     /** if we found a function, return, otherwise throw exception */
-    if (isFunction(d3PromiseFunction)) {
-      return d3PromiseFunction(urlPromiseOrArray);
+    if (isFunction(promiseFunction)) {
+      return promiseFunction(urlPromiseOrArray);
     }
     throw Error('ScrollyTeller.convertURLToPromise(). URL must have a file extension of ' +
       '.csv, .tsv, .json, .html, .txt, or .xml');

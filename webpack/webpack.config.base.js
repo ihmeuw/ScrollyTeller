@@ -1,59 +1,83 @@
 import webpack from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Config, { environment } from 'webpack-config';
+// import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 const baseDir = environment.valueOf('dir');
 const env = environment.valueOf('env');
+const sourceMap = (env === 'development');
 
 export default new Config().merge({
+  mode: env === 'development' ? 'development' : 'production',
   bail: true,
   output: {
     path: `${baseDir}/dist`,
     filename: '[name].js',
   },
   plugins: [
-    new ExtractTextPlugin(env === 'build' ? 'styles.scss' : '[name].css'),
+    new MiniCssExtractPlugin({
+      filename: env === 'build' ? 'styles.scss' : '[name].css',
+    }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(env),
     }),
+    // new BundleAnalyzerPlugin(), // un-comment to check bundle stats
   ],
   module: {
     rules: [
       {
         test: /\.js$/,
-        include: [ `${baseDir}/demo_app` ],
+        include: [ `${baseDir}/demo_app`,  `${baseDir}/src` ],
         use: 'babel-loader'
       },
       {
         test: /\.jsx$/,
-        include: [ `${baseDir}/demo_app` ],
+        include: [ `${baseDir}/demo_app`, `${baseDir}/src` ],
         use: 'babel-loader'
       },
       {
         test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap, importLoaders: 1 },
+          },
+          'postcss-loader'
+        ],
       },
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          use: [{
-            loader: "css-loader"
-          }, {
-            loader: "sass-loader"
-          }],
-          // use style-loader in development
-          fallback: "style-loader"
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap, importLoaders: 1 },
+          },
+          'postcss-loader',
+          {
+            loader: 'sass-loader',
+            options: { sourceMap },
+          },
+        ],
       },
       {
         test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "less-loader"
-        })
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: { sourceMap, importLoaders: 1 },
+          },
+          'postcss-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              javascriptEnabled: true,
+              sourceMap,
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)/,
@@ -89,8 +113,5 @@ export default new Config().merge({
     extensions: ['.js', '.jsx', '.css', '.scss', '.less']
   },
   externals: {
-    jquery: '$',
-    vizhub: 'VizHub',
-    googleAnalytics: 'ga',
   },
 });

@@ -8,7 +8,7 @@ import MinifyPlugin from 'babel-minify-webpack-plugin';
 
 export default new Config().extend('./webpack/webpack.config.base.js').merge({
   entry: {
-    bundle: ['babel-polyfill', './demo_app/app.js'],
+    bundle: ['./demo_app/app.js'],
   },
   filename: __filename,
   plugins: [

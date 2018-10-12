@@ -2,8 +2,8 @@ import {
   get,
   isEmpty,
   isNil,
-} from 'lodash';
-import { select, selectAll } from 'd3';
+} from 'lodash-es';
+import { select, selectAll } from 'd3-selection';
 
 
 function vhToPx(vh) {

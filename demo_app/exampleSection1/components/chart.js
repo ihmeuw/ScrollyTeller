@@ -1,5 +1,5 @@
 import Emitter from 'events';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import * as d3 from 'd3';
 import './chart.scss';
 

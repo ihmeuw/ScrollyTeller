@@ -1,19 +1,18 @@
 {
   "presets": [
-    ["env", {
+    ["@babel/preset-env", {
       "targets": {
         "browsers": ["last 2 versions"]
       },
-      "useBuiltIns": true,
+      "useBuiltIns": "usage"
     }],
-    "react",
   ],
   "plugins": [
     "add-module-exports",
-    "transform-object-rest-spread",
-    "transform-async-to-generator",
+    "@babel/plugin-proposal-object-rest-spread",
+    "@babel/plugin-proposal-class-properties"
   ],
   "ignore": [
-    "node_modules/",
+    "node_modules/"
   ],
 }

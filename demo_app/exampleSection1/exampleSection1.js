@@ -2,16 +2,14 @@ import {
   get,
   isUndefined,
   groupBy,
-  findIndex,
   toNumber,
   toArray,
   isEmpty,
   reduce,
   entries,
-  forIn,
-} from 'lodash';
-import { select, timeParse } from 'd3';
-import * as d3promise from 'd3.promise';
+} from 'lodash-es';
+import { select } from 'd3-selection';
+import { timeParse } from 'd3-time-format';
 import SampleChart from './components/template.chart';
 import './data/narrationExampleSection1.csv';
 
@@ -90,11 +88,11 @@ export default {
   // narration: [ {}, ],
 
   /** narration as promise example */
-  // narration: d3promise.csv('demo_app/exampleSection1/data/narrationExampleSection1.csv'),
+  // narration: d3.csv('demo_app/exampleSection1/data/narrationExampleSection1.csv'),
 
   /** data can be either of the following 4 options:
    *  1) a string representing an absolute file path to a file of the following types:
-   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3.promise
+   *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3-fetch
    *  2) array of data objects
    *  3) a promise to return an array of narration objects in the appropriate form
    *  4) undefined

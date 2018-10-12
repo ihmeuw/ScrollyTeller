@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 
 import Chart from './chart';
 
