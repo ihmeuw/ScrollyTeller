@@ -66,6 +66,7 @@
     "babel-polyfill": "^6.26.0",
     "d3": "^5.7.0",
     "d3-selection-multi": "^1.0.1",
+    "d3-svg-legend": "^2.25.6",
     "element-resize-detector": "^1.1.14",
     "intersection-observer": "^0.5.0",
     "intersection-observer-polyfill": "^0.1.0",
