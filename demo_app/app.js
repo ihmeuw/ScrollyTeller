@@ -2,7 +2,7 @@
 import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
 import myExampleSection0 from './exampleSection0/exampleSection0';
-import myExampleSection1 from './exampleSection1/exampleSection1';
+import wealthAndHealthConfig from './healthAndWealthOfNations/scrollyTellerConfig';
 
 export default class App {
   constructor() {
@@ -15,16 +15,16 @@ export default class App {
        * the properties defined in the next section */
       sectionList: {
         /** [key = sectionIdentifier]: value = { section config object } */
-        [myExampleSection0.sectionIdentifier]: myExampleSection0,
-        [myExampleSection1.sectionIdentifier]: myExampleSection1,
+        // [myExampleSection0.sectionIdentifier]: myExampleSection0,
+        [wealthAndHealthConfig.sectionIdentifier]: wealthAndHealthConfig,
       },
     };
 
     /** create the ScrollyTeller object to validate the config */
-    const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
+    const storyInstance = new ScrollyTeller(myScrollyTellerConfig);
 
     /** parse data and build all HMTL */
-    myScrollyTellerInstance.render();
+    storyInstance.render();
   }
 }
 
