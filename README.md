@@ -25,7 +25,7 @@
 ##### A `ScrollyTeller` object is created with the constructor `ScrollyTeller`, which takes a configuration object as argument. To actually set up the story, including loading data, building the HTML, and setting up event listeners, call the asynchronous method `render`. The pseudo code below shows how a to create a `ScrollyTeller` instance from a configuration object and then render the HTML. The configuration object is described in much more detail below.
 ```javascript
 const myAppId = 'myAppId';
-const myScrollyTellerConfig = {
+const storyConfiguration = {
   /** The id of the <div> that will hold this and all other sections */
   appContainerId: myAppId,
   /** build a list of story sections, keyed by sectionIdentifier.
@@ -45,7 +45,7 @@ const myScrollyTellerConfig = {
 };
 
 /** create the ScrollyTeller object to validate the config */
-const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
+const myScrollyTellerInstance = new ScrollyTeller(storyConfiguration);
 
 /** parse data and build all HMTL */
 myScrollyTellerInstance.render();
@@ -71,7 +71,7 @@ myScrollyTellerInstance.render();
 | ```triggerKeyValueSeparator``` | **Optional**: Character used create key value paris when converting to an object or creating state, default is `:`.  |
 
 
-##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
+##### Here's an example of a section configuration that gets added to ```storyConfiguration```
 ```javascript
 const myAppId = 'myAppId';
 const myExampleSection0Name = 'myExampleSection0';
@@ -103,7 +103,7 @@ const myExampleSection0 = {
   };
 
 /** Now add the section configuration to the overall ScrollyTeller config */
-const myScrollyTellerConfig = {
+const storyConfiguration = {
   appContainerId: myAppId,
   sectionList: {
     [myExampleSection0Name]: myExampleSection0,
@@ -115,7 +115,7 @@ const myScrollyTellerConfig = {
 ##### Finally, pass the configuration to the ScrollyTeller constructor.  The configuration will be validated, and will throw errors if the configuration is not valid.
 ```javascript
 /** create the ScrollyTeller object to validate the config */
-const myScrollyTellerInstance = new ScrollyTeller(myScrollyTellerConfig);
+const myScrollyTellerInstance = new ScrollyTeller(storyConfiguration);
 
 /** parse data and build all HMTL (here we're throwing away the result of the Promise, and just calling the method) */
 myScrollyTellerInstance.render();

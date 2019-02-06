@@ -1,7 +1,7 @@
 
 export default {
   scrollyTellerConfig: `
-    const myScrollyTellerConfig = {
+    const storyConfiguration = {
       /** The id of the div that will contain all of the scrolling content */
       appContainerId: 'app',
       /** a list of story section configurations, keyed by unique sectionIdentifier. */
@@ -12,7 +12,7 @@ export default {
     };
 
     /** create the ScrollyTeller object to validate the config */
-    const storyInstance = new ScrollyTeller(myScrollyTellerConfig);
+    const storyInstance = new ScrollyTeller(storyConfiguration);
 
     /** parse data and build all HMTL */
     storyInstance.render();

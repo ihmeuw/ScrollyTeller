@@ -7,7 +7,7 @@ import wealthAndHealthConfig from './healthAndWealthOfNations/scrollyTellerConfi
 export default class App {
   constructor() {
     /** ScrollyTeller */
-    const myScrollyTellerConfig = {
+    const storyConfiguration = {
       /** The id of the <div> that will contain all of the page content */
       appContainerId: 'app',
       /** build a list of story sections, keyed by sectionIdentifier.
@@ -21,7 +21,7 @@ export default class App {
     };
 
     /** create the ScrollyTeller object to validate the config */
-    const storyInstance = new ScrollyTeller(myScrollyTellerConfig);
+    const storyInstance = new ScrollyTeller(storyConfiguration);
 
     /** parse data and build all HMTL */
     storyInstance.render();
