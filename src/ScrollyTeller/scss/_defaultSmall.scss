@@ -22,7 +22,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
   .section {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: auto auto;
     grid-template-areas:  "graphArea"
                           "narrationArea";
 
