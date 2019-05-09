@@ -83,7 +83,7 @@ export default class ScrollyTeller {
 
     const state = (convertTriggerToObject)
       ? utils.getNarrationState(sectionConfig, index, progress)
-      : undefined;
+      : {};
 
     return { trigger, state };
   }
