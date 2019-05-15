@@ -1,18 +1,9 @@
 import {
   get,
   isEmpty,
-  isNil,
 } from 'lodash-es';
 import { select, selectAll } from 'd3-selection';
-
-
-function vhToPx(vh) {
-  if (isNil(vh)) return undefined;
-
-  const { clientHeight: height } = document.documentElement;
-  const percent = parseFloat(vh) / 100;
-  return `${(height * percent)}px`;
-}
+import { vhToPx } from './vhToPxFunctions';
 
 function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   /** build the narration as an html string */
