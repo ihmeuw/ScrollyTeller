@@ -1,9 +1,13 @@
-/* global window */
+/* global document, window */
 import {
   get,
   forEach,
+  isNil,
+  isNumber,
+  isString,
   isUndefined,
   noop,
+  reduce,
 } from 'lodash-es';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3-selection';
@@ -255,6 +259,47 @@ export default class ScrollyTeller {
     });
   }
 
+  _buildKeyboardListeners() {
+    // prevent default scroll using spacebar and arrow keys
+    document.addEventListener('keydown', (event) => {
+      const key = event.key || event.keyCode;
+
+      if (event.target === document.body) {
+        switch (key) {
+          case ' ':
+          case 'ArrowDown':
+          case 'ArrowRight':
+          case 'ArrowUp':
+          case 'ArrowLeft':
+            event.preventDefault();
+            break;
+          default:
+        }
+      }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      const key = event.key || event.keyCode;
+
+      switch (key) {
+        case ' ':
+        case 'ArrowDown':
+        case 'ArrowRight':
+          this.scrollToNextNarration();
+          break;
+        case 'ArrowUp':
+        case 'ArrowLeft':
+          this.scrollToPreviousNarration();
+          break;
+        default:
+      }
+    });
+  }
+
   _buildResizeListeners() {
     forEach(this.sectionList, (sectionConfig) => {
       const {
@@ -332,6 +377,7 @@ export default class ScrollyTeller {
     this._buildScrollamaContainers();
     this._buildGraphs();
     this._buildResizeListeners();
+    this._buildKeyboardListeners();
 
     window.addEventListener('resize', () => {
       forEach(this.sectionList, (config) => {
