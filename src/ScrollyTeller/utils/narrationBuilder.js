@@ -31,7 +31,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .attr('id', narrationBlockId)
       .style('margin-top', vhToPx(spaceAbove))
       .style('margin-bottom', vhToPx(spaceBelow))
-      .style('min-height', vhToPx(minHeight));
+      .style('min-height', vhToPx(minHeight || (Number(spaceAbove) + Number(spaceBelow))));
 
     const blockContent = blockContainer.append('div')
       .datum(block)
