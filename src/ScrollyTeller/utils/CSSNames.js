@@ -23,7 +23,7 @@ export default class CSSNames {
     return this.css.narrationBlock;
   }
 
-  narrationConcentClass() {
+  narrationContentClass() {
     return this.css.narrationContent;
   }
 
