@@ -191,7 +191,7 @@ export default class ScrollyTeller {
     }
   }
 
-  _handleOnStepProgress(sectionConfig, { element, index }) {
+  _handleOnStepProgress(sectionConfig, { element, scrollProgressElement, index }) {
     if (this._triggersDisabled) {
       return;
     }
@@ -207,7 +207,7 @@ export default class ScrollyTeller {
     /** recalculate scroll progress due to intersection observer bug in Chrome
      *  https://github.com/russellgoldenberg/scrollama/issues/64
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
-    const progress = utils.calcScrollProgress(element, TRIGGER_OFFSET);
+    const progress = utils.calcScrollProgress(scrollProgressElement || element, TRIGGER_OFFSET);
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
@@ -427,8 +427,13 @@ export default class ScrollyTeller {
       `.${cssNames.narrationList()}`,
       `div.${cssNames.narrationClass()}:nth-of-type(${index + 1})`,
     ].join(' ');
+    const narrationBlockSelection = select(targetNarrationSelector); // d3 selection
+    const narrationBlockElement = narrationBlockSelection.node(); // node
 
-    const element = select(targetNarrationSelector).node();
+    // select the content element within the desired narration block, which we'll scroll directly to
+    const scrollToContentElement = narrationBlockSelection.select(
+      `div.${cssNames.narrationContentClass()}`,
+    ).node();
 
     // Get the page position, so we can determine which direction we've scrolled.
     const startingYOffset = window.pageYOffset;
@@ -438,15 +443,23 @@ export default class ScrollyTeller {
     // Set a flag to prevent trigger callbacks from executing during scrolling.
     this._triggersDisabled = true;
     // Scroll the page (asynchronously).
-    await new Promise((resolve) => { scrollIntoView(element, options, resolve); });
+    await new Promise((resolve) => {
+      scrollIntoView(scrollToContentElement, options, resolve);
+    });
     // Re-enable trigger callbacks.
     this._triggersDisabled = false;
 
     // Compute the direction of scrolling.
     const direction = window.pageYOffset < startingYOffset ? 'up' : 'down';
     // Manually activate triggers for the current narration (since they won't have fired on scroll).
-    this._handleOnStepEnter(sectionConfig, { element, index, direction });
-    this._handleOnStepProgress(sectionConfig, { element, index });
+    this._handleOnStepEnter(sectionConfig, { element: narrationBlockElement, index, direction });
+    this._handleOnStepProgress(
+      sectionConfig,
+      {
+        element: narrationBlockElement,
+        index,
+        scrollProgressElement: scrollToContentElement,
+      });
   }
 
   /**
