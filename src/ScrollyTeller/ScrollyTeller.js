@@ -311,32 +311,43 @@ export default class ScrollyTeller {
 
   /**
    * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
-   * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
-   * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
-   * @returns {Promise<void>}
+   * @param {string|number|undefined} [narrationIdStringOrNumericIndex]
+   *  - optional: if undefined, defaults to the first narration block of target section
+   *              if number, argument is treated as the index of the narration block to scroll to
+   *              if string, argument is treated as the `narrationId` of the target narration block
+   * @param {object} [options] - optional: configuration object passed to `scrollIntoView`
+   *              (https://github.com/KoryNunn/scroll-into-view)
+   * @returns {Promise<void>} - returns empty promise
    */
-  async scrollTo(sectionIdentifier, narrationId, options) {
+  async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) {
     const { appContainerId, cssNames, sectionList } = this;
 
     // Find the sectionConfig.
     const sectionConfig = sectionList[sectionIdentifier];
 
     // Find the index of the target narration block to scroll to.
-    const index = (
-      narrationId !== undefined
+    let index = 0; // undefined case, treat as zero index
+    // string case: treat as narration id
+    if (isString(narrationIdStringOrNumericIndex)) {
+      index = sectionConfig.narration.findIndex(
         // eslint-disable-next-line eqeqeq
-        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
-        : 0
-    );
-    // get the target narration block element from the section config.
-    const targetNarrationBlock = sectionConfig.narration[index];
+        (block) => { return block.narrationId === narrationIdStringOrNumericIndex; },
+      ) || 0;
+    } else if ( // numeric case: treat as index
+      isNumber(narrationIdStringOrNumericIndex)
+      && narrationIdStringOrNumericIndex > -1
+      && narrationIdStringOrNumericIndex < sectionConfig.narration.length
+    ) {
+      index = narrationIdStringOrNumericIndex;
+    }
 
     // create a selector for the target narration block and select that element
     const targetNarrationSelector = [
       `#${cssNames.sectionId(sectionIdentifier)}`,
       `.${cssNames.narrationList()}`,
-      `#${cssNames.narrationId(targetNarrationBlock.narrationId)}`,
+      `div.${cssNames.narrationClass()}:nth-of-type(${index + 1})`,
     ].join(' ');
+
     const element = select(targetNarrationSelector).node();
 
     // Get the page position, so we can determine which direction we've scrolled.

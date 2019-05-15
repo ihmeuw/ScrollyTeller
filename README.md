@@ -155,11 +155,15 @@ The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to
 ```javascript
 /**
  * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
- * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
- * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
- * @returns {Promise<void>}
+ * @param {string|number|undefined} [narrationIdStringOrNumericIndex]
+ *  - optional: if undefined, defaults to the first narration block of target section
+ *              if number, argument is treated as the index of the narration block to scroll to
+ *              if string, argument is treated as the `narrationId` of the target narration block
+ * @param {object} [options] - optional: configuration object passed to `scrollIntoView`
+ *              (https://github.com/KoryNunn/scroll-into-view)
+ * @returns {Promise<void>} - returns empty promise
  */
-async scrollTo(sectionIdentifier, narrationId, options) { ... }
+async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) { ... }
 ```
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
