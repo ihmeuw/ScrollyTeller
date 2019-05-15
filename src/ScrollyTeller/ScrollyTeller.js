@@ -28,6 +28,11 @@ export default class ScrollyTeller {
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
 
+    /** state to handle advancing to previous/next narration */
+    this.sectionNamesArray = Object.keys(this.sectionList);
+    this.currentSectionId = '';
+    this.currentNarrationIndex = null;
+
     /** if cssNames is unassigned,
      * use the default CSSNames constructor to create a new one */
     if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'CSSNames')) {
@@ -118,6 +123,9 @@ export default class ScrollyTeller {
       sectionIdentifier,
       onActivateNarrationFunction = noop,
     } = sectionConfig;
+
+    this.currentSectionId = sectionIdentifier;
+    this.currentNarrationIndex = index;
 
     const graphId = names.graphId(sectionIdentifier);
     const graphContainerId = names.graphContainerId(sectionIdentifier);
