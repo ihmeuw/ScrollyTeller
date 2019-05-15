@@ -400,4 +400,87 @@ export default class ScrollyTeller {
     this._handleOnStepEnter(sectionConfig, { element, index, direction });
     this._handleOnStepProgress(sectionConfig, { element, index });
   }
+
+  /**
+   * Scrolls "up" to the previous narration block in the story
+   * @return {Promise<void>} - returns empty promise
+   */
+  async scrollToPreviousNarration() {
+    const {
+      currentNarrationIndex,
+      currentSectionId,
+      sectionList,
+      sectionNamesArray,
+    } = this;
+    const sectionIndex = sectionNamesArray.findIndex(
+      (id) => { return id === currentSectionId; },
+    );
+
+    this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+    this.currentNarrationIndex = currentNarrationIndex === null
+      ? 1
+      : currentNarrationIndex;
+
+    const isFirstSection = sectionIndex === 0;
+    const isNarrationInPreviousSection = this.currentNarrationIndex - 1 < 0;
+
+    if (isNarrationInPreviousSection && !isFirstSection) {
+      this.currentSectionId = sectionNamesArray[sectionIndex - 1];
+      const currentNarration = get(sectionList, [this.currentSectionId, 'narration']);
+      this.currentNarrationIndex = currentNarration ? currentNarration.length - 1 : 0;
+    } else if (!isNarrationInPreviousSection) {
+      this.currentNarrationIndex = this.currentNarrationIndex - 1;
+    } else {
+      return;
+    }
+
+    await this.scrollTo(
+      this.currentSectionId,
+      this.currentNarrationIndex,
+      this._getScrollAlignObject(this.currentSectionId, this.currentNarrationIndex),
+    );
+  }
+
+  /**
+   * Scrolls "down" to the next narration block in the story
+   * @return {Promise<void>} - returns empty promise
+   */
+  async scrollToNextNarration() {
+    const {
+      currentNarrationIndex,
+      currentSectionId,
+      sectionList,
+      sectionNamesArray,
+    } = this;
+    const sectionIndex = sectionNamesArray.findIndex(
+      (id) => { return id === currentSectionId; },
+    );
+
+    this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+    this.currentNarrationIndex = currentNarrationIndex === null ? -1 : currentNarrationIndex;
+
+    const isLastSection = sectionIndex === sectionNamesArray.length - 1;
+    const currentSectionNarrationCount = get(
+      sectionList,
+      [this.currentSectionId, 'narration', 'length'],
+      0,
+    );
+    const isNarrationInNextSection = this.currentNarrationIndex + 1
+      === currentSectionNarrationCount;
+
+    if (isNarrationInNextSection && !isLastSection) {
+      this.currentSectionId = sectionNamesArray[sectionIndex + 1];
+      this.currentNarrationIndex = 0;
+    } else if (!isNarrationInNextSection) {
+      this.currentNarrationIndex = this.currentNarrationIndex + 1;
+    } else {
+      return;
+    }
+
+    await this.scrollTo(
+      this.currentSectionId,
+      this.currentNarrationIndex,
+      this._getScrollAlignObject(this.currentSectionId, this.currentNarrationIndex),
+    );
+  }
 }

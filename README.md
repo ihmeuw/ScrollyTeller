@@ -166,6 +166,23 @@ The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to
 async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) { ... }
 ```
 ----------------------------------------------------------------------------------------------------------------------------------
+### Auto-scrolling to the previous/next narration block
+The methods `scrollToPreviousNarration/scrollToNextNarration` on the `ScrollyTeller` object allows you to auto-scroll to the previous/next narration blocks.  ScrollyTeller automatically adds event listeners to scroll to the previous narration block with keyboard events `<ArrowUp>` and `<ArrowLeft>`, and to the next narration block with keyboard events `<Space>`, `<ArrowDown>`, and `<ArrowRight>`, but the asynchronous functions could be used for custom navigation functionality as well.
+
+```javascript
+/**
+ * Scrolls "up" to the previous narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToPreviousNarration() { ... }
+
+/**
+ * Scrolls "down" to the next narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToNextNarration() { ... }
+```
+----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
 * (uses lodash toNumber() and groupBy() functions to manipulate data)
