@@ -23,6 +23,10 @@ export default class CSSNames {
     return this.css.narrationBlock;
   }
 
+  narrationConcentClass() {
+    return this.css.narrationContent;
+  }
+
   /** Returns the section id associated with this section based on the sectionIdentifier
    * @param {string} narrationId id of the narration to concatenate to default narrationBlock keyword
    * @returns {string} representing the id of the div containing narration
