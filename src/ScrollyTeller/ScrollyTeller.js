@@ -340,30 +340,6 @@ export default class ScrollyTeller {
     forEach(this.sectionList, utils.buildSectionWithNarration);
   }
 
-  _getScrollAlignObject(sectionId, narrationIndex) {
-    const { cssNames, sectionList } = this;
-    // create a selector for the target narration block and select that element
-    const targetNarrationSelector = [
-      `#${cssNames.sectionId(sectionId)}`,
-      `.${cssNames.narrationList()}`,
-      `:nth-child(${narrationIndex + 1})`,
-      `.${cssNames.narrationConcentClass()}`,
-    ].join(' ');
-
-    const { height } = select(targetNarrationSelector).node().getBoundingClientRect();
-
-    const spaceAbove = utils.vhToNumericPx(
-      sectionList[sectionId].narration[narrationIndex].spaceAboveInVh,
-    );
-
-    return {
-      align: {
-        topOffset: spaceAbove - (height / 2),
-      },
-    };
-  }
-
-
   /** 'PUBLIC' METHODS * */
 
   /**
@@ -498,7 +474,7 @@ export default class ScrollyTeller {
     await this.scrollTo(
       this.currentSectionId,
       this.currentNarrationIndex,
-      this._getScrollAlignObject(this.currentSectionId, this.currentNarrationIndex),
+      { align: { top: 0.5 } },
     );
   }
 
@@ -541,7 +517,7 @@ export default class ScrollyTeller {
     await this.scrollTo(
       this.currentSectionId,
       this.currentNarrationIndex,
-      this._getScrollAlignObject(this.currentSectionId, this.currentNarrationIndex),
+      { align: { top: 0.5 } },
     );
   }
 }
