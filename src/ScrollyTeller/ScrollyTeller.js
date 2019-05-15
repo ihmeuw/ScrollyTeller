@@ -2,12 +2,11 @@
 import {
   get,
   forEach,
-  isNil,
+  isEmpty,
   isNumber,
   isString,
   isUndefined,
   noop,
-  reduce,
 } from 'lodash-es';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3-selection';
@@ -443,32 +442,46 @@ export default class ScrollyTeller {
    * @return {Promise<void>} - returns empty promise
    */
   async scrollToPreviousNarration() {
-    const {
-      currentNarrationIndex,
-      currentSectionId,
-      sectionList,
-      sectionNamesArray,
-    } = this;
-    const sectionIndex = sectionNamesArray.findIndex(
-      (id) => { return id === currentSectionId; },
-    );
+    let narrationContentEmtpy = false;
+    while (!narrationContentEmtpy) {
+      const {
+        currentNarrationIndex,
+        currentSectionId,
+        sectionList,
+        sectionNamesArray,
+      } = this;
+      const sectionIndex = sectionNamesArray.findIndex(
+        (id) => { return id === currentSectionId; },
+      );
 
-    this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
-    this.currentNarrationIndex = currentNarrationIndex === null
-      ? 1
-      : currentNarrationIndex;
+      this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+      this.currentNarrationIndex = currentNarrationIndex === null
+        ? 1
+        : currentNarrationIndex;
 
-    const isFirstSection = sectionIndex === 0;
-    const isNarrationInPreviousSection = this.currentNarrationIndex - 1 < 0;
+      const isFirstSection = sectionIndex === 0;
+      const isNarrationInPreviousSection = this.currentNarrationIndex - 1 < 0;
 
-    if (isNarrationInPreviousSection && !isFirstSection) {
-      this.currentSectionId = sectionNamesArray[sectionIndex - 1];
-      const currentNarration = get(sectionList, [this.currentSectionId, 'narration']);
-      this.currentNarrationIndex = currentNarration ? currentNarration.length - 1 : 0;
-    } else if (!isNarrationInPreviousSection) {
-      this.currentNarrationIndex = this.currentNarrationIndex - 1;
-    } else {
-      return;
+      if (isNarrationInPreviousSection && !isFirstSection) {
+        this.currentSectionId = sectionNamesArray[sectionIndex - 1];
+        const currentNarration = get(sectionList, [this.currentSectionId, 'narration']);
+        this.currentNarrationIndex = currentNarration ? currentNarration.length - 1 : 0;
+      } else if (!isNarrationInPreviousSection) {
+        this.currentNarrationIndex = this.currentNarrationIndex - 1;
+      } else {
+        return;
+      }
+
+      const content = get(
+        sectionList,
+        [this.currentSectionId, 'narration', this.currentNarrationIndex],
+      );
+
+      narrationContentEmtpy = !(
+        isEmpty(content.hRefText)
+        && isEmpty(content.h2Text)
+        && isEmpty(content.paragraphText)
+      );
     }
 
     await this.scrollTo(
@@ -483,35 +496,49 @@ export default class ScrollyTeller {
    * @return {Promise<void>} - returns empty promise
    */
   async scrollToNextNarration() {
-    const {
-      currentNarrationIndex,
-      currentSectionId,
-      sectionList,
-      sectionNamesArray,
-    } = this;
-    const sectionIndex = sectionNamesArray.findIndex(
-      (id) => { return id === currentSectionId; },
-    );
+    let narrationContentEmtpy = false;
+    while (!narrationContentEmtpy) {
+      const {
+        currentNarrationIndex,
+        currentSectionId,
+        sectionList,
+        sectionNamesArray,
+      } = this;
+      const sectionIndex = sectionNamesArray.findIndex(
+        (id) => { return id === currentSectionId; },
+      );
 
-    this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
-    this.currentNarrationIndex = currentNarrationIndex === null ? -1 : currentNarrationIndex;
+      this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+      this.currentNarrationIndex = currentNarrationIndex === null ? -1 : currentNarrationIndex;
 
-    const isLastSection = sectionIndex === sectionNamesArray.length - 1;
-    const currentSectionNarrationCount = get(
-      sectionList,
-      [this.currentSectionId, 'narration', 'length'],
-      0,
-    );
-    const isNarrationInNextSection = this.currentNarrationIndex + 1
-      === currentSectionNarrationCount;
+      const isLastSection = sectionIndex === sectionNamesArray.length - 1;
+      const currentSectionNarrationCount = get(
+        sectionList,
+        [this.currentSectionId, 'narration', 'length'],
+        0,
+      );
+      const isNarrationInNextSection = this.currentNarrationIndex + 1
+        === currentSectionNarrationCount;
 
-    if (isNarrationInNextSection && !isLastSection) {
-      this.currentSectionId = sectionNamesArray[sectionIndex + 1];
-      this.currentNarrationIndex = 0;
-    } else if (!isNarrationInNextSection) {
-      this.currentNarrationIndex = this.currentNarrationIndex + 1;
-    } else {
-      return;
+      if (isNarrationInNextSection && !isLastSection) {
+        this.currentSectionId = sectionNamesArray[sectionIndex + 1];
+        this.currentNarrationIndex = 0;
+      } else if (!isNarrationInNextSection) {
+        this.currentNarrationIndex = this.currentNarrationIndex + 1;
+      } else {
+        return;
+      }
+
+      const content = get(
+        sectionList,
+        [this.currentSectionId, 'narration', this.currentNarrationIndex],
+      );
+
+      narrationContentEmtpy = !(
+        isEmpty(content.hRefText)
+        && isEmpty(content.h2Text)
+        && isEmpty(content.paragraphText)
+      );
     }
 
     await this.scrollTo(
