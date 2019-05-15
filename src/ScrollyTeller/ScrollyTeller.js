@@ -283,19 +283,21 @@ export default class ScrollyTeller {
         return;
       }
 
-      const key = event.key || event.keyCode;
+      if (event.target === document.body) {
+        const key = event.key || event.keyCode;
 
-      switch (key) {
-        case ' ':
-        case 'ArrowDown':
-        case 'ArrowRight':
-          this.scrollToNextNarration();
-          break;
-        case 'ArrowUp':
-        case 'ArrowLeft':
-          this.scrollToPreviousNarration();
-          break;
-        default:
+        switch (key) {
+          case ' ':
+          case 'ArrowDown':
+          case 'ArrowRight':
+            this.scrollToNextNarration();
+            break;
+          case 'ArrowUp':
+          case 'ArrowLeft':
+            this.scrollToPreviousNarration();
+            break;
+          default:
+        }
       }
     });
   }
