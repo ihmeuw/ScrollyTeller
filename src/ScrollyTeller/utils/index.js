@@ -5,3 +5,4 @@ export * from './narrationBuilder';
 export * from './scrollProgress';
 export * from './triggerUtils';
 export * from './graphUpdates';
+export * from './vhToPxFunctions';

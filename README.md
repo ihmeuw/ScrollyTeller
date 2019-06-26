@@ -155,11 +155,32 @@ The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to
 ```javascript
 /**
  * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
- * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
- * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
- * @returns {Promise<void>}
+ * @param {string|number|undefined} [narrationIdStringOrNumericIndex]
+ *  - optional: if undefined, defaults to the first narration block of target section
+ *              if number, argument is treated as the index of the narration block to scroll to
+ *              if string, argument is treated as the `narrationId` of the target narration block
+ * @param {object} [options] - optional: configuration object passed to `scrollIntoView`
+ *              (https://github.com/KoryNunn/scroll-into-view)
+ * @returns {Promise<void>} - returns empty promise
  */
-async scrollTo(sectionIdentifier, narrationId, options) { ... }
+async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) { ... }
+```
+----------------------------------------------------------------------------------------------------------------------------------
+### Auto-scrolling to the previous/next narration block
+The methods `scrollToPreviousNarration/scrollToNextNarration` on the `ScrollyTeller` object allows you to auto-scroll to the previous/next narration blocks.  ScrollyTeller automatically adds event listeners to scroll to the previous narration block with keyboard events `<ArrowUp>` and `<ArrowLeft>`, and to the next narration block with keyboard events `<Space>`, `<ArrowDown>`, and `<ArrowRight>`, but the asynchronous functions could be used for custom navigation functionality as well.
+
+```javascript
+/**
+ * Scrolls "up" to the previous narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToPreviousNarration() { ... }
+
+/**
+ * Scrolls "down" to the next narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToNextNarration() { ... }
 ```
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```

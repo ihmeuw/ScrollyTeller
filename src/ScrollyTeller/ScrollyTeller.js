@@ -1,7 +1,10 @@
-/* global window */
+/* global document, window */
 import {
   get,
   forEach,
+  isEmpty,
+  isNumber,
+  isString,
   isUndefined,
   noop,
 } from 'lodash-es';
@@ -27,6 +30,11 @@ export default class ScrollyTeller {
 
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
+
+    /** state to handle advancing to previous/next narration */
+    this.sectionNamesArray = Object.keys(this.sectionList);
+    this.currentSectionId = '';
+    this.currentNarrationIndex = null;
 
     /** if cssNames is unassigned,
      * use the default CSSNames constructor to create a new one */
@@ -119,6 +127,9 @@ export default class ScrollyTeller {
       onActivateNarrationFunction = noop,
     } = sectionConfig;
 
+    this.currentSectionId = sectionIdentifier;
+    this.currentNarrationIndex = index;
+
     const graphId = names.graphId(sectionIdentifier);
     const graphContainerId = names.graphContainerId(sectionIdentifier);
 
@@ -179,7 +190,7 @@ export default class ScrollyTeller {
     }
   }
 
-  _handleOnStepProgress(sectionConfig, { element, index }) {
+  _handleOnStepProgress(sectionConfig, { element, scrollProgressElement, index }) {
     if (this._triggersDisabled) {
       return;
     }
@@ -195,7 +206,7 @@ export default class ScrollyTeller {
     /** recalculate scroll progress due to intersection observer bug in Chrome
      *  https://github.com/russellgoldenberg/scrollama/issues/64
      *  TODO: revert back to using scrollama progress if/when issue is resolved */
-    const progress = utils.calcScrollProgress(element, TRIGGER_OFFSET);
+    const progress = utils.calcScrollProgress(scrollProgressElement || element, TRIGGER_OFFSET);
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
 
@@ -244,6 +255,49 @@ export default class ScrollyTeller {
         .onStepEnter((payload) => { this._handleOnStepEnter(sectionConfig, payload); })
         .onStepExit((payload) => { this._handleOnStepExit(sectionConfig, payload); })
         .onStepProgress((payload) => { this._handleOnStepProgress(sectionConfig, payload); });
+    });
+  }
+
+  _buildKeyboardListeners() {
+    // prevent default scroll using spacebar and arrow keys
+    document.addEventListener('keydown', (event) => {
+      const key = event.key || event.keyCode;
+
+      if (event.target === document.body) {
+        switch (key) {
+          case ' ':
+          case 'ArrowDown':
+          case 'ArrowRight':
+          case 'ArrowUp':
+          case 'ArrowLeft':
+            event.preventDefault();
+            break;
+          default:
+        }
+      }
+    });
+
+    document.addEventListener('keyup', (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+
+      if (event.target === document.body) {
+        const key = event.key || event.keyCode;
+
+        switch (key) {
+          case ' ':
+          case 'ArrowDown':
+          case 'ArrowRight':
+            this.scrollToNextNarration();
+            break;
+          case 'ArrowUp':
+          case 'ArrowLeft':
+            this.scrollToPreviousNarration();
+            break;
+          default:
+        }
+      }
     });
   }
 
@@ -300,6 +354,7 @@ export default class ScrollyTeller {
     this._buildScrollamaContainers();
     this._buildGraphs();
     this._buildResizeListeners();
+    this._buildKeyboardListeners();
 
     window.addEventListener('resize', () => {
       forEach(this.sectionList, (config) => {
@@ -311,33 +366,49 @@ export default class ScrollyTeller {
 
   /**
    * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
-   * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
-   * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
-   * @returns {Promise<void>}
+   * @param {string|number|undefined} [narrationIdStringOrNumericIndex]
+   *  - optional: if undefined, defaults to the first narration block of target section
+   *              if number, argument is treated as the index of the narration block to scroll to
+   *              if string, argument is treated as the `narrationId` of the target narration block
+   * @param {object} [options] - optional: configuration object passed to `scrollIntoView`
+   *              (https://github.com/KoryNunn/scroll-into-view)
+   * @returns {Promise<void>} - returns empty promise
    */
-  async scrollTo(sectionIdentifier, narrationId, options) {
+  async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) {
     const { appContainerId, cssNames, sectionList } = this;
 
     // Find the sectionConfig.
     const sectionConfig = sectionList[sectionIdentifier];
 
     // Find the index of the target narration block to scroll to.
-    const index = (
-      narrationId !== undefined
+    let index = 0; // undefined case, treat as zero index
+    // string case: treat as narration id
+    if (isString(narrationIdStringOrNumericIndex)) {
+      index = sectionConfig.narration.findIndex(
         // eslint-disable-next-line eqeqeq
-        ? sectionConfig.narration.findIndex((block) => { return block.narrationId == narrationId; })
-        : 0
-    );
-    // get the target narration block element from the section config.
-    const targetNarrationBlock = sectionConfig.narration[index];
+        (block) => { return block.narrationId === narrationIdStringOrNumericIndex; },
+      ) || 0;
+    } else if ( // numeric case: treat as index
+      isNumber(narrationIdStringOrNumericIndex)
+      && narrationIdStringOrNumericIndex > -1
+      && narrationIdStringOrNumericIndex < sectionConfig.narration.length
+    ) {
+      index = narrationIdStringOrNumericIndex;
+    }
 
     // create a selector for the target narration block and select that element
     const targetNarrationSelector = [
       `#${cssNames.sectionId(sectionIdentifier)}`,
       `.${cssNames.narrationList()}`,
-      `#${cssNames.narrationId(targetNarrationBlock.narrationId)}`,
+      `div.${cssNames.narrationClass()}:nth-of-type(${index + 1})`,
     ].join(' ');
-    const element = select(targetNarrationSelector).node();
+    const narrationBlockSelection = select(targetNarrationSelector); // d3 selection
+    const narrationBlockElement = narrationBlockSelection.node(); // node
+
+    // select the content element within the desired narration block, which we'll scroll directly to
+    const scrollToContentElement = narrationBlockSelection.select(
+      `div.${cssNames.narrationContentClass()}`,
+    ).node();
 
     // Get the page position, so we can determine which direction we've scrolled.
     const startingYOffset = window.pageYOffset;
@@ -347,14 +418,133 @@ export default class ScrollyTeller {
     // Set a flag to prevent trigger callbacks from executing during scrolling.
     this._triggersDisabled = true;
     // Scroll the page (asynchronously).
-    await new Promise((resolve) => { scrollIntoView(element, options, resolve); });
+    await new Promise((resolve) => {
+      scrollIntoView(scrollToContentElement, options, resolve);
+    });
     // Re-enable trigger callbacks.
     this._triggersDisabled = false;
 
     // Compute the direction of scrolling.
     const direction = window.pageYOffset < startingYOffset ? 'up' : 'down';
     // Manually activate triggers for the current narration (since they won't have fired on scroll).
-    this._handleOnStepEnter(sectionConfig, { element, index, direction });
-    this._handleOnStepProgress(sectionConfig, { element, index });
+    this._handleOnStepEnter(sectionConfig, { element: narrationBlockElement, index, direction });
+    this._handleOnStepProgress(
+      sectionConfig,
+      {
+        element: narrationBlockElement,
+        index,
+        scrollProgressElement: scrollToContentElement,
+      });
+  }
+
+  /**
+   * Scrolls "up" to the previous narration block in the story
+   * @return {Promise<void>} - returns empty promise
+   */
+  async scrollToPreviousNarration() {
+    let narrationContentEmtpy = false;
+    while (!narrationContentEmtpy) {
+      const {
+        currentNarrationIndex,
+        currentSectionId,
+        sectionList,
+        sectionNamesArray,
+      } = this;
+      const sectionIndex = sectionNamesArray.findIndex(
+        (id) => { return id === currentSectionId; },
+      );
+
+      this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+      this.currentNarrationIndex = currentNarrationIndex === null
+        ? 1
+        : currentNarrationIndex;
+
+      const isFirstSection = sectionIndex === 0;
+      const isNarrationInPreviousSection = this.currentNarrationIndex - 1 < 0;
+
+      if (isNarrationInPreviousSection && !isFirstSection) {
+        this.currentSectionId = sectionNamesArray[sectionIndex - 1];
+        const currentNarration = get(sectionList, [this.currentSectionId, 'narration']);
+        this.currentNarrationIndex = currentNarration ? currentNarration.length - 1 : 0;
+      } else if (!isNarrationInPreviousSection) {
+        this.currentNarrationIndex = this.currentNarrationIndex - 1;
+      } else {
+        return;
+      }
+
+      const content = get(
+        sectionList,
+        [this.currentSectionId, 'narration', this.currentNarrationIndex],
+      );
+
+      narrationContentEmtpy = !(
+        isEmpty(content.hRefText)
+        && isEmpty(content.h2Text)
+        && isEmpty(content.paragraphText)
+      );
+    }
+
+    await this.scrollTo(
+      this.currentSectionId,
+      this.currentNarrationIndex,
+      { align: { top: 0.5 } },
+    );
+  }
+
+  /**
+   * Scrolls "down" to the next narration block in the story
+   * @return {Promise<void>} - returns empty promise
+   */
+  async scrollToNextNarration() {
+    let narrationContentEmtpy = false;
+    while (!narrationContentEmtpy) {
+      const {
+        currentNarrationIndex,
+        currentSectionId,
+        sectionList,
+        sectionNamesArray,
+      } = this;
+      const sectionIndex = sectionNamesArray.findIndex(
+        (id) => { return id === currentSectionId; },
+      );
+
+      this.currentSectionId = sectionIndex === -1 ? sectionNamesArray[0] : currentSectionId;
+      this.currentNarrationIndex = currentNarrationIndex === null ? -1 : currentNarrationIndex;
+
+      const isLastSection = sectionIndex === sectionNamesArray.length - 1;
+      const currentSectionNarrationCount = get(
+        sectionList,
+        [this.currentSectionId, 'narration', 'length'],
+        0,
+      );
+      const isNarrationInNextSection = this.currentNarrationIndex + 1
+        === currentSectionNarrationCount;
+
+      if (isNarrationInNextSection && !isLastSection) {
+        this.currentSectionId = sectionNamesArray[sectionIndex + 1];
+        this.currentNarrationIndex = 0;
+      } else if (!isNarrationInNextSection) {
+        this.currentNarrationIndex = this.currentNarrationIndex + 1;
+      } else {
+        return;
+      }
+
+      const content = get(
+        sectionList,
+        [this.currentSectionId, 'narration', this.currentNarrationIndex],
+      );
+
+      narrationContentEmtpy = !(
+        isEmpty(content.hRefText)
+        && isEmpty(content.h2Text)
+        && isEmpty(content.paragraphText)
+      );
+    }
+
+    await this.scrollTo(
+      this.currentSectionId,
+      this.currentNarrationIndex,
+      { align: { top: 0.5 } },
+    );
   }
 }
