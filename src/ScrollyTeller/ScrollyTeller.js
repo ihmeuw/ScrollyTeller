@@ -1,8 +1,9 @@
-/* global document, window */
+/* global document, window, ga */
 import {
   get,
   forEach,
   isEmpty,
+  isNil,
   isNumber,
   isString,
   isUndefined,
@@ -136,6 +137,60 @@ export default class ScrollyTeller {
       sectionIdentifier,
       onActivateNarrationFunction = noop,
     } = sectionConfig;
+
+    // if google analytics object exists
+    if (ga) {
+      // if user requests SECTION tracking and section has changed
+      if (this.sendSectionAnalytics && sectionIdentifier !== this.currentSectionId) {
+        // send enter section tracking events
+        utils.sendEnteredSectionAnalytics({
+          enteringSectionId: sectionIdentifier,
+          enteringSectionIndex: this._sectionIndexFromSectionIdentifier(sectionIdentifier),
+          pageLoadStartTime: this.pageLoadStartTime,
+          maxTimeInSeconds: this.maxTimeInSeconds,
+        });
+
+        // if a previous section is set, send analytics on the section that was exited from
+        if (!isNil(this.currentSectionId)) {
+          utils.sendExitedSectionAnalytics({
+            exitedNarrationIndex: this.currentNarrationIndex,
+            exitedSectionId: this.currentSectionId,
+            exitedSectionIndex: this._sectionIndexFromSectionIdentifier(this.currentSectionId),
+            maxTimeInSeconds: this.maxTimeInSeconds,
+            timeEntered: this.timeEnteredCurrentSection || new Date(),
+          });
+        }
+
+        this.timeEnteredCurrentSection = new Date();
+      }
+
+      // if user requests NARRATION tracking and section or narration index has changed
+      if (
+        this.sendNarrationAnalytics
+        && (sectionIdentifier !== this.currentSectionId || index !== this.currentNarrationIndex)
+      ) {
+        // there should always be an entered section identifier: send enter section tracking events
+        utils.sendEnteredNarrationAnalytics({
+          enteringNarrationIndex: index,
+          enteringSectionId: sectionIdentifier,
+          enteringSectionIndex: this._sectionIndexFromSectionIdentifier(sectionIdentifier),
+          pageLoadStartTime: this.pageLoadStartTime,
+          maxTimeInSeconds: this.maxTimeInSeconds,
+        });
+
+        // if a previous section is set, send analytics on the section that was exited from
+        if (!isNil(this.currentNarrationIndex)) {
+          utils.sendExitedNarrationAnalytics({
+            exitingNarrationIndex: this.currentNarrationIndex,
+            exitedSectionId: this.currentSectionId,
+            exitedSectionIndex: this._sectionIndexFromSectionIdentifier(this.currentSectionId),
+            maxTimeInSeconds: this.maxTimeInSeconds,
+            timeEntered: this.timeEnteredCurrentNarration || new Date(),
+          });
+        }
+        this.timeEnteredCurrentNarration = new Date();
+      }
+    }
 
     this.currentSectionId = sectionIdentifier;
     this.currentNarrationIndex = index;
