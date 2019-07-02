@@ -44,6 +44,7 @@ export default class ScrollyTeller {
     this.timeEnteredCurrentSection = null;
     this.timeEnteredCurrentNarration = null;
     this.pageLoadStartTime = new Date();
+
     /** if cssNames is unassigned,
      * use the default CSSNames constructor to create a new one */
     if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'CSSNames')) {
@@ -60,9 +61,10 @@ export default class ScrollyTeller {
   /** 'PRIVATE' METHODS * */
 
   _assignConfigVariablesToSectionConfigs() {
-    forEach(this.sectionList, (section) => {
+    forEach(this.sectionList, (section, sectionIdentifier) => {
       section.appContainerId = this.appContainerId;
       section.cssNames = this.cssNames;
+      section.sectionIndex = this._sectionIndexFromSectionIdentifier(sectionIdentifier);
     });
   }
 
@@ -345,6 +347,12 @@ export default class ScrollyTeller {
       .attr('class', this.cssNames.scrollContainer());
 
     forEach(this.sectionList, utils.buildSectionWithNarration);
+  }
+
+  _sectionIndexFromSectionIdentifier(sectionIdentifier) {
+    return this.sectionNamesArray.findIndex(
+      (id) => { return id === sectionIdentifier; },
+    );
   }
 
   /** 'PUBLIC' METHODS * */
