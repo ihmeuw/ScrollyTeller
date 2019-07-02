@@ -446,7 +446,13 @@ export default class ScrollyTeller {
    * @returns {Promise<void>} - returns empty promise
    */
   async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) {
-    const { appContainerId, cssNames, sectionList } = this;
+    const {
+      appContainerId,
+      cssNames,
+      currentNarrationIndex,
+      currentSectionId,
+      sectionList,
+    } = this;
 
     // Find the sectionConfig.
     const sectionConfig = sectionList[sectionIdentifier];
@@ -465,6 +471,21 @@ export default class ScrollyTeller {
       && narrationIdStringOrNumericIndex < sectionConfig.narration.length
     ) {
       index = narrationIdStringOrNumericIndex;
+    }
+
+    // if user requests tracking and google analytics object exists
+    if (this.sendScrollToAnalytics && ga) {
+      // send props to handle analytics tracking of the previous section that we just left
+      utils.sendScrollToAnalytics({
+        enteringSectionId: sectionIdentifier,
+        enteringSectionIndex: this._sectionIndexFromSectionIdentifier(sectionIdentifier),
+        enteringNarrationIndex: index,
+        pageLoadStartTime: this.pageLoadStartTime,
+        maxTimeInSeconds: this.maxTimeInSeconds,
+        exitedSectionId: currentSectionId,
+        exitedSectionIndex: this._sectionIndexFromSectionIdentifier(currentSectionId),
+        exitedNarrationIndex: currentNarrationIndex,
+      });
     }
 
     // create a selector for the target narration block and select that element
