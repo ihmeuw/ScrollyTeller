@@ -182,6 +182,43 @@ async scrollToPreviousNarration() { ... }
  */
 async scrollToNextNarration() { ... }
 ```
+
+
+### Tracking Scroll Progress using Google Analytics
+
+ScrollyTeller can automatically send google analytics events when sections or narration blocks are entered, and when the `scrollTo()` function is called.  To enable these features, add the following booleans to the ScrollyTeller configuration object.
+
+ScrollyTeller *requires that the `ga()` function from google's `analytics.js` be in the global scope with valid credentials.*  See [these instructions for how to set up google analytics](https://developers.google.com/analytics/devguides/collection/analyticsjs/). In the future, we hope to support the new `gtag.js` library in addition to `analytics.js`.
+
+```javascript
+const myScrollyTellerConfig = {
+  appContainerId: 'myAppId',
+  /** section list */
+  sectionList: { /** ... see above for section list properties */ },
+  
+  /** optional google analytics properties */
+  sendSectionAnalytics: true, // send analytics events when a section is entered or exited
+  sendNarrationAnalytics: true, // send analytics events when each narration block is entered or exited
+  sendScrollToAnalytics: true, // send analytics events when scrollTo() is called
+  maxTimeInSeconds: 60, // optionally cap the maximum amount of time that can be sent to google (think of this as the maximum user "idle" time
+};
+
+// call render methods...
+```
+
+Page Events that ScrollyTeller can send are:
+
+| ScrollyTeller config flag (sends events when true) | EventCategory | EventAction | EventLabel | EventValue |
+| :---: | :---: | :---: | :---: | :---: |
+| sendSectionAnalytics | Time in Narration (seconds) | [sectionIndex]--[sectionIdentifier] | Exited [sectionIdentifier], narration #[exitingNarrationIndex] after (EventValue) seconds | [seconds a user spent in section] |
+| sendSectionAnalytics | Section Entry Time (seconds since page load) | [sectionIndex]--[sectionIdentifier] | Entered section [enteringSectionId] (EventValue) seconds since page load | [seconds since page load section was entered] |
+| sendNarrationAnalytics | Time in Narration (seconds) | [sectionIndex]--[sectionIdentifier]--[narrationIndex] | Exited [section], narration #[exitingNarrationIndex] after (EventValue) seconds | [seconds a user spent in a given narration block] |
+| sendNarrationAnalytics | Narration Entry Time (seconds since page load) | [sectionIndex]--[sectionIdentifier]--[narrationIndex] | Entered narration #[enteringNarrationIndex] (EventValue) seconds since page load | [seconds since page load narration block was entered] |
+| sendScrollToAnalytics | Scroll From-To (SectionIndex---SectionId---NarrationIndex) | From [from section]--[narration index of exit] | To [to section]--[narration index of entry] | [seconds since page load that scrollTo() occurred] |
+| sendScrollToAnalytics | Scroll To-From (SectionIndex---SectionId---NarrationIndex) | To [to section]--[narration index of entry] | From [from section]--[narration index of exit] | [seconds since page load that scrollTo() occurred] |
+
+All of the times are reported as PageEvents in seconds, and can be given an upper bound by specifying `maxTimeInSeconds`, which defaults to `Infinity`. 
+
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```

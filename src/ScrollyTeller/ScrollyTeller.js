@@ -31,11 +31,19 @@ export default class ScrollyTeller {
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
 
-    /** state to handle advancing to previous/next narration */
+    /** state to handle advancing to previous/next narration and time tracking */
     this.sectionNamesArray = Object.keys(this.sectionList);
-    this.currentSectionId = '';
+    this.currentSectionId = null;
     this.currentNarrationIndex = null;
 
+    /** state to handle google analytics tracking */
+    this.sendSectionAnalytics = config.sendSectionAnalytics || false;
+    this.sendNarrationAnalytics = config.sendNarrationAnalytics || false;
+    this.sendScrollToAnalytics = config.sendScrollToAnalytics || false;
+    this.maxTimeInSeconds = config.maxTimeInSeconds || Infinity;
+    this.timeEnteredCurrentSection = null;
+    this.timeEnteredCurrentNarration = null;
+    this.pageLoadStartTime = new Date();
     /** if cssNames is unassigned,
      * use the default CSSNames constructor to create a new one */
     if (isUndefined(config.cssNames) || (config.cssNames.constructor.name !== 'CSSNames')) {
