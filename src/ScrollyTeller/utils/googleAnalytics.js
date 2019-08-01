@@ -1,4 +1,4 @@
-/* global ga */
+/* global window */
 
 function padNumberWithZeros(number, width) {
   return new Array(+width + 1 - (number.toString()).length).join('0') + number;
@@ -29,7 +29,7 @@ export function sendEnteredNarrationAnalytics({
 }) {
   const section = orderedSectionName(enteringSectionIndex, enteringSectionId);
 
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Narration Entry Time (seconds since page load)',
     eventAction: `${section}--${enteringNarrationIndex}`,
@@ -50,7 +50,7 @@ export function sendExitedNarrationAnalytics({
 }) {
   const section = orderedSectionName(exitedSectionIndex, exitedSectionId);
 
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Time in Narration (seconds)',
     eventAction: `${section}--${exitingNarrationIndex}`,
@@ -68,7 +68,7 @@ export function sendEnteredSectionAnalytics({
   pageLoadStartTime,
   maxTimeInSeconds,
 }) {
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Section Entry Time (seconds since page load)',
     eventAction: orderedSectionName(enteringSectionIndex, enteringSectionId),
@@ -89,7 +89,7 @@ export function sendExitedSectionAnalytics({
 }) {
   const section = orderedSectionName(exitedSectionIndex, exitedSectionId);
 
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Time in Section (seconds)',
     eventAction: section,
@@ -111,14 +111,14 @@ export function sendScrollToAnalytics({
   exitedSectionIndex,
   exitedNarrationIndex: exitNIndex,
 }) {
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Scroll From-To (SectionIndex---SectionId---NarrationIndex)',
     eventAction: `From ${orderedSectionName(exitedSectionIndex, exitedSectionId)}--${exitNIndex}`,
     eventLabel: `To ${orderedSectionName(enteringSectionIndex, enteringSectionId)}--${enterNIndex}`,
     eventValue: cappedTimeElapsed({ maxTimeInSeconds, startTime: pageLoadStartTime }),
   });
-  ga('send', {
+  window.ga('send', {
     hitType: 'event',
     eventCategory: 'Scroll To-From (SectionIndex---SectionId---NarrationIndex)',
     eventAction: `To ${orderedSectionName(enteringSectionIndex, enteringSectionId)}--${exitNIndex}`,

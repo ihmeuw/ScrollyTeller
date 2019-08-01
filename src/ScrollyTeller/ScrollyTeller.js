@@ -1,4 +1,4 @@
-/* global document, window, ga */
+/* global document, window */
 import {
   get,
   forEach,
@@ -139,7 +139,7 @@ export default class ScrollyTeller {
     } = sectionConfig;
 
     // if google analytics object exists
-    if (ga) {
+    if (window.ga) {
       // if user requests SECTION tracking and section has changed
       if (this.sendSectionAnalytics && sectionIdentifier !== this.currentSectionId) {
         // send enter section tracking events
@@ -474,7 +474,7 @@ export default class ScrollyTeller {
     }
 
     // if user requests tracking and google analytics object exists
-    if (this.sendScrollToAnalytics && ga) {
+    if (this.sendScrollToAnalytics && window.ga) {
       // send props to handle analytics tracking of the previous section that we just left
       utils.sendScrollToAnalytics({
         enteringSectionId: sectionIdentifier,
