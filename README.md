@@ -66,9 +66,9 @@ myScrollyTellerInstance.render();
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
-| ```convertTriggerToObject``` | **Optional**: Option to covert trigger string for narration steps to an object and create sate object, default is false.  |
 | ```triggerListSeparator``` | **Optional**: Character used to split trigger string into multiple triggers, default is `;`.  |
 | ```triggerKeyValueSeparator``` | **Optional**: Character used create key value paris when converting to an object or creating state, default is `:`.  |
+| ```convertTriggerToObject``` | **Optional**: Option to parse the JSON trigger for narration steps to an object and update the state object, default is true.  |
 
 
 ##### Here's an example of a section configuration that gets added to ```myScrollyTellerConfig```
@@ -284,7 +284,7 @@ function buildGraphFunction(graphId, sectionConfig) {
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
- * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Not computed if the value for `convertTriggerToObject` in section config is set to false.
  * @param {string} [params.direction] - the direction the event happened in (up or down)
  * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
@@ -331,7 +331,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
- * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Not computed if the value for `convertTriggerToObject` in section config is set to false.
  * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
