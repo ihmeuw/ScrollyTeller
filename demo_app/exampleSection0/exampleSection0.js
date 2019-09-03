@@ -3,15 +3,13 @@ import { select } from 'd3-selection';
 import './data/narrationExampleSection0.csv';
 
 const snippets = {
-  scrollyTellerIsAwesome:
+  setMyVariable:
     `{ // SECTION CONFIGURATION OBJECT
     // ... other properties
     onActivateNarrationFunction: function ({ trigger, state, graphId }) {
       console.log('The text based trigger is: ', trigger);
       
-      if (state.percentOfScrollyTellerThatIsAwesome < 100) {
-        console.log('Wrong! 100% of ScrollyTeller is awesome!!!');
-      }
+      console.log('My state variable is: ', state.myVariable);
     },
   } // SECTION CONFIGURATION OBJECT`,
   onScroll:
@@ -114,7 +112,12 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction: function onScroll({ state, graphId, graphContainerId }) {
+  onScrollFunction: function onScroll({ progress, state, graphId }) {
+    if (state.codeSnippet === 'onScroll' && state.xStart && state.xEnd) {
+      const currentX = Math.ceil((state.xEnd - state.xStart) * progress);
+      select(`#${graphId} h3.currentX`)
+        .html(`<h3 class="currentX">progress: ${progress.toPrecision(3)}<br><br>currentX: ${currentX}</h3>`);
+    }
   },
 
   /**
@@ -139,9 +142,12 @@ export default {
    * @returns {void}
    */
   onActivateNarrationFunction: function onActivateNarration({ state, graphId }) {
-    if (state.code) {
+    console.log(state);
+    if (state.codeSnippet) {
       select(`#${graphId}`)
-        .html(`<pre class="prettyprint lang-js">${snippets[state.code]}</pre>`);
+        .html(`<pre class="prettyprint lang-js">${snippets[state.codeSnippet]}</pre>\
+               <h3 class="currentX"></h3>\
+         `);
       PR.prettyPrint();
     } else {
       select(`#${graphId}`).html('');
