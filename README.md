@@ -66,8 +66,6 @@ myScrollyTellerInstance.render();
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
-| ```triggerListSeparator``` | **Optional**: Character used to split trigger string into multiple triggers, default is `;`.  |
-| ```triggerKeyValueSeparator``` | **Optional**: Character used create key value paris when converting to an object or creating state, default is `:`.  |
 | ```convertTriggerToObject``` | **Optional**: Option to parse the JSON trigger for narration steps to an object and update the state object, default is true.  |
 
 
@@ -130,8 +128,8 @@ myScrollyTellerInstance.render();
 
 | narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |  :---: |
-| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | show_chart | This is a Graph Title | This is a graph caption
-| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | show_data_1 | This is a Graph Title | This is a graph caption
+| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | <pre>{ show_chart: true }</pre> | This is a Graph Title | This is a graph caption
+| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | <pre>{ show_data_1: true }</pre> | This is a Graph Title | This is a graph caption
 
  Here's a description of what each column header controls:
 
@@ -144,7 +142,7 @@ myScrollyTellerInstance.render();
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
-| **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
+| **trigger** | **Optional** user customizable JSON to help trigger actions such as chart visiblity, styles, data ranges, etc. Must be a valid JSON string with the optional keyword `$progress` that refers to scroll progress within the current narration block. Invalid JSON strings are indicated by console warnings.  |
 | **graphTitle** | **Optional**  User customizable graph title that is placed in the ```<div class=graph_container>``` container.  |
 | **graphCaption** | **Optional**  User customizable graph caption that is placed in the ```<div class=graph_container>``` container.  |
 
@@ -322,7 +320,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
 ```
 
 #### ```onScrollFunction```
-* Called when scrolling occurs within a section that is visible in the window. The example below fades the graph in and out using triggers ('unhide', 'hide', 'opacityzero') specified in the narration file.
+* Called when scrolling occurs within a section that is visible in the window.  Receives a current progress representing the progress through the existing narration.  The example below takes a range of data and interpolates a current x value based on progress. 
 ```javascript
 /**
  * Called upon scrolling of the section
@@ -343,24 +341,16 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
-function onScrollFunction({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig }) {
-  const myGraphDiv = select(`#${graphContainerId}`);
-  /** use trigger specified in the narration csv file to trigger actions */
-  switch (trigger) {
-    case 'unhide':
-      /** set graph opacity based on progress to fade graph in */
-      myGraphDiv.style('opacity', progress);
-      break;
-    case 'hide':
-      /** set graph opacity based on progress to fade graph out */
-      myGraphDiv.style('opacity', 1 - progress);
-      break;
-    case 'opacityzero':
-      /** set opacity to zero (after fadeout */
-      myGraphDiv.style('opacity', 0);
-      break;
-    default:
-      myGraphDiv.style('opacity', 1);
+function onScrollFunction({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig, state }) {
+  /** user sets state in the csv file as JSON trigger:
+    {
+      xStart: 1,
+      xEnd: 500
+    }
+  */
+  if (state.xStart && state.xEnd) {
+      const currentX = Math.ceil((state.xEnd - state.xStart) * progress);
+      console.log('Current x is: ', currentX);
   }
 }
 ```
