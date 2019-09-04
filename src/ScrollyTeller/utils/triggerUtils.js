@@ -18,7 +18,7 @@ function replaceMap(string, replacements) {
   return string;
 }
 
-export function getStateFromTrigger(sectionConfig, triggerString, attributes, state = {}) {
+export function getStateFromTrigger(triggerString, attributes, state = {}) {
   const attributeReplacedTrigger = replaceMap(triggerString, attributes);
   try {
     const triggerState = JSON.parse(attributeReplacedTrigger);
@@ -36,7 +36,6 @@ export function getNarrationState(sectionConfig, activeIndex, currentProgress) {
     const narrationProgress = (narrationIndex === activeIndex) ? currentProgress : 1;
 
     return getStateFromTrigger(
-      sectionConfig,
       trigger,
       {
         progress: narrationProgress,
