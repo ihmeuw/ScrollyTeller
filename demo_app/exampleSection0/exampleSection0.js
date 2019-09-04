@@ -6,8 +6,8 @@ const snippets = {
   setMyVariable:
     `{ // SECTION CONFIGURATION OBJECT
     // ... other properties
-    onActivateNarrationFunction: function ({ trigger, state, graphId }) {
-      console.log('The text based trigger is: ', trigger);
+    onActivateNarrationFunction: function ({ trigger, state }) {
+      console.log('The json based trigger text is: ', trigger);
       
       console.log('My state variable is: ', state.myVariable);
     },
@@ -15,12 +15,11 @@ const snippets = {
   onScroll:
     `{ // SECTION CONFIGURATION OBJECT
       // ... other properties
-      onScrollFunction: function ({ progress, trigger, state, graphId }) {
-        console.log('My progress (0-1) is: ', progress);
-        
+      onScrollFunction: function ({ progress, state, graph }) {
         if (state.xStart && state.xEnd) {
           const currentX = (state.xEnd - state.xStart) * progress;
           // ... render the graph up to the current x value
+         graph.render({ x: currentX }); 
         }
     } // SECTION CONFIGURATION OBJECT`,
 };
@@ -87,10 +86,11 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {object} - chart instance
    */
-  buildGraphFunction: function buildGraph({ graphId, sectionConfig }) {
+  buildGraphFunction: function buildGraph(graphId, sectionConfig) {
     // build graph
     // render using any initial data (sectionConfig.data) here
     // return the result to store in sectionConfig.graph
+    return 'myGraphInstance';
   },
 
   /**
@@ -142,7 +142,6 @@ export default {
    * @returns {void}
    */
   onActivateNarrationFunction: function onActivateNarration({ state, graphId }) {
-    console.log(state);
     if (state.codeSnippet) {
       select(`#${graphId}`)
         .html(`<pre class="prettyprint lang-js">${snippets[state.codeSnippet]}</pre>\
