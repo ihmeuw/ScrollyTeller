@@ -1,5 +1,5 @@
 import {
-  merge, reduce, slice, replace, isString,
+  isEmpty, isString, merge, reduce, slice, replace,
 } from 'lodash-es';
 
 function replaceMap(string, replacements) {
@@ -21,8 +21,9 @@ function replaceMap(string, replacements) {
 export function getStateFromTrigger(triggerString, attributes, state = {}) {
   const attributeReplacedTrigger = replaceMap(triggerString, attributes);
   try {
-    const triggerState = JSON.parse(attributeReplacedTrigger);
-    return merge(state, triggerState);
+    return isEmpty(attributeReplacedTrigger)
+      ? state
+      : merge(state, JSON.parse(attributeReplacedTrigger));
   } catch (e) {
     console.warn(`malformed JSON in trigger ${triggerString}`);
   }
