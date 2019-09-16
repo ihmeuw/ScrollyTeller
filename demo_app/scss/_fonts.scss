@@ -54,6 +54,10 @@ strong, b {
   font-weight: bold;
 }
 
+em {
+  font-style: italic;
+}
+
 .prettyprint {
   @extend p;
 }

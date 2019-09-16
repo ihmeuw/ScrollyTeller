@@ -19,8 +19,22 @@
   }
 }
 
-/*  ------------- FOR NARRATION CONTENT WITH ID = outline -------------  */
 #section_myExampleSection0 {
+  .narration-content {
+    p pre {
+      text-align: left;
+      padding: 2%;
+      border: darkgray;
+      background: #e4effd;
+      border-width: thin;
+      border-style: solid;
+      border-radius: 10px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+  }
+  
+  /*  ------------- FOR NARRATION CONTENT WITH ID = outline -------------  */
   #narration_outline {
     .narration-content {
       border: #30231d;

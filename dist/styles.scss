@@ -134,8 +134,8 @@ html {
   .scroll {
     /*  ------------- SECTION -------------  */ }
     .scroll .section {
-      -ms-grid-columns: 1fr 2fr;
-      grid-template-columns: 1fr 2fr;
+      -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
           grid-template-areas: "narrationArea graphArea";
       /*  ------------- NARRATION LIST -------------  */
       /*  ------------- GRAPHS -------------  */ }
