@@ -36,8 +36,6 @@ export default class ScrollyTeller {
     this.sectionNamesArray = Object.keys(this.sectionList);
     this.currentSectionId = null;
     this.currentNarrationIndex = null;
-    this.currentTriggerState = {};
-    this.currentTrigger = config.convertTriggerToObject ? {} : '';
 
     /** state to handle google analytics tracking */
     this.sendSectionAnalytics = config.sendSectionAnalytics || false;
@@ -77,11 +75,7 @@ export default class ScrollyTeller {
 
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
-      const {
-        state, trigger,
-      } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
-      this.currentTriggerState = state;
-      this.currentTrigger = trigger;
+      const { state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
 
       const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
       this._updateTitleAndCaption({
@@ -207,8 +201,6 @@ export default class ScrollyTeller {
     const progress = 0;
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
-    this.currentTriggerState = state;
-    this.currentTrigger = trigger;
 
     select(element).classed('active', true);
     const graphContainer = select(`#${graphContainerId}`).classed('active', true);
@@ -282,8 +274,6 @@ export default class ScrollyTeller {
     const progress = utils.calcScrollProgress(scrollProgressElement || element, TRIGGER_OFFSET);
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
-    this.currentTriggerState = state;
-    this.currentTrigger = trigger;
 
     utils.updateGraphStyles({
       graph: select(`#${graphId}`),
@@ -399,11 +389,7 @@ export default class ScrollyTeller {
               graphElement: element,
               graphContainerId,
               graphId,
-              sectionConfig: {
-                ...sectionConfig,
-                trigger: this.currentTrigger,
-                state: this.currentTriggerState,
-              },
+              sectionConfig,
             });
           },
         );
