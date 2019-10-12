@@ -31,10 +31,10 @@ html {
   .scroll .section {
     display: -ms-grid;
     display: grid;
-        -ms-grid-columns: 1fr;
-        grid-template-columns: 1fr;
-        -ms-grid-rows: 50% 50%;
-        grid-template-rows: 50% 50%;
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+    -ms-grid-rows: auto auto;
+    grid-template-rows: auto auto;
         grid-template-areas: "graphArea" "narrationArea";
     /*  ------------- NARRATION LIST -------------  */
     /*  ------------- GRAPHS -------------  */ }
@@ -74,20 +74,6 @@ html {
       top: 0;
       height: 50vh;
       opacity: 0; }
-    @media only screen and (min-width: 35em) {
-    .scroll .section .narration_list {
-    -ms-grid-row: 1;
-    -ms-grid-column: 1; }
-    .scroll .section .graph_container {
-    -ms-grid-row: 1;
-    -ms-grid-column: 2; } }
-    @media only screen and (min-width: 64em) {
-    .scroll .section .narration_list {
-    -ms-grid-row: 1;
-    -ms-grid-column: 1; }
-    .scroll .section .graph_container {
-    -ms-grid-row: 1;
-    -ms-grid-column: 2; } }
       .scroll .section .graph_container .graph_title {
         font-size: 1.5rem; }
       .scroll .section .graph_container .graph_caption {
@@ -115,8 +101,8 @@ html {
     .scroll .section {
       display: -ms-grid;
       display: grid;
-          -ms-grid-columns: 1fr 1fr;
-          grid-template-columns: 1fr 1fr;
+      -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
           grid-template-areas: "narrationArea graphArea";
       /*  ------------- NARRATION LIST -------------  */
       /*  ------------- GRAPHS -------------  */ }
@@ -133,7 +119,13 @@ html {
         top: 10vh;
         height: 80vh;
         padding: 0;
-        margin: 0; } }
+        margin: 0; }
+    .scroll .section .narration_list {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1; }
+    .scroll .section .graph_container {
+    -ms-grid-row: 1;
+    -ms-grid-column: 2; } }
 
 /* override for large screens (full monitor sizes)
  * 64em is also 1028px (if basefont is 16px) */
@@ -142,11 +134,17 @@ html {
   .scroll {
     /*  ------------- SECTION -------------  */ }
     .scroll .section {
-          -ms-grid-columns: 1fr 2fr;
-          grid-template-columns: 1fr 2fr;
+      -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
           grid-template-areas: "narrationArea graphArea";
       /*  ------------- NARRATION LIST -------------  */
       /*  ------------- GRAPHS -------------  */ }
       .scroll .section .narration_list {
-        /*  ------------- NARRATION (block) -------------  */ } }
+        /*  ------------- NARRATION (block) -------------  */ }
+    .scroll .section .narration_list {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1; }
+    .scroll .section .graph_container {
+    -ms-grid-row: 1;
+    -ms-grid-column: 2; } }
 

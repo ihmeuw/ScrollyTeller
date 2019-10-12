@@ -1,18 +1,9 @@
 import {
   get,
   isEmpty,
-  isNil,
 } from 'lodash-es';
 import { select, selectAll } from 'd3-selection';
-
-
-function vhToPx(vh) {
-  if (isNil(vh)) return undefined;
-
-  const { clientHeight: height } = document.documentElement;
-  const percent = parseFloat(vh) / 100;
-  return `${(height * percent)}px`;
-}
+import { vhToPx } from './vhToPxFunctions';
 
 function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   /** build the narration as an html string */
@@ -40,7 +31,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .attr('id', narrationBlockId)
       .style('margin-top', vhToPx(spaceAbove))
       .style('margin-bottom', vhToPx(spaceBelow))
-      .style('min-height', vhToPx(minHeight));
+      .style('min-height', vhToPx(minHeight || (Number(spaceAbove) + Number(spaceBelow))));
 
     const blockContent = blockContainer.append('div')
       .datum(block)

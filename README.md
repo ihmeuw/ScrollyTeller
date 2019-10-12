@@ -66,9 +66,7 @@ myScrollyTellerInstance.render();
 | ```onActivateNarration``` | Called when a narration block hits the top of the page, causing it to become active (and classed as ```graph-scroll-active```. See argument list below, this function is called as ```onActivateNarrationFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle scrolling actions.  |
 | ```onScrollFunction``` |  Called upon scrolling of the section when the section is active. See argument list below, this function is called as ```onScrollFunction({ index, progress, element, graphContainerId, graphId, sectionConfig, trigger })```, and can be used to handle data loading, or graph show-hide actions for a given narration block. |
 | ```onResizeFunction``` |  Called upon resize of the graph container ```onResizeFunction({ graphElement, graphId, sectionConfig })```, and can be used to resize the chart appropriately when the container is resized. |
-| ```convertTriggerToObject``` | **Optional**: Option to covert trigger string for narration steps to an object and create sate object, default is false.  |
-| ```triggerListSeparator``` | **Optional**: Character used to split trigger string into multiple triggers, default is `;`.  |
-| ```triggerKeyValueSeparator``` | **Optional**: Character used create key value paris when converting to an object or creating state, default is `:`.  |
+| ```convertTriggerToObject``` | **Optional**: Option to parse the JSON trigger for narration steps to an object and update the state object, default is true.  |
 
 
 ##### Here's an example of a section configuration that gets added to ```storyConfiguration```
@@ -130,8 +128,8 @@ myScrollyTellerInstance.render();
 
 | narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |  :---: |
-| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | show_chart | This is a Graph Title | This is a graph caption
-| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | show_data_1 | This is a Graph Title | This is a graph caption
+| 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | <pre>{ show_chart: true }</pre> | This is a Graph Title | This is a graph caption
+| 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | <pre>{ show_data_1: true }</pre> | This is a Graph Title | This is a graph caption
 
  Here's a description of what each column header controls:
 
@@ -144,7 +142,7 @@ myScrollyTellerInstance.render();
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |
-| **trigger** | **Optional** user customizable field to help trigger actions. Can be a number or string describing an action, data name, etc. CANNOT have spaces. See examples below for usage.  |
+| **trigger** | **Optional** user customizable JSON to help trigger actions such as chart visiblity, styles, data ranges, etc. Must be a valid JSON string with the optional keyword `$progress` that refers to scroll progress within the current narration block. Invalid JSON strings are indicated by console warnings.  |
 | **graphTitle** | **Optional**  User customizable graph title that is placed in the ```<div class=graph_container>``` container.  |
 | **graphCaption** | **Optional**  User customizable graph caption that is placed in the ```<div class=graph_container>``` container.  |
 
@@ -155,12 +153,70 @@ The method `scrollTo` on the `ScrollyTeller` object allows you to auto-scroll to
 ```javascript
 /**
  * @param {string|number} sectionIdentifier - `sectionIdentifier` of the target section
- * @param {string|number} [narrationId] - optional: `narrationId` of the target narration block (default: first narration block of target section)
- * @param {object} [options] - optional: configuration object passed to `scrollIntoView` (https://github.com/KoryNunn/scroll-into-view)
- * @returns {Promise<void>}
+ * @param {string|number|undefined} [narrationIdStringOrNumericIndex]
+ *  - optional: if undefined, defaults to the first narration block of target section
+ *              if number, argument is treated as the index of the narration block to scroll to
+ *              if string, argument is treated as the `narrationId` of the target narration block
+ * @param {object} [options] - optional: configuration object passed to `scrollIntoView`
+ *              (https://github.com/KoryNunn/scroll-into-view)
+ * @returns {Promise<void>} - returns empty promise
  */
-async scrollTo(sectionIdentifier, narrationId, options) { ... }
+async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) { ... }
 ```
+----------------------------------------------------------------------------------------------------------------------------------
+### Auto-scrolling to the previous/next narration block
+The methods `scrollToPreviousNarration/scrollToNextNarration` on the `ScrollyTeller` object allows you to auto-scroll to the previous/next narration blocks.  ScrollyTeller automatically adds event listeners to scroll to the previous narration block with keyboard events `<ArrowUp>` and `<ArrowLeft>`, and to the next narration block with keyboard events `<Space>`, `<ArrowDown>`, and `<ArrowRight>`, but the asynchronous functions could be used for custom navigation functionality as well.
+
+```javascript
+/**
+ * Scrolls "up" to the previous narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToPreviousNarration() { ... }
+
+/**
+ * Scrolls "down" to the next narration block in the story
+ * @return {Promise<void>} - returns empty promise
+ */
+async scrollToNextNarration() { ... }
+```
+
+
+### Tracking Scroll Progress using Google Analytics
+
+ScrollyTeller can automatically send google analytics events when sections or narration blocks are entered, and when the `scrollTo()` function is called.  To enable these features, add the following booleans to the ScrollyTeller configuration object.
+
+ScrollyTeller *requires that the `ga()` function from google's `analytics.js` be in the global scope with valid credentials.*  See [these instructions for how to set up google analytics](https://developers.google.com/analytics/devguides/collection/analyticsjs/). In the future, we hope to support the new `gtag.js` library in addition to `analytics.js`.
+
+```javascript
+const myScrollyTellerConfig = {
+  appContainerId: 'myAppId',
+  /** section list */
+  sectionList: { /** ... see above for section list properties */ },
+  
+  /** optional google analytics properties */
+  sendSectionAnalytics: true, // send analytics events when a section is entered or exited
+  sendNarrationAnalytics: true, // send analytics events when each narration block is entered or exited
+  sendScrollToAnalytics: true, // send analytics events when scrollTo() is called
+  maxTimeInSeconds: 60, // optionally cap the maximum amount of time that can be sent to google (think of this as the maximum user "idle" time
+};
+
+// call render methods...
+```
+
+Page Events that ScrollyTeller can send are:
+
+| ScrollyTeller config flag (sends events when true) | EventCategory | EventAction | EventLabel | EventValue |
+| :---: | :---: | :---: | :---: | :---: |
+| sendSectionAnalytics | Time in Narration (seconds) | [sectionIndex]--[sectionIdentifier] | Exited [sectionIdentifier], narration #[exitingNarrationIndex] after (EventValue) seconds | [seconds a user spent in section] |
+| sendSectionAnalytics | Section Entry Time (seconds since page load) | [sectionIndex]--[sectionIdentifier] | Entered section [enteringSectionId] (EventValue) seconds since page load | [seconds since page load section was entered] |
+| sendNarrationAnalytics | Time in Narration (seconds) | [sectionIndex]--[sectionIdentifier]--[narrationIndex] | Exited [section], narration #[exitingNarrationIndex] after (EventValue) seconds | [seconds a user spent in a given narration block] |
+| sendNarrationAnalytics | Narration Entry Time (seconds since page load) | [sectionIndex]--[sectionIdentifier]--[narrationIndex] | Entered narration #[enteringNarrationIndex] (EventValue) seconds since page load | [seconds since page load narration block was entered] |
+| sendScrollToAnalytics | Scroll From-To (SectionIndex---SectionId---NarrationIndex) | From [from section]--[narration index of exit] | To [to section]--[narration index of entry] | [seconds since page load that scrollTo() occurred] |
+| sendScrollToAnalytics | Scroll To-From (SectionIndex---SectionId---NarrationIndex) | To [to section]--[narration index of entry] | From [from section]--[narration index of exit] | [seconds since page load that scrollTo() occurred] |
+
+All of the times are reported as PageEvents in seconds, and can be given an upper bound by specifying `maxTimeInSeconds`, which defaults to `Infinity`. 
+
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Sample implementations of ```reshapeDataFunction()```, ```buildGraphFunction()```, ```onActivateNavigationFunction()```, and ```onScrollFunction()```
 #### ```reshapeDataFunction()```
@@ -226,7 +282,7 @@ function buildGraphFunction(graphId, sectionConfig) {
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
- * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Not computed if the value for `convertTriggerToObject` in section config is set to false.
  * @param {string} [params.direction] - the direction the event happened in (up or down)
  * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
@@ -264,7 +320,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
 ```
 
 #### ```onScrollFunction```
-* Called when scrolling occurs within a section that is visible in the window. The example below fades the graph in and out using triggers ('unhide', 'hide', 'opacityzero') specified in the narration file.
+* Called when scrolling occurs within a section that is visible in the window.  Receives a current progress representing the progress through the existing narration.  The example below takes a range of data and interpolates a current x value based on progress. 
 ```javascript
 /**
  * Called upon scrolling of the section
@@ -273,7 +329,7 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {number} [params.progress] - 0-1 (sort of) value indicating progress through the active narration block
  * @param {HTMLElement} [params.element] - the narration block DOM element that is currently active
  * @param {string|object} [params.trigger] - the trigger attribute for narration block that is currently active. Optionally converted to an object based on the value set for `convertTriggerToObject` in section config.
- * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Only computed if the value for `convertTriggerToObject` in section config is set to true.
+ * @param {object} [params.state] - the full state of all narration blocks before and including the active one. Not computed if the value for `convertTriggerToObject` in section config is set to false.
  * @param {string} [params.graphContainerId] - id of the graph container in this section. const graphContainer = d3.select(`#${graphContainerId}`);
  * @param {string} [params.graphId] - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
  * @param {object} [params.sectionConfig] - the configuration object passed to ScrollyTeller
@@ -285,24 +341,16 @@ function onActivateNarrationFunction({ index, progress, element, trigger, direct
  * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
  * @returns {void}
  */
-function onScrollFunction({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig }) {
-  const myGraphDiv = select(`#${graphContainerId}`);
-  /** use trigger specified in the narration csv file to trigger actions */
-  switch (trigger) {
-    case 'unhide':
-      /** set graph opacity based on progress to fade graph in */
-      myGraphDiv.style('opacity', progress);
-      break;
-    case 'hide':
-      /** set graph opacity based on progress to fade graph out */
-      myGraphDiv.style('opacity', 1 - progress);
-      break;
-    case 'opacityzero':
-      /** set opacity to zero (after fadeout */
-      myGraphDiv.style('opacity', 0);
-      break;
-    default:
-      myGraphDiv.style('opacity', 1);
+function onScrollFunction({ index, progress, element, trigger, graphContainerId, graphId, sectionConfig, state }) {
+  /** user sets state in the csv file as JSON trigger:
+    {
+      xStart: 1,
+      xEnd: 500
+    }
+  */
+  if (state.xStart && state.xEnd) {
+      const currentX = Math.ceil((state.xEnd - state.xStart) * progress);
+      console.log('Current x is: ', currentX);
   }
 }
 ```
