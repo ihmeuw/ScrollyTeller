@@ -2,55 +2,85 @@
 export default {
   scrollyTellerConfig: `
     const storyConfiguration = {
-      /** The id of the div that will contain all of the scrolling content */
-      appContainerId: 'app',
-      /** a list of story section configurations, keyed by unique sectionIdentifier. */
-      sectionList: {
-        /** [unique sectionIdentifier]: { section config object } */
-        wealthAndHealth: wealthAndHealthConfig, // {object} containing data, graph, etc
+
+      appContainerId: 'app', // div id of the story
+ 
+      sectionList: { // story section configurations, keyed by a sectionIdentifier string
+      
+        wealthAndHealth: { /* ...a section configuration object... */ },
+        
+        anotherStoryId: { /* ... another section configuration... */ },
       },
     };
 
-    /** create the ScrollyTeller object to validate the config */
-    const storyInstance = new ScrollyTeller(storyConfiguration);
+    const storyInstance = new ScrollyTeller(storyConfiguration); // validate the config
 
-    /** parse data and build all HMTL */
-    storyInstance.render();
-  `,
+    storyInstance.render(); // fetch data and build HMTL`,
   sectionConfigSummary: `
   const wealthAndHealthConfig = { // Section Config object
-    // STATIC PROPS 
     sectionIdentifier: 'healthAndWealth',  // unique identifier (string)
+    
+    // 1) DATA PATHS/PROMISES 
     narration: 'path/to/narration.csv',  // can be promise, array, or path to file
     data: 'path/to/wealthAndHealthData.json',  // can be promise, array, or path to file
     
-    // INITIAL RENDER FUNCTIONS, called upon ScrollyTeller.render()
-    reshapeDataFunction: function () {},
-    buildGraphFunction: function () {},
+    // 2) FIRST RENDER
+    reshapeDataFunction: function (data) {},
+    buildGraphFunction: function (graphId, { data }) {},
 
-    // EVENT BASED FUNCTIONS
+    // 3) ON USER EVENTS
     onActivateNarrationFunction: function () {},
     onScrollFunction: function () {},
-    onResizeFunction: function () { },
+    onResizeFunction: function () {},
     
-  }; // end Section Config object
-  `,
+  }; // end Section Config object`,
+  sectionConfigFlow: `
+  const wealthAndHealthConfig = {
+    // on storyInstance.render()...
+    narration: 'path/to/narration.csv',
+    /* after fetching narration... 
+          &#8600
+                ScrollyTeller renders narration as HTML */
+               
+    data: 'path/to/wealthAndHealthData.json',
+    /* after fetching data... 
+          &#8600
+                &#8600  raw data is passed to reshapeDataFunction 
+                      &#8600                                                                                */
+    reshapeDataFunction: function (rawData) {
+        /* process rawData */
+        return data;
+    }, /*
+              &#8600
+                    &#8600 reshaped data is passed to buildGraphFunction
+                          &#8600                                                                            */
+    buildGraphFunction: function (graphId, { data }) {
+        /* select graphId, build graph, render graph */
+        return graph;
+    }, /*
+              &#8600
+                    &#8600  returned graph instance is stored in
+                          &#8600 sectionConfig: { data, graph }
+                                &#8600 
+                                    ... and is passed to event handlers when triggered                     */
+    onActivateNarrationFunction: function ({ data, graph }) {},
+    onScrollFunction: function ({ data, graph }) {},
+    onResizeFunction: function ({ data, graph }) {},
+  };`,
   sectionConfigReshapeData: `
   const wealthAndHealthConfig = { // Section Config object
     data: 'path/to/datafile.json', // can be promise, array, or path to file
-    
-    // 1) Called after data is fetched to do any pre-processing
     reshapeDataFunction: function (results) {
+    // 1) Called after data is fetched to do any pre-processing
       // ... do some processing
       return data; // return an object or array
     },
-  }; // end Section Config object
-  `,
+  }; // end Section Config object`,
   sectionConfigReshapeDemoData: `
   const wealthAndHealthConfig = { // Section Config object
-    data: 'path/to/datafile.json', // can be promise, array, or path to file
-    
-    // 1) Called after data is fetched to do any pre-processing
+    data: 'path/to/datafile.json', /* can be promise, array, or path to file
+          &#8600
+                &#8600                                                          */
     reshapeDataFunction: function (results) {
       /** compute data domains for income (x), life expectancy (y), and years */
       const xDomain = computeXDomain(results); // min, max of all income [300, 100000]
@@ -65,8 +95,7 @@ export default {
         yearDomain,
       };
     },
-  }; // end Section Config object
-  `,
+  }; // end Section Config object`,
   sectionConfigBuildGraph: `
   const wealthAndHealthConfig = { // Section Config object
     // 2) Called after reshapeDataFunction()
@@ -86,6 +115,5 @@ export default {
       /** REMEMBER TO RETURN THE GRAPH! */
       return graph;
     },
-  }; // end Section Config object
-  `,
+  }; // end Section Config object`,
 };

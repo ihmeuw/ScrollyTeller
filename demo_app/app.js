@@ -1,6 +1,7 @@
 /* global document window */
 import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
+import intro from './introduction/scrollyTellerConfig';
 import myExampleSection0 from './exampleSection0/exampleSection0';
 import wealthAndHealthConfig from './healthAndWealthOfNations/scrollyTellerConfig';
 
@@ -15,7 +16,8 @@ export default class App {
        * the properties defined in the next section */
       sectionList: {
         /** [key = sectionIdentifier]: value = { section config object } */
-        // [myExampleSection0.sectionIdentifier]: myExampleSection0,
+        [intro.sectionIdentifier]: intro,
+        [myExampleSection0.sectionIdentifier]: myExampleSection0,
         [wealthAndHealthConfig.sectionIdentifier]: wealthAndHealthConfig,
       },
     };

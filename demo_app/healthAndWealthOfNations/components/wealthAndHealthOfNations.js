@@ -156,6 +156,8 @@ export default class WealthAndHealthOfNations {
 
     update
       .enter().append('circle')
+      .attr('cx', d => this.xScale(d.income[yearIndex]))
+      .attr('cy', d => this.yScale(d.lifeExpectancy[yearIndex]))
       .merge(update)
       .transition()
       .duration(duration)
