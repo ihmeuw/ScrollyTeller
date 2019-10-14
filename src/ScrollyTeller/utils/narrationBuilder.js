@@ -25,16 +25,20 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     } = block;
 
     const narrationBlockId = `${names.narrationId(narrationId)}`;
-    const scaledHeight = (window.innerWidth <= 480) ? minHeight * 2 : minHeight;
+    const isMobile = (window.innerWidth <= 480);
+    const scaledHeight = isMobile ? minHeight * 2 : minHeight;
+    const scaledSpaceAbove = isMobile ? spaceAbove * 2 : minHeight;
+    const scaledSpaceBelow = isMobile ? spaceBelow * 2 : minHeight;
+
 
     const blockContainer = narrationDiv
       .append('div')
       .datum(block)
       .attr('class', css.narrationBlock)
       .attr('id', narrationBlockId)
-      .style('margin-top', vhToPx(spaceAbove))
-      .style('margin-bottom', vhToPx(spaceBelow))
-      .style('min-height', vhToPx(scaledHeight || (Number(spaceAbove) + Number(spaceBelow))));
+      .style('margin-top', vhToPx(scaledSpaceAbove))
+      .style('margin-bottom', vhToPx(scaledSpaceBelow))
+      .style('min-height', vhToPx(scaledHeight || (Number(scaledSpaceAbove) + Number(scaledSpaceBelow))));
 
     const blockContent = blockContainer.append('div')
       .datum(block)
