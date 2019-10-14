@@ -1,3 +1,5 @@
+/* global window document */
+/* eslint-disable require-jsdoc */
 import {
   get,
   isEmpty,
@@ -23,6 +25,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     } = block;
 
     const narrationBlockId = `${names.narrationId(narrationId)}`;
+    const scaledHeight = (window.innerWidth <= 480) ? minHeight * 2 : minHeight;
 
     const blockContainer = narrationDiv
       .append('div')
@@ -31,7 +34,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .attr('id', narrationBlockId)
       .style('margin-top', vhToPx(spaceAbove))
       .style('margin-bottom', vhToPx(spaceBelow))
-      .style('min-height', vhToPx(minHeight || (Number(spaceAbove) + Number(spaceBelow))));
+      .style('min-height', vhToPx(scaledHeight || (Number(spaceAbove) + Number(spaceBelow))));
 
     const blockContent = blockContainer.append('div')
       .datum(block)
