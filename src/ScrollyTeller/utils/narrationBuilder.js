@@ -25,11 +25,11 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     } = block;
 
     const narrationBlockId = `${names.narrationId(narrationId)}`;
+
     const isMobile = (window.innerWidth <= 480);
     const scaledHeight = isMobile ? minHeight * 2 : minHeight;
     const scaledSpaceAbove = isMobile ? spaceAbove * 2 : minHeight;
     const scaledSpaceBelow = isMobile ? spaceBelow * 2 : minHeight;
-
 
     const blockContainer = narrationDiv
       .append('div')
