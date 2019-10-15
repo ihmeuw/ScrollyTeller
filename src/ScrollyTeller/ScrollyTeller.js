@@ -9,6 +9,7 @@ import {
   isUndefined,
   noop,
 } from 'lodash-es';
+import isTouchDevice from './utils/isTouchDevice';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3-selection';
 import * as utils from './utils';
@@ -57,6 +58,8 @@ export default class ScrollyTeller {
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
 
     this._triggersDisabled = false;
+
+    this.isTouchDevice = isTouchDevice();
   }
 
   /** 'PRIVATE' METHODS * */
@@ -427,11 +430,17 @@ export default class ScrollyTeller {
     this._buildResizeListeners();
     this._buildKeyboardListeners();
 
-    window.addEventListener('resize', () => {
-      forEach(this.sectionList, (config) => {
-        utils.resizeNarrationBlocks(config);
-        config.scroller.resize();
-      });
+    if (this.isTouchDevice) {
+      window.addEventListener('orientationchange', this._handleResizeEvent);
+    } else {
+      window.addEventListener('resize', this._handleResizeEvent);
+    }
+  }
+
+  _handleResizeEvent() {
+    forEach(this.sectionList, (config) => {
+      utils.resizeNarrationBlocks(config);
+      config.scroller.resize();
     });
   }
 
