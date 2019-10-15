@@ -58,8 +58,6 @@ export default class ScrollyTeller {
     this._assignConfigVariablesToSectionConfigs(this.cssNames);
 
     this._triggersDisabled = false;
-
-    this.isTouchDevice = isTouchDevice();
   }
 
   /** 'PRIVATE' METHODS * */
@@ -430,7 +428,7 @@ export default class ScrollyTeller {
     this._buildResizeListeners();
     this._buildKeyboardListeners();
 
-    if (this.isTouchDevice) {
+    if (isTouchDevice()) {
       window.addEventListener('orientationchange', this._handleResizeEvent);
     } else {
       window.addEventListener('resize', this._handleResizeEvent);
