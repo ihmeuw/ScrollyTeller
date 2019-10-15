@@ -32,6 +32,9 @@ export default class ScrollyTeller {
 
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
+    /** multiply minHeightInVh, spaceAboveInVh, and spaceBelowInVh by this factor on mobile to
+     * pad scrolling */
+    this.mobileScrollHeightMultiplier = config.mobileScrollHeightMultiplier || 1;
 
     /** state to handle advancing to previous/next narration and time tracking */
     this.sectionNamesArray = Object.keys(this.sectionList);
@@ -402,7 +405,13 @@ export default class ScrollyTeller {
       .append('div')
       .attr('class', this.cssNames.scrollContainer());
 
-    forEach(this.sectionList, utils.buildSectionWithNarration);
+    const mobileScrollHeightMultiplier = isTouchDevice()
+      ? this.mobileScrollHeightMultiplier
+      : 1;
+    forEach(
+      this.sectionList,
+      config => (utils.buildSectionWithNarration(config, mobileScrollHeightMultiplier)),
+    );
   }
 
   _sectionIndexFromSectionIdentifier(sectionIdentifier) {
@@ -429,15 +438,22 @@ export default class ScrollyTeller {
     this._buildKeyboardListeners();
 
     if (isTouchDevice()) {
-      window.addEventListener('orientationchange', this._handleResizeEvent);
+      window.addEventListener('orientationchange', () => {
+        this._handleResizeEvent();
+      });
     } else {
-      window.addEventListener('resize', this._handleResizeEvent);
+      window.addEventListener('resize', () => {
+        this._handleResizeEvent();
+      });
     }
   }
 
   _handleResizeEvent() {
+    const mobileScrollHeightMultiplier = isTouchDevice()
+      ? this.mobileScrollHeightMultiplier
+      : 1;
     forEach(this.sectionList, (config) => {
-      utils.resizeNarrationBlocks(config);
+      utils.resizeNarrationBlocks(config, mobileScrollHeightMultiplier);
       config.scroller.resize();
     });
   }

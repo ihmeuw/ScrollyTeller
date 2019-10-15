@@ -7,7 +7,37 @@ import {
 import { select, selectAll } from 'd3-selection';
 import { vhToPx } from './vhToPxFunctions';
 
-function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
+function scaleMarginTop(mobileScrollHeightMultiplier = 1) {
+  return function ({ spaceAboveInVh }) {
+    return vhToPx(spaceAboveInVh * mobileScrollHeightMultiplier);
+  };
+}
+
+function scaleMarginBottom(mobileScrollHeightMultiplier = 1) {
+  return function ({ spaceBelowInVh }) {
+    return vhToPx(spaceBelowInVh * mobileScrollHeightMultiplier);
+  };
+}
+
+function scaleMinHeight(mobileScrollHeightMultiplier = 1) {
+  return function ({ minHeightInVh, spaceAboveInVh, spaceBelowInVh }) {
+    const scaledHeight = minHeightInVh * mobileScrollHeightMultiplier;
+    const scaledSpaceAbove = spaceAboveInVh * mobileScrollHeightMultiplier;
+    const scaledSpaceBelow = spaceBelowInVh * mobileScrollHeightMultiplier;
+
+    return vhToPx(
+      scaledHeight || (Number(scaledSpaceAbove) + Number(scaledSpaceBelow)),
+    );
+  };
+}
+
+
+function buildNarrationBlocks(
+  narrationDiv,
+  narrationBlocksArray,
+  config,
+  mobileScrollHeightMultiplier = 1,
+) {
   /** build the narration as an html string */
   const names = config.cssNames;
   const css = get(config, ['cssNames', 'css']);
@@ -15,9 +45,6 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   narrationBlocksArray.forEach((block) => {
     const {
       narrationId,
-      spaceAboveInVh: spaceAbove,
-      spaceBelowInVh: spaceBelow,
-      minHeightInVh: minHeight,
       h2Text,
       paragraphText,
       hRefText,
@@ -26,19 +53,14 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
 
     const narrationBlockId = `${names.narrationId(narrationId)}`;
 
-    const isMobile = (window.innerWidth <= 480);
-    const scaledHeight = isMobile ? minHeight * 2 : minHeight;
-    const scaledSpaceAbove = isMobile ? spaceAbove * 2 : minHeight;
-    const scaledSpaceBelow = isMobile ? spaceBelow * 2 : minHeight;
-
     const blockContainer = narrationDiv
       .append('div')
       .datum(block)
       .attr('class', css.narrationBlock)
       .attr('id', narrationBlockId)
-      .style('margin-top', vhToPx(scaledSpaceAbove))
-      .style('margin-bottom', vhToPx(scaledSpaceBelow))
-      .style('min-height', vhToPx(scaledHeight || (Number(scaledSpaceAbove) + Number(scaledSpaceBelow))));
+      .style('margin-top', scaleMarginTop(mobileScrollHeightMultiplier))
+      .style('margin-bottom', scaleMarginBottom(mobileScrollHeightMultiplier))
+      .style('min-height', scaleMinHeight(mobileScrollHeightMultiplier));
 
     const blockContent = blockContainer.append('div')
       .datum(block)
@@ -63,19 +85,19 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   });
 }
 
-export function resizeNarrationBlocks(config) {
+export function resizeNarrationBlocks(config, mobileScrollHeightMultiplier) {
   const { sectionIdentifier, cssNames: names } = config;
 
   const css = get(names, ['css']);
   const sectionId = names.sectionId(sectionIdentifier);
 
   selectAll(`#${sectionId} .${css.narrationBlock}`)
-    .style('margin-top', ({ spaceAboveInVh: spaceAbove }) => vhToPx(spaceAbove))
-    .style('margin-bottom', ({ spaceBelowInVh: spaceBelow }) => vhToPx(spaceBelow))
-    .style('min-height', ({ minHeightInVh: minHeight }) => vhToPx(minHeight));
+    .style('margin-top', scaleMarginTop(mobileScrollHeightMultiplier))
+    .style('margin-bottom', scaleMarginBottom(mobileScrollHeightMultiplier))
+    .style('min-height', scaleMinHeight(mobileScrollHeightMultiplier));
 }
 
-export function buildSectionWithNarration(config) {
+export function buildSectionWithNarration(config, mobileScrollHeightMultiplier) {
   const { sectionIdentifier, cssNames: names, narration } = config;
 
   const sectionDiv = select(`.${names.scrollContainer()}`)
@@ -97,5 +119,5 @@ export function buildSectionWithNarration(config) {
 
   /** select the appropriate section by id, and append a properly formatted html string
    * containing the contents of each narration block (row in the narration.csv file) */
-  buildNarrationBlocks(narrationDiv, narration, config);
+  buildNarrationBlocks(narrationDiv, narration, config, mobileScrollHeightMultiplier);
 }
