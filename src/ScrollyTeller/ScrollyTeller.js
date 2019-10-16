@@ -439,7 +439,11 @@ export default class ScrollyTeller {
 
     if (isTouchDevice()) {
       window.addEventListener('orientationchange', () => {
-        this._handleResizeEvent();
+        const afterOrientationChange = () => {
+          this._handleResizeEvent();
+          window.removeEventListener('resize', afterOrientationChange);
+        };
+        window.addEventListener('resize', afterOrientationChange);
       });
     } else {
       window.addEventListener('resize', () => {
