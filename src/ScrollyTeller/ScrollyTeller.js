@@ -33,7 +33,8 @@ export default class ScrollyTeller {
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
     /** multiply minHeightInVh, spaceAboveInVh, and spaceBelowInVh by this factor on mobile to
-     * pad scrolling */
+     * pad scrolling
+     * TODO: DOCUMENT this config variable in the README.md */
     this.mobileScrollHeightMultiplier = config.mobileScrollHeightMultiplier || 1;
 
     /** state to handle advancing to previous/next narration and time tracking */
