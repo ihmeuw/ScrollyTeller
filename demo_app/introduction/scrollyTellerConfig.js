@@ -2,6 +2,7 @@ import { select } from 'd3-selection';
 import './data/narration.csv';
 import './scss/introduction.scss';
 import './data/slides';
+import { updateSvgImage } from '../utils';
 
 /** local state object */
 const sectionState = {
@@ -65,6 +66,9 @@ export default {
     /** REMEMBER TO RETURN THE GRAPH! (could also return as an object with multiple graphs, etc)
      * The graph object is assigned to sectionConfig.graph, which is returned to all scrollyteller
      * functions such as buildGraphFunction(), onActivateNarrationFunction(), onScrollFunction()  */
+    select(`#${graphId}`)
+      .append('div')
+      .classed('imageDiv', true);
     return undefined;
   },
 
@@ -113,28 +117,13 @@ export default {
    */
   onActivateNarrationFunction: function onActivateNarration({
     graphId,
+    state,
     state: {
       svgFileName,
     },
   }) {
-    /** DISPLAY CODE SNIPPETS */
-    if (sectionState.svgFileName !== svgFileName) {
-      const html = svgFileName
-        ? `<img src="dist/images/${svgFileName}.svg" />`
-        : '';
-      const graph = select(`#${graphId}`);
-      graph
-        .transition()
-        .duration(500)
-        .style('opacity', 0)
-        .on('end', () => {
-          graph
-            .html(html)
-            .transition()
-            .duration(500)
-            .style('opacity', svgFileName ? 1 : 0);
-        });
-    }
+    /** DISPLAY/FLIP BETWEEN IMAGES */
+    updateSvgImage(graphId, state, sectionState.svgFileName);
     sectionState.svgFileName = svgFileName;
   },
 

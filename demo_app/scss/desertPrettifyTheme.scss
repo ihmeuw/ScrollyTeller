@@ -22,7 +22,8 @@ pre.prettyprint {
   margin: auto;
   padding: 3% !important; /* these important flags override the prettyprint.css that gets reloaded on every snippet render */
   padding-left: 5% !important; /* make room for line numbers */
-  width: fit-content;
+  width: 100%;
+  overflow-x: scroll;
 }
 pre .nocode { background-color: none; color: #000 }
 pre .str { color: #ffa0a0 } /* string  - pink */

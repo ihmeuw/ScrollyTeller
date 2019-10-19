@@ -3,7 +3,7 @@ import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
 import intro from './introduction/scrollyTellerConfig';
 import myExampleSection0 from './exampleSection0/exampleSection0';
-import wealthAndHealthConfig from './healthAndWealthOfNations/scrollyTellerConfig';
+import wealthAndHealthConfig from './wealthAndHealthOfNations/scrollyTellerConfig';
 
 export default class App {
   constructor() {
@@ -17,8 +17,8 @@ export default class App {
       sectionList: {
         /** [key = sectionIdentifier]: value = { section config object } */
         [intro.sectionIdentifier]: intro,
-        [myExampleSection0.sectionIdentifier]: myExampleSection0,
         [wealthAndHealthConfig.sectionIdentifier]: wealthAndHealthConfig,
+        [myExampleSection0.sectionIdentifier]: myExampleSection0,
       },
     };
 
