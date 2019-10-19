@@ -1,4 +1,4 @@
-narrationId,spaceAboveInVh,spaceBelowInVh,minHeightInVh,h2Text,paragraphText,hRef,hRefText,trigger,imageUrl,graphTitle,graphCaption,imageUrl
+narrationId,marginTopVh,marginBottomVh,minHeightVh,h2Text,paragraphText,hRef,hRefText,trigger,imageUrl,graphTitle,graphCaption,imageUrl
 0,50,0,50,This is scrolling <strong>'Narration'</strong> in ScrollyTeller,,,,"{
 	""containerStyle"": {
 		""opacity"": 0

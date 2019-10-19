@@ -1,6 +1,16 @@
-narrationId,spaceAboveInVh,spaceBelowInVh,minHeightInVh,h2Text,paragraphText,hRef,hRefText,trigger,graphTitle,graphCaption
-,40,40,50,So you want to build a cool scrolling story?,,,,svgFileName:slide1,,
-,40,40,50,And trigger events in your chart when different text boxes appear?,,,,svgFileName:slide2,,
-,40,40,50,But you don't want to write a lot of HTML boilerplate...,,,,svgFileName:slide3,,
-,40,40,50,ScrollyTeller can help you put it all together!,,,,svgFileName:slide4,,
-,40,40,50,How does it work?,"ScrollyTeller uses a JavaScript configuration object to define data resources like text narration and data for your chart, and builds the HTML layout of the page. The configuration also contains functions to build your chart and event handlers to respond to scrolling and resize events.",,,svgFileName:slide5,,
+narrationId,marginTopVh,marginBottomVh,minHeightVh,h2Text,paragraphText,hRef,hRefText,trigger,graphTitle,graphCaption
+,40,40,50,So you want to build a cool scrolling story?,,,,"{
+	""svgFileName"": ""slide1""
+}",,
+,40,40,50,And trigger events in your chart when different text boxes appear?,,,,"{
+	""svgFileName"": ""slide2""
+}",,
+,40,40,50,But you don't want to write a lot of HTML boilerplate...,,,,"{
+	""svgFileName"": ""slide3""
+}",,
+,40,40,50,ScrollyTeller can help you put it all together!,,,,"{
+	""svgFileName"": ""slide4""
+}",,
+,40,40,50,How does it work?,"ScrollyTeller uses a JavaScript configuration object to define data resources like text narration and data for your chart, and builds the HTML layout of the page. The configuration also contains functions to build your chart and event handlers to respond to scrolling and resize events.",,,"{
+	""svgFileName"": ""slide5""
+}",,

@@ -13,9 +13,9 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   narrationBlocksArray.forEach((block) => {
     const {
       narrationId,
-      spaceAboveInVh: spaceAbove,
-      spaceBelowInVh: spaceBelow,
-      minHeightInVh: minHeight,
+      marginTopVh: spaceAbove,
+      marginBottomVh: spaceBelow,
+      minHeightVh: minHeight,
       h2Text,
       paragraphText,
       hRefText,
@@ -63,9 +63,9 @@ export function resizeNarrationBlocks(config) {
   const sectionId = names.sectionId(sectionIdentifier);
 
   selectAll(`#${sectionId} .${css.narrationBlock}`)
-    .style('margin-top', ({ spaceAboveInVh: spaceAbove }) => vhToPx(spaceAbove))
-    .style('margin-bottom', ({ spaceBelowInVh: spaceBelow }) => vhToPx(spaceBelow))
-    .style('min-height', ({ minHeightInVh: minHeight }) => vhToPx(minHeight));
+    .style('margin-top', ({ marginTopVh: spaceAbove }) => vhToPx(spaceAbove))
+    .style('margin-bottom', ({ marginBottomVh: spaceBelow }) => vhToPx(spaceBelow))
+    .style('min-height', ({ minHeightVh: minHeight }) => vhToPx(minHeight));
 }
 
 export function buildSectionWithNarration(config) {

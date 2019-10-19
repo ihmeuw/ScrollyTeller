@@ -126,7 +126,7 @@ myScrollyTellerInstance.render();
 ### Narration file/object format
 ##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
-| narrationId | spaceAboveInVh | spaceBelowInVh | minHeightInVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
+| narrationId | marginTopVh | marginBottomVh | minHeightVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |  :---: |
 | 0 | 40 | 40 | 100 | Some text that will be formatted as ```<h2>``` | Some text that will be formatted as ```<p>``` | www.link.com | I'm a link to link.com | <pre>{ show_chart: true }</pre> | This is a Graph Title | This is a graph caption
 | 1 | 40 | 40 | 200 | More Narration... | Here's why this chart is important!| | | <pre>{ show_data_1: true }</pre> | This is a Graph Title | This is a graph caption
@@ -136,9 +136,9 @@ myScrollyTellerInstance.render();
 | Column Header/Property Name | Effect |
 | :---: | :---: |
 | **narrationId** | Appended to the id field of each narration block as "narration_ + ```narrationId```". Can be non unique. Provided mainly as a means of distinguishing narration blocks easily. |
-| **spaceAboveInVh** | Specifies the size of the margin ***above*** any text in each narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
-| **spaceBelowInVh** | Specifies the size the margin ***below*** any text in each narration block.  Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  |
-| **minHeightInVh** | Specifies the minimum height of the narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
+| **marginTopVh** | Specifies the size of the margin ***above*** any text in each narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
+| **marginBottomVh** | Specifies the size the margin ***below*** any text in each narration block.  Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height.  |
+| **minHeightVh** | Specifies the minimum height of the narration block. Units are in viewport height **vh**, but are converted to pixels **px** upon load or resize to avoid issues with mobile browsers using a reduced view height. |
 | **h2Text** | **Optional** larger text at the top of each narration block. If unspecified, no ```<h2>``` text is added to the narration block |
 | **paragraphText** | **Optional** paragraph text below the h2Text in each narration block. If unspecified, no ```<p>``` text is added to the narration block |
 | **hRef** & **hRefText** | **Optional** link for each narration block. If either **hRef** or **hRefText** is unspecified, no ```<a>``` link is added to the narration block |

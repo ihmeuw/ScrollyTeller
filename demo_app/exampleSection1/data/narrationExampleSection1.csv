@@ -1,4 +1,4 @@
-narrationId,spaceAboveInVh,spaceBelowInVh,h2Text,paragraphText,hRef,hRefText,trigger
+narrationId,marginTopVh,marginBottomVh,h2Text,paragraphText,hRef,hRefText,trigger
 1,40,40,EXAMPLE SECTION WITH CHART,Scroll down to fade the graph in,,,"{
 	""containerStyle"": {
 		""opacity"": 0
