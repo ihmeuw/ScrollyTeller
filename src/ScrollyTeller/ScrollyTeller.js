@@ -479,6 +479,9 @@ export default class ScrollyTeller {
    * @returns {Promise<void>} - returns empty promise
    */
   async scrollTo(sectionIdentifier, narrationIdStringOrNumericIndex, options) {
+    if (isNil(sectionIdentifier) || isNil(narrationIdStringOrNumericIndex)) {
+      return;
+    }
     const {
       appContainerId,
       cssNames,
@@ -488,7 +491,10 @@ export default class ScrollyTeller {
     } = this;
 
     // Find the sectionConfig.
-    const sectionConfig = sectionList[sectionIdentifier];
+    const sectionConfig = get(sectionList, sectionIdentifier);
+    if (isNil(sectionConfig)) {
+      return;
+    }
 
     // Find the index of the target narration block to scroll to.
     let index = 0; // undefined case, treat as zero index
