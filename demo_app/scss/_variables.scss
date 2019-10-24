@@ -1,12 +1,14 @@
-@import url('https://fonts.googleapis.com/css?family=Merriweather+Sans:400,400i,800');
-@import url('https://fonts.googleapis.com/css?family=Merriweather:400,400i,800');
+@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Nunito:400,700,800&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Inconsolata&display=swap');
 
-$title-font-family: 'Merriweather Sans', sans-serif;
-$general-font-family: 'Merriweather', serif;
-$normal-weight: 300;
+$title-font-family: 'Fredericka the Great', serif;
+$intermediate-font-family: 'Nunito', sans-serif;
+$general-font-family: 'Nunito', sans-serif;
+$code-font-family: 'Inconsolata', monospace;
+$normal-weight: 400;
 $bold-weight: 700;
 
-$primary-color: #93291b;
+$primary-color: #3F3D56;
 $secondary-color: #50413c;
 $background-color: white;
-$base-font-color: #30231d;
+$base-font-color: #3F3D56;

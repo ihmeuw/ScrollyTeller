@@ -8,13 +8,49 @@
     </head>
     <body>
         <div class="app-container" id="scrolly-teller-app">
-            <div class="title center">ScrollyTeller Example</div>
-            <p class="intro center">ScrollyTeller is a JavaScript library that dynamically builds the HTML/CSS for the narration part of a scrolling based data story from a .csv file, and provides functionality for linking named 'triggers' to actions dispatched when each narration comes into view.</p>
-            <h3 class="intro center">Scroll down for an introduction to ScrollyTeller.</h3>
+            <div class="title-area">
+                <div class="title left">ScrollyTeller</div>
+                <h3 class="intro left">ScrollyTeller is a JavaScript library that builds the HTML for a scrolling
+                    data story from csv files, and provides a flexible framework for triggering chart actions when
+                    text "narration" scrolls into view.</h3>
+                <p class="intro left"><strong>Scroll down</strong> to learn how to create a data story using
+                    ScrollyTeller. The <strong>spacebar</strong> and <strong>arrow keys</strong> also advance the
+                    story.</p>
+                <p class="intro left">Use the <span class="navbar" style="display: inline; padding: 0; margin: 0;">
+                    <span class="navButton" style="padding: 5px;">buttons</span></span> jump to different parts of the
+                    story.</p>
+            </div>
+            <nav class="navbar">
+                <div
+                  data-section="introduction"
+                  data-narrationtarget="introStart"
+                  class="navButton intro"><h3>Overview</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="storyConfigStart"
+                  class="navButton storyConfig"><h3>Story Config</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="sectionConfigStart"
+                  class="navButton sectionConfig"><h3>Section Config</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="fetchNarrationStart"
+                  class="navButton fetchNarration"><h3>Fetch Narration</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="fetchDataStart"
+                  class="navButton fetchData"><h3>Fetch Data</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="renderGraphStart"
+                  class="navButton renderGraph"><h3>Render Graph</h3></div>
+                <div data-section="wealthAndHealth"
+                  data-narrationtarget="eventHandlersStart"
+                  class="navButton eventHandlers"><h3>Event Handlers</h3></div>
+                <div data-section="builtInTriggers"
+                  data-narrationtarget="builtInTriggersStart"
+                  class="navButton builtInTriggers"><h3>Built-in Triggers</h3></div>
+            </nav>
             <div id="app">
             </div>
         </div>
-        <script type="text/javascript" src="dist/bundle.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+        <script type="text/javascript" src="dist/bundle.js"></script>
     </body>
 </html>

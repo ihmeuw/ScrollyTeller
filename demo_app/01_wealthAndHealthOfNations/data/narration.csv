@@ -1,0 +1,353 @@
+narrationId,narrationClass,marginTopVh,marginBottomVh,minHeightVh,h2Text,paragraphText,hRef,hRefText,trigger,graphTitle,graphCaption
+,intro,40,40,50,Building a data story with ScrollyTeller,"To demonstrate ScrollyTeller's functionality we'll implement a simple data story using Hans Rosling's famous ""Wealth and Health of Nations"" animated bubble plot.<br><br>This data is from <a style=""display: inline;"" target=""blank"" href=""https://www.gapminder.org/"">gapminder.org,</a> and the chart was modified from <a  style=""display: inline;"" href=""https://robisateam.github.io/courses/d3-course/"" target=""blank"">this excellent d3 tutorial.</a>",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""year"": 1950
+}",The Wealth and Health of Nations,"See Hans Rosling's excellent summary video on this chart (with updated data) <a href=""https://www.gapminder.org/answers/how-does-income-relate-to-life-expectancy/"" target=blank>here.</a>"
+,intro,40,40,50,The chart,"We'll assume that you can create your own chart that can respond to changes with <strong>render()</strong> or <strong>update()</strong> functions.<br><br>For example, this chart component has a constructor function that creates the chart, <br><pre class=""prettyprint lang-js"">new WealthAndHealthOfNations({ data })</pre><br>and a render function that updates the chart with data for the specified year,<br><pre class=""prettyprint lang-js"">render({ year })</pre>",,,"{
+	""snippet"": null
+}",The Wealth and Health of Nations,"See Hans Rosling's excellent summary video on this chart (with updated data) <a href=""https://www.gapminder.org/answers/how-does-income-relate-to-life-expectancy/"" target=blank>here.</a>"
+,intro,40,40,50,The final result,"Eventually, we'll want to animate this chart to tell an exciting story, so here's what we're going for: triggering some chart actions based on scroll events or scroll progress.<br><br>(if you're using the spacebar/arrow keys, scroll through this to see the chart smoothly update)",,,"{
+	""year"": null,
+	""yearDomain"": [1950, 2008],
+	""svgFileName"": null,
+	""snippet"": null
+}",The Wealth and Health of Nations,"See Hans Rosling's excellent summary video on this chart (with updated data) <a href=""https://www.gapminder.org/answers/how-does-income-relate-to-life-expectancy/"" target=blank>here.</a>"
+storyConfigStart,storyConfig,40,40,50,Configuring ScrollyTeller,Let's look at how we can use ScrollyTeller configuration to create a chart-based data story like this.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""svgFileName"": ""slide5"",
+	""snippet"": null,
+	""yearDomain"": null,
+	""snippet"": null,
+	""highlight"":  null
+}",,
+,storyConfig,40,40,50,Configuring ScrollyTeller,The code snippet to the right shows the JavaScript configuration object that specifies how the data story is constructed.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""svgFileName"": null,
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"":  ""4""
+}",,
+,storyConfig,40,40,50,Configuring ScrollyTeller,"This sample data story has 2 different 'sections':  'intro' and 'wealthAndHealth'.<br><br>Each section contains a configuration object that encapsulates narration (the scrolling text boxes that narrate the story), data, graph rendering code, and event handling code to trigger graph events when narration scrolls into view.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"":  ""1,2""
+}",,
+,storyConfig,40,40,50,App Container Id,"The <strong>storyConfig</strong> object contains two properties: 1) an <strong>appContainerId</strong>, which defines the <strong>div</strong> id to render the scrolling content into, and . . .",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"": ""5""
+}",,
+,storyConfig,40,40,50,Section List,2) a <strong>sectionList</strong> object that contains configurations for each of the different sections.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"": ""7,8,9,10,11""
+}",,
+,storyConfig,40,40,50,Rendering the story,"To build the HTML for the story, we create a ScrollyTeller instance and call the render() function to create the DOM elements.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"": ""13,14,15""
+}",,
+sectionConfigStart,sectionConfig,40,40,50,Section Configuration,"Next, we'll look at how we define the <strong>wealthAndHealth</strong> object defined on line 2 and included in the story's <strong>sectionList</strong>.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""scrollyTellerConfig"",
+	""highlight"": null,
+	""highlight"": ""2,9""
+}",,
+,sectionConfig,40,40,50,Section configuration,This code snippet expands the wealthAndHealth section configuration from the previous story rendering code.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigSummary"",
+	""highlight"": ""1""
+}",,
+,sectionConfig,40,40,50,Section Configuration,"The section config object must contain a unique <strong>sectionIdentifier</strong> (string), which is useful for creating css selectors and uniquely identifying each section.<br><br>For example, ScrollyTeller builds this section within: &lt;div id=""<strong>section_wealthAndHealth</strong> /&gt;, and our graph will be contained within: &lt;div id=""<strong>graph_wealthAndHealth</strong>"" /&gt;.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigSummary"",
+	""highlight"": ""2""
+}",,
+,sectionConfig,40,40,50,Section Configuration,"The section config object also contains:<br><br>1) <strong>Data Paths/Promises</strong> for the narration and graph-specific data,<br><br>2) <strong>Initial render functions</strong> called upon ScrollyTeller.render(), and<br><br>3) <strong>Event based functions</strong> that respond to scroll and resize events.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigSummary"",
+	""highlight"": ""4,8,12""
+}",,
+fetchNarrationStart,fetchNarration,40,40,50,Fetch & Render,Let's walk through what happens when ScrollyTeller.render() is called for our Wealth and Health of Nations story.  The same process occurs for each section in the data story.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigSummary"",
+	""highlight"": ""4,8""
+}",,
+,fetchNarration,40,40,50,Fetch & Render: Narration,"First, ScrollyTeller asynchronously fetches the contents of <strong>narration.csv</strong>, which contains the scrollng text that ""narrates"" the story.<br><br>Narration is immediately rendered to create a ""stack"" of <strong>narration blocks</strong> containing text that the user can scroll through.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""2,3,4,5,6""
+}",,
+,fetchNarration,40,40,80,Narration Blocks,Each <strong>narration block</strong> contains several DOM elements derived from 1 row of a csv file or other tabular data format.<br><br>The part of the narration table structure that defines the <strong>narration block</strong> DOM elements is shown to the right. <strong>Each column maps to a part of the DOM</strong> as follows...,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationTableHTML""
+}",,
+outline,fetchNarration,40,40,80,h2Text -> Title,paragraphText -> Summary,http://link.com,hRefText -> linked text,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationTableHTML""
+}",,
+,fetchNarration,40,40,80,Customizing text,"Both <strong>h2Text</strong> and <strong>paragraphText</strong> can contain HTML, so you can customize these two fields with links and other formatting.<br><br>However, keep in mind that any HTML will be rendered inside the corresponding <strong>&lt;h2&gt;</strong> and <strong>&lt;p&gt;</strong> tags.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationTableHTML""
+}",,
+,fetchNarration,40,40,80,Narration Properties,"Several other properties customize the behavior of each narration block:<br><br><strong>narrationId</strong> adds a unique <strong>&lt;div&gt; id</strong> to the narration block,<br><br><strong>narrationClass</strong> adds a class to the narration block, and <br><br><strong>graphTitle</strong> and <strong>graphCaption</strong> add titles/captions above and below the graph.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationRestHTML""
+}",,
+,fetchNarration,40,40,80,Narration Sizing,"<strong>marginTopVh</strong> and <strong>marginBottomVh</strong> control the amount of space above and below the narration <strong>&lt;div&gt; id</strong>, which controls scroll ""velocity"".  <strong>minHeightVh</strong> controls the total height of the narration block and its margins, which can be used in conjunction or as a replacement for the previous two properties.<br><br><em>Although all three properties are specified in vh (viewport height) units, ScrollyTeller dynamically converts these values to pixels to prevent various issues with viewport heights and scrolling.</em>",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationSizingHTML""
+}",,
+,fetchNarration,40,40,80,Narration <strong>triggers</strong>,Each table row also contains a <strong>trigger</strong> column that can contain any valid JSON string.<br><br>The JSON is converted to a JavaScript object and passed to event handler functions to allow the chart to respond when each narration scrolls into view and become <strong>active</strong>.<br><br>We'll revisit this more in a later section. First lets see how to fetch data and render the graph.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+            ""svgFileName"": null,
+	""snippet"": ""narrationTriggerHTML""
+}",,
+fetchDataStart,fetchData,40,40,50,Fetch & Render: Graph Data,"While fetching narration, ScrollyTeller also fetches the contents of <strong>wealthAndHealthData.json</strong> for the graph.<br><br>Graph data can be one of:<br>1) a path to any file format readable by d3-fetch (csv, json, tsv, xml, html),<br>2) an array of data, or<br>3) a Promise, which can resolve to return any format you choose.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""8""
+}",,
+,fetchData,40,40,50,Fetch & Render: Reshaping data,"The graph-specific data is passed to <strong>reshapeDataFunction()</strong>, which can perfom operations like converting strings to numbers, computing data ranges, etc.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""8,9,10,11,12""
+}",,
+,fetchData,40,40,50,Reshape Data Function,Let's look in more depth at the <strong>reshapeDataFunction()</strong>.,,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""11,12,13,14""
+}",,
+,fetchData,40,40,50,Reshape Data Function,"Once the DOM elements exist, <strong>reshapeDataFunction()</strong> is passed the results of the data fetch (<strong>rawData</strong>). (If you specified the <strong>data</strong> property as a Promise, the <strong>rawData</strong> argment will contain whatever your Promise resolves to.)<br><br>In the code example here, <strong>we compute min and max values for the data ranges</strong> to pass to our graph component.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigReshapeDemoData"",
+	""highlight"": ""2,3,4""
+}",,
+,fetchData,40,40,50,Reshape Data,"Notice that we return the results of the data as an object with some useful properties. This result is attached to a <strong>sectionConfig.data</strong> property that is passed to subsequent functions for easy access.<br><br>Next, we'll look at building the graph.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigReshapeDemoData"",
+	""highlight"": ""10,11,12,13,14,15,16""
+}",,
+renderGraphStart,renderGraph,40,40,50,Fetch & Render: Graph construction,"The data returned from <strong>reshapeDataFunction()</strong> is then passed to <strong>buildGraphFunction()</strong>, which builds the chart or charts for the section.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""13,14,15,16""
+}",,
+,renderGraph,40,40,50,Building the Chart,"In the code snippet, <strong>buildGraphFunction</strong> receives <strong>graphId</strong> and <strong>sectionConfig</strong> arguments.<br><br><strong>graphId</strong> is the id of the div to target to build the graph.<br><br><strong>sectionConfig</strong> is an object containing a variety of props, but most importantly, the <strong>data</strong> prop, which is the return value of <strong>reshapeDataFunction</strong>.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigBuildGraph"",
+	""highlight"": ""3""
+}",,
+,renderGraph,40,40,50,Building the Chart,"Next, we use some object destructuring (ES6 fanciness) to get data props from <strong>sectionConfig.data</strong>. Notice that we're using <strong>dataArray</strong>, which was computed in <strong>reshapeDataFunction()</strong> and returned as a property (<strong>sectionConfig.data.dataArray</strong>)",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigBuildGraph"",
+	""highlight"": ""4,5,6,7""
+}",,
+,renderGraph,40,40,50,Building the Chart,"Finally, we build our chart component with the data.  Here we gloss over the details and just create an instance of a custom component called <strong>WealthAndHealthOfNations</strong>, which takes a css selector to target the <strong>graphId</strong> div and builds the graph using the data and properties we calculated in <strong>reshapeDataFunction()</strong>.",,,"{	
+            ""year"": 1950,
+            ""yearDomain"": null,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigBuildGraph"",
+	""highlight"": ""9,10,11,12,13,14""
+}",,
+,renderGraph,40,40,50,The rendered chart,"At this point, the basic structure of the DOM should be rendered, along with the chart that we created.",,,"{
+	""year"": 1950,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": null,
+	""highlight"": null,
+	""svgFileName"": null
+}",,
+,renderGraph,40,40,50,Building the Chart,<strong>Remember to return the graph instance!</strong>,,,"{
+	""year"": 1950,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigBuildGraph"",
+	""highlight"": ""16,17"",
+	""svgFileName"": null
+}",,
+,renderGraph,40,40,50,Building the Chart," The return value of <strong>buildGraphFunction</strong> is available as <strong>sectionConfig.graph</strong> when passed to each of the event handlers:<br><br><strong>onActivateNarrationFunction()</strong>,<br><strong>onScrollFunction()</strong>, and<br><strong>onResizeFunction()</strong>,<br><br>which are discussed in the next section.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigFlow"",
+	""highlight"": ""17,18,19,20,21"",
+	""svgFileName"": null
+}",,
+eventHandlersStart,eventHandlers,40,40,50,Triggering narration events,Now let's look at how to trigger events in the chart when narration scrolls into view.,,,"{
+	""year"": 1950,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": null,
+	""highlight"": null,
+	""svgFileName"": ""slide2""
+}",,
+,eventHandlers,40,40,50,Triggering narration events,"Recall that event handlers are are found in the section configuration, and are only available after <strong> buildGraphFunction()</strong> has been called.",,,"{
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""sectionConfigSummary"",
+	""highlight"": null,
+	""highlight"": ""12,13,14,15"",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,Trigger example: 1950,Let's imagine we want to advance the chart year from the default value of 1950 to 2008.,,,"{
+	""year"": 1950,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": null,
+	""highlight"": """",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,Trigger example: 2008,This is the result we're expecting.,,,"{
+	""year"": 2008,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": null,
+	""highlight"": """",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,Narration <strong>triggers</strong>,"To change the graph's year, we'll use the custom JSON trigger that we added to the <strong>trigger</strong> column of the narration file (remember that each row represents a block of narration text).",,,"{
+	""year"": 1990,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""narrationTriggerHTML"",
+	""highlight"": """",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,onActivateNarrationFunction,"ScrollyTeller uses the excellent JavaScript library <a href=""https://github.com/russellgoldenberg/scrollama"" target=_blank style=""display: inline-block; padding: 0;"">Scrollama</a> to detect when each narration block intersects the midle of the page an becomes active. When the narration block becomes active, <strong>onActivateNarrationFunction()</strong> receives:<br><br>an object with <strong>sectionConfig.graph</strong>, which is the graph that we returned from <strong>buildGraphFunction</strong><br><br>and a <strong>state</strong> object with the <strong>state.year</strong> property from the trigger JSON.",,,"{
+	""year"": 2008,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""onActivateNarrationExample"",
+	""highlight"": ""4,5,6,8,9"",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,onActivateNarrationFunction,"To render, we simply check for a valid <strong>chart</strong> and <strong>year</strong>, and pass the current year to the <strong>WealthAndHealthOfNations</strong> graph, which handles the rest.",,,"{
+	""year"": 2008,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""onActivateNarrationExample"",
+	""highlight"": ""11,12,13"",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,50,Trigger to state conversion,"ScrollyTeller manages the <strong>state</strong> of each narration block by <em>deep merging all preceding <strong>trigger</strong> objects</em>.<br><br>Thus, unchanged <strong>state</strong> properties do not need to be re-defined in each <strong>trigger</strong>, and properties can override preceding properties with the same name.",,,"{
+	""year"": 2008,
+	""containerStyle"": {
+		""opacity"": 1
+	},
+	""snippet"": ""triggerToStateHTML"",
+	""highlight"": """",
+	""svgFileName"": null
+}",,
+,eventHandlers,40,40,100,Smoothly handling progress,"We can also continuously handle scroll progress with the <strong>onScrollFunction()</strong>, which allows us to smoothly transition across years. Let's look at one way to do that.",,,"{
+   ""year"": null,
+   ""yearDomain"": [1950, 1999],
+     ""snippet"": null
+}",The Wealth and Health of Nations,
+,eventHandlers,40,40,50,Interpolating years with progress,The <strong>onScroll</strong> function receives a <strong>progress</strong> property that varies from 0 -> 1 as the user scrolls through each narration block.,,,"{
+   ""yearDomain"": null,
+   ""highlight"": ""4"",
+     ""snippet"": ""onScrollExample""
+}",,
+,eventHandlers,40,40,50,Interpolating years with progress,"To define the boundaries (the domain) of the years to scroll through, we'll create a new trigger property called <strong>yearDomain</strong> that will be an array of start/end years.<br><br><pre class=""trigger"">{
+             ""yearDomain"": [1950, 1999],
+             ""year"": null
+}</pre>",,,"{
+   ""yearDomain"": null,
+   ""highlight"": ""6"",
+     ""snippet"": ""onScrollExample""
+}",,
+,eventHandlers,40,40,50,Interpolating years with progress,"Notice that we have separate properties that are handled by different functions: <strong>year</strong> is only handled by <strong>onActivateNarrationFunction</strong>, and <strong>yearDomain</strong> is only handled by the <strong>onScrollFunction</strong>.  Both event handlers are structured in such a way that their specific property only triggers a graph update when the value is <strong>non-null</strong>, so we can be sure that only one event handler operates in a given narration block at a time.<br><br><pre class=""trigger"">{
+             ""yearDomain"": [1950, 1999],
+             ""year"": null
+}</pre>",,,"{
+   ""yearDomain"": null,
+   ""highlight"": ""8"",
+     ""snippet"": ""onScrollExample""
+}",,
+,eventHandlers,40,40,40,Interpolating years with progress,Interpolating between years is relatively simple. Here we've used <strong>d3.js</strong>'s <strong>interpolate</strong> function to convert the progress (0 to 1) to a year between 1950 and 1999.,,,"{
+   ""yearDomain"": null,
+   ""highlight"": ""9,10,11,12"",
+     ""snippet"": ""onScrollExample""
+}",,
+,eventHandlers,40,40,40,onResizeFunction,"The <strong>onResizeFunction</strong> is the final event handler in each section, and is triggered when EITHER the window resizes OR when the graph container resizes (using the excellent <a href=""https://www.npmjs.com/package/element-resize-detector"" target=_blank style=""display: inline-block; padding: 0;"">Element Resize Detector</a> library). Graph container resizes can occur for various reasons, so check to make sure that the resize function isn't being called more often than you would expect.",,,"{
+     ""snippet"": ""sectionConfigSummary"",
+     ""highlight"": ""15""
+}",,
+,eventHandlers,50,50,80,Go Forth and Scroll!,"Now you should have most of the tools you need to build your own data story! Please see the rest of the ScrollyTeller documentation for more details, or keep scrolling for some more useful information about custom trigger properties that you can use to add graph titles, captions, and styling. ",https://stash.ihme.washington.edu/projects/VIZ/repos/scrolly-teller/browse,Here's a link to the scrolly-teller repo,"{
+   ""year"": null,
+   ""yearDomain"": [1950, 2008],
+     ""containerStyle"": {
+		""opacity"": ""calc(1 - $progress)""
+	},
+	""snippet"": null
+}",The Wealth and Health of Nations,

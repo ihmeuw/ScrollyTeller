@@ -2,6 +2,8 @@
 
 /*  ------------- TITLE -------------  */
 #app {
+  width: 98%;
+  margin: 0 1%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 8rem auto 3rem;
@@ -9,6 +11,12 @@
           "title" // app specific
           "scroll"; // scrollyteller
   background-color: $background-color;
+}
+
+.title-area,
+.navbar {
+  width: 98%;
+  margin: 1%;
 }
 
 /*  ------------- TITLE -------------  */
@@ -25,7 +33,65 @@
   padding: 0.5rem;
 }
 
-.center {
-  text-align: center;
+.left {
+  margin: 0;
+  text-align: left
 }
+
+/*  ------------- NAVIGATION -------------  */
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+  padding: 0.5%;
+  height: 100%;
+  
+  .navButton {
+    background-color: #8078ff36;
+    border-radius: 10px;
+    padding: 0.5% 1%;
+    margin: 0 0.25%;
+    
+    h3 {
+      pointer-events: none;
+      text-align: center;
+      font-size: 1.3rem;
+      line-height: 1.4rem;
+      margin: 3% 0;
+    }
+  }
+  
+  .navButton.active {
+    background-color: rgba(128, 120, 255, 0.82);
+  }
+  
+  .navButton:hover {
+    box-shadow: #6C63FF 0 0 4px;
+  }
+}
+
+.dashed {
+  border: black;
+  border-style: dashed;
+  border-width: medium;
+}
+
+.narration-content {  // to differentiate trigger JSON from other code
+  p pre.trigger {
+    text-align: left;
+    padding: 2%;
+    border: darkgray;
+    background: #e4effd;
+    border-width: thin;
+    border-style: solid;
+    border-radius: 10px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+  }
+}
+
 

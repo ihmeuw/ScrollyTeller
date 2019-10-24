@@ -1,0 +1,112 @@
+@import '../../scss/variables';
+
+/* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
+#graph_wealthAndHealth {
+  background-color: transparent;
+}
+
+#codeSnippet, #graph_wealthAndHealth svg, #codeSnippet img {
+  width: 90%;
+  position: absolute;
+  top: auto;
+  left: auto;
+}
+
+#codeSnippet {
+  overflow-x: auto;
+}
+
+#graph_wealthAndHealth svg, #codeSnippet img {
+  pointer-events: none;
+}
+
+#graph_wealthAndHealth .imageDiv {
+  position: absolute;
+  top: auto;
+  left: auto;
+  width: 100%;
+  height: 100%;
+}
+
+#graph_wealthAndHealth .imageDiv img {
+  width: 90%;
+  height: 90%;
+}
+
+/*  ------------- FOR NARRATION CONTENT WITH ID = outline -------------  */
+#narration_outline {
+  .narration-content {
+    border: #30231d;
+    border-width: medium;
+    border-style: dashed;
+    padding: 10px;
+    
+    h2 {
+      padding: 3px;
+      margin: 5px;
+      border: $primary-color;
+      border-width: medium;
+      border-style: dashed;
+    }
+    p {
+      padding: 3px;
+      margin: 5px;
+      border: $secondary-color;
+      border-width: medium;
+      border-style: dashed;
+    }
+    
+    div.link {
+      p {
+        border: none;
+      }
+      padding: 3px;
+      margin: 5px;
+      border: $primary-color;
+      border-width: medium;
+      border-style: dashed;
+    }
+  }
+}
+
+/*  ------------- Excel-like table -------------  */
+input {
+  border: none;
+  width: 80px;
+  font-size: 14px;
+  padding: 2px;
+}
+
+input:hover {
+  background-color: #eee;
+}
+
+input:focus {
+  background-color: #ccf;
+}
+
+input:not(:focus) {
+  text-align: right;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: auto;
+  font-size: 1.1rem;
+  line-height: 1.2rem;
+}
+
+td {
+  border: 1px solid #999;
+  padding: 0.2rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+tr:first-child td, td:first-child {
+  background-color: #ccc;
+  padding: 1px 3px;
+  font-weight: bold;
+  text-align: center;
+}
+

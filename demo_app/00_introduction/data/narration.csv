@@ -1,0 +1,16 @@
+narrationId,narrationClass,marginTopVh,marginBottomVh,minHeightVh,h2Text,paragraphText,hRef,hRefText,trigger,graphTitle,graphCaption
+introStart,intro,40,40,50,So you want to build a scrollytelling data story?,,,,"{
+	""svgFileName"": ""slide1""
+}",,
+,intro,40,40,50,And <strong>animate</strong> your charts as you <strong>narrate</strong> the story with scrolling text?,,,,"{
+	""svgFileName"": ""slide2""
+}",,
+,intro,40,40,50,But you don't want to write a lot of HTML boilerplate...,,,,"{
+	""svgFileName"": ""slide3""
+}",,
+,intro,40,40,50,ScrollyTeller can help you put it all together!,,,,"{
+	""svgFileName"": ""slide4""
+}",,
+,intro,40,40,50,How does it work?,"ScrollyTeller uses a JavaScript configuration object (<pre style=""display: inline-block;""><code>{ ... }</code></pre>) to define data resources like <strong>chart data</strong> and <strong>text narration</strong>, and builds the HTML layout of the page.<br><br>The configuration also defines functions to <strong>pre-process data</strong>, <strong>build your chart</strong> and <strong>event handlers</strong> to respond to scrolling and resize events.",,,"{
+	""svgFileName"": ""slide5""
+}",,

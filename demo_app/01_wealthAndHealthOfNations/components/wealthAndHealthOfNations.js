@@ -171,6 +171,8 @@ export default class WealthAndHealthOfNations {
   }
 
   resize(props) {
+    this.svg.remove();
+    this._init(props);
 
   }
 }

@@ -1,12 +1,8 @@
-/* globals PR */
-import { scaleLinear } from 'd3-scale';
 import { select } from 'd3-selection';
-import { extent } from 'd3-array';
-import WealthAndHealthOfNations from './components/wealthAndHealthOfNations';
-import snippets from './components/codeSnippets';
-import './scss/wealthAndHealth.scss';
 import './data/narration.csv';
-import { highlightLines, updateSvgImage } from '../utils';
+import './scss/introduction.scss';
+import './data/slides';
+import { updateSvgImage } from '../utils';
 
 /** local state object */
 const sectionState = {
@@ -17,15 +13,15 @@ const sectionState = {
 export default {
   /** identifier used to delineate different sections.  Should be unique from other sections
    * identifiers */
-  sectionIdentifier: 'wealthAndHealth',
+  sectionIdentifier: 'introduction',
 
   /** narration can be either of the following 3 options:
    *  1) a string representing an absolute file path to a file of the following types:
    *      'csv', 'tsv', 'json', 'html', 'txt', 'xml', which will be parsed by d3.promise
    *  2) array of narration objects,
    *  3) a promise to return an array of narration objects in the appropriate form
-   * See README for the specfication of the narration objects */
-  narration: 'demo_app/wealthAndHealthOfNations/data/narration.csv',
+   * See README for the specification of the narration objects */
+  narration: 'demo_app/00_introduction/data/narration.csv',
 
   /** data can be either of the following 4 options:
    *  1) a string representing an absolute file path to a file of the following types:
@@ -35,7 +31,9 @@ export default {
    *  4) undefined
    */
   /** data from path example */
-  data: 'demo_app/wealthAndHealthOfNations/data/wealthAndHealthData.json',
+  data: [],
+
+  convertTriggerToObject: true,
 
   /**
    * Optional method to reshape the data passed into ScrollyTeller, or resolved by the data promise
@@ -43,36 +41,7 @@ export default {
    * @returns {object|array} -  an object or array of data of user-defined shape
    */
   reshapeDataFunction: function processData(results) {
-    /** compute data domains for population (radius), income (x), life expectancy (y), and years
-     * These functions compute the data domains [min, max] over a range of years from
-     * 1950 - 2008 so the graph axes don't change as we update */
-    const rDomain = extent(results.reduce((acc, d) => (acc.concat(...extent(d.population))), []));
-    const xDomain = extent(results.reduce((acc, d) => (acc.concat(...extent(d.income))), []));
-    const yDomain = extent(results.reduce((acc, d) =>
-      (acc.concat(...extent(d.lifeExpectancy))), []));
-    const yearDomain = extent(results.reduce((acc, d) => (acc.concat(...extent(d.years))), []));
-
-    /** Legend items are regions, so get unique region names */
-    const legendArray = results.reduce((acc, d) =>
-      (acc.includes(d.region) ? acc : acc.concat(d.region)), []);
-
-    /** Create a scale to convert progress from [0,1] -> year between [1950 - 2008] */
-    const yearProgressScale = scaleLinear()
-      .domain([0, 1])
-      .range(yearDomain);
-
-    /** return the raw data, domains, and scales, which will be assigned
-     * to sectionConfig.data. The sectionConfig object is received by all scrollyteller
-     * functions such as buildGraphFunction(), onActivateNarrationFunction(), onScrollFunction() */
-    return {
-      dataArray: results,
-      legendArray,
-      rDomain,
-      xDomain,
-      yDomain,
-      yearDomain,
-      yearProgressScale,
-    };
+    return {};
   },
 
   /**
@@ -83,6 +52,7 @@ export default {
    * This function is called as follows:
    * buildGraphFunction(graphId, sectionConfig)
    * @param {string} graphId - id of the graph in this section. const myGraph = d3.select(`#${graphId}`);
+   * @param {object} sectionConfig - the configuration object passed to ScrollyTeller
    * @param {object} [sectionConfig] - the configuration object passed to ScrollyTeller
    * @param {string} [sectionConfig.sectionIdentifier] - the identifier for this section
    * @param {object} [sectionConfig.graph] - the chart instance, or a reference containing the result of the buildChart() function above
@@ -93,55 +63,13 @@ export default {
    * @returns {object} - chart instance
    */
   buildGraphFunction: function buildGraph(graphId, sectionConfig) {
-    const {
-      /** destructure the dataArray and domains computed by reshapeDataFunction() from the sectionConfig */
-      data: {
-        dataArray,
-        legendArray,
-        rDomain,
-        xDomain,
-        yDomain,
-        yearDomain,
-      },
-    } = sectionConfig;
-
-    /** create a css selector to select the graph div by id */
-    const graphSelector = `#${graphId}`;
-
-    /** create a div to render code snippets */
-    select(graphSelector)
-      .append('div')
-      .attr('id', 'codeSnippet');
-
-    /** create a div to render images */
-    select(`#${graphId}`)
-      .append('div')
-      .classed('imageDiv', true);
-
-    /** build the wealth and health graph */
-    const wealthAndHealthGraph = new WealthAndHealthOfNations({
-      container: graphSelector,
-      /** data */
-      data: dataArray,
-      /** data domains */
-      rDomain,
-      xDomain,
-      yDomain,
-      yearDomain,
-      /** legend values */
-      legendArray,
-      /** dimensions */
-      height: select(graphSelector).node().offsetHeight * 0.9,
-      width: select(graphSelector).node().offsetWidth * 0.9,
-    });
-
     /** REMEMBER TO RETURN THE GRAPH! (could also return as an object with multiple graphs, etc)
      * The graph object is assigned to sectionConfig.graph, which is returned to all scrollyteller
      * functions such as buildGraphFunction(), onActivateNarrationFunction(), onScrollFunction()  */
-    return {
-      wealthAndHealthGraph,
-      codeSnippetSelector: `${graphSelector} #codeSnippet`,
-    };
+    select(`#${graphId}`)
+      .append('div')
+      .classed('imageDiv', true);
+    return undefined;
   },
 
   /**
@@ -163,23 +91,7 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onScrollFunction: function onScroll({
-    state: { yearProgress }, /** destructure year progress variable set from the narration.csv file */
-    sectionConfig: {
-      graph: { wealthAndHealthGraph }, /** destructure graph from section config */
-      data: {
-        /** destructure yearProgressScale (computed by reshapeDataFunction and stored on sectonConfig.data)
-         to convert [0,1] progress -> a year in the range [1950,2008] */
-        yearProgressScale,
-      },
-    },
-  }) {
-    if (wealthAndHealthGraph && yearProgress) {
-      wealthAndHealthGraph.render({
-        year: Math.floor(yearProgressScale(yearProgress)),
-        duration: 100,
-      });
-    }
+  onScrollFunction: function onScroll() {
   },
 
   /**
@@ -205,50 +117,14 @@ export default {
    */
   onActivateNarrationFunction: function onActivateNarration({
     graphId,
+    state,
     state: {
-      year,
-      snippet,
-      highlight,
       svgFileName,
-    }, /** destructure "year" variable from state */
-    sectionConfig: {
-      graph: {
-        wealthAndHealthGraph,
-        codeSnippetSelector,
-      },
-    }, /** destructure graph from section config */
+    },
   }) {
-    /** DISPLAY CODE SNIPPETS */
-    const code = snippet
-      ? `<pre class="prettyprint lang-js linenums:5">${snippets[snippet]}</pre>`
-      : '';
-    select(codeSnippetSelector)
-      .html(code);
-    PR.prettyPrint();
-
-    if (snippet && highlight) {
-      highlightLines(
-        codeSnippetSelector,
-        highlight.toString().split(','),
-        '#f0e68c40',
-      );
-    }
-
-    /** HIDE GRAPH WHEN CODE SNIPPETS ARE DISPLAYED */
-    select(`#${graphId} svg`)
-      .attr('opacity', (snippet || svgFileName) ? 0 : 1);
-
     /** DISPLAY/FLIP BETWEEN IMAGES */
-    updateSvgImage(graphId, { svgFileName }, sectionState.svgFileName);
+    updateSvgImage(graphId, state, sectionState.svgFileName);
     sectionState.svgFileName = svgFileName;
-
-    /** render a year (year = undefined defaults to min year in component) */
-    if (wealthAndHealthGraph && year) {
-      wealthAndHealthGraph.render({
-        year: Number(year),
-        duration: 1000,
-      });
-    }
   },
 
   /**
@@ -267,15 +143,6 @@ export default {
    * @param {object} [params.sectionConfig.elementResizeDetector] - the element-resize-detector object: see https://github.com/wnr/element-resize-detector for usage
    * @returns {void}
    */
-  onResizeFunction: function onResize({
-    graphElement,
-    sectionConfig: {
-      graph: { wealthAndHealthGraph },
-    },
-  }) {
-    wealthAndHealthGraph.resize({
-      width: graphElement.offsetWidth * 0.9,
-      height: graphElement.offsetHeight * 0.9,
-    });
+  onResizeFunction: function onResize() {
   },
 };

@@ -1,3 +1,4 @@
+
 /* hack to remove decimals from ordered lists */
 ol {
   counter-reset: list;
@@ -20,10 +21,9 @@ pre.prettyprint {
   background-color: #333;
   border-radius: 10px;
   margin: auto;
-  padding: 3% !important; /* these important flags override the prettyprint.css that gets reloaded on every snippet render */
-  padding-left: 5% !important; /* make room for line numbers */
+  padding: 3% 3% 3% 6% !important; /* these important flags override the prettyprint.css that gets reloaded on every snippet render */
   width: 100%;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 pre .nocode { background-color: none; color: #000 }
 pre .str { color: #ffa0a0 } /* string  - pink */

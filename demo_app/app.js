@@ -1,9 +1,9 @@
 /* global document window */
 import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
-import intro from './introduction/scrollyTellerConfig';
-import myExampleSection0 from './exampleSection0/exampleSection0';
-import wealthAndHealthConfig from './wealthAndHealthOfNations/scrollyTellerConfig';
+import intro from './00_introduction/scrollyTellerConfig';
+import wealthAndHealthConfig from './01_wealthAndHealthOfNations/scrollyTellerConfig';
+import builtInTriggers from './02_builtInTriggers/scrollyTellerConfig';
 
 export default class App {
   constructor() {
@@ -18,7 +18,7 @@ export default class App {
         /** [key = sectionIdentifier]: value = { section config object } */
         [intro.sectionIdentifier]: intro,
         [wealthAndHealthConfig.sectionIdentifier]: wealthAndHealthConfig,
-        [myExampleSection0.sectionIdentifier]: myExampleSection0,
+        [builtInTriggers.sectionIdentifier]: builtInTriggers,
       },
     };
 
