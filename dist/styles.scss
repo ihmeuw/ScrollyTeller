@@ -26,6 +26,7 @@ html {
 
 /*  ------------- SCROLL -------------  */
 .scroll {
+  width: 100%;
   grid-area: scroll;
   /*  ------------- SECTION -------------  */ }
   .scroll .section {
@@ -49,18 +50,21 @@ html {
       margin: 0;
       /*  ------------- NARRATION (block) -------------  */ }
       .scroll .section .narration_list .narration {
-        text-align: center;
+        text-align: left;
         opacity: 0.3;
-        margin: 10%; }
+        margin: 5%; }
         .scroll .section .narration_list .narration h2 {
-          padding: 0.5rem 5% 0.5rem 5%;
-          text-transform: uppercase; }
+          padding: 0.5rem 25% 0.5rem 5%; }
         .scroll .section .narration_list .narration p {
-          padding: 0.5rem 5% 0.5rem 5%; }
+          padding: 0.5rem 5% 0.5rem 5%;
+          text-align: justify; }
         .scroll .section .narration_list .narration .link {
-          padding: 0.5rem 5% 0.5rem 5%; }
+          padding: 0.5rem 5% 0.5rem 5%;
+          text-align: justify; }
+        .scroll .section .narration_list .narration a {
+          padding: 0; }
       .scroll .section .narration_list .narration.active {
-        margin: 10%;
+        margin: 5%;
         opacity: 1; }
     .scroll .section .graph_container {
       -ms-grid-row: 1;
@@ -86,7 +90,6 @@ html {
     .scroll .section .graph_container.active {
       top: 0;
       height: 50vh;
-      position: fixed;
       position: -webkit-sticky;
       position: sticky;
       padding: 0;
