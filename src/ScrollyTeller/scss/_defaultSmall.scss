@@ -17,6 +17,7 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 
 /*  ------------- SCROLL -------------  */
 .scroll {
+  width: 100%;
   grid-area: scroll;
   /*  ------------- SECTION -------------  */
   .section {
@@ -35,20 +36,22 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
 
       /*  ------------- NARRATION (block) -------------  */
       .narration {
-        text-align: center;
+        text-align: left;
         opacity: 0.3;
         margin: $narration-inner-margin;
 
         h2 {
-          padding: 0.5rem 5% 0.5rem 5%;
+          padding: 0.5rem 25% 0.5rem 5%;
         }
-
+  
         p {
           padding: 0.5rem 5% 0.5rem 5%;
+          text-align: justify;
         }
-
+  
         .link {
           padding: 0.5rem 5% 0.5rem 5%;
+          text-align: justify;
         }
       }
 
@@ -90,7 +93,6 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
     .graph_container.active {
       top: 0;
       height: 50vh;
-      position: fixed; // ie doesn't support sticky, so used fixed
       position: sticky;
       padding: 0;
       margin: 0;
