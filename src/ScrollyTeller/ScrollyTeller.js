@@ -38,6 +38,10 @@ export default class ScrollyTeller {
     this.currentSectionId = null;
     this.currentNarrationIndex = null;
 
+    /** store the current trigger state */
+    this.triggerState = {};
+    this.trigger = '';
+
     /** state to handle google analytics tracking */
     this.sendSectionAnalytics = config.sendSectionAnalytics || false;
     this.sendNarrationAnalytics = config.sendNarrationAnalytics || false;
@@ -77,6 +81,7 @@ export default class ScrollyTeller {
   _buildGraphs() {
     forEach(this.sectionList, (config) => {
       const { state } = this._triggerState({ sectionConfig: config, index: 0, progress: 0 });
+      this.triggerState = state;
 
       const containerId = config.cssNames.graphContainerId(config.sectionIdentifier)
       this._updateTitleAndCaption({
@@ -92,6 +97,9 @@ export default class ScrollyTeller {
   }
 
   _triggerState({ sectionConfig, index, progress }) {
+    if (isNil(sectionConfig) || isNil(index)) {
+      return { trigger: '', state: {} };
+    }
     const {
       narration,
       convertTriggerToObject = true,
@@ -208,6 +216,7 @@ export default class ScrollyTeller {
     const progress = 0;
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
+    this.triggerState = state;
 
     select(element).classed('active', true);
     const graphContainer = select(`#${graphContainerId}`).classed('active', true);
@@ -295,6 +304,7 @@ export default class ScrollyTeller {
     const progress = utils.calcScrollProgress(scrollProgressElement || element, TRIGGER_OFFSET);
 
     const { trigger, state } = this._triggerState({ sectionConfig, index, progress });
+    this.triggerState = state;
 
     utils.updateGraphStyles({
       graph: select(`#${graphId}`),
@@ -411,6 +421,8 @@ export default class ScrollyTeller {
               graphContainerId,
               graphId,
               sectionConfig,
+              state: this.triggerState,
+              trigger: this.triggerState,
             });
           },
         );
