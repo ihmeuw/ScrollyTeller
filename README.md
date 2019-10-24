@@ -41,6 +41,15 @@ const storyConfiguration = {
     myExampleSection2: {
       /** ... section properties described below */
     },
+    /** optional function to receive the current sectionIdentifier,
+     * narrationIndex, narrationId, and narrationClass
+     * when narration blocks are entered */
+    onNarrationChangedFunction: function ({
+      sectionIdentifier,
+      narrationIndex,
+      narrationId,
+      narrationClass,
+    }) { console.log('in ', sectionIdentifier, narrationIndex); },
   },
 };
 

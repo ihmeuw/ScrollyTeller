@@ -31,6 +31,7 @@ export default class ScrollyTeller {
 
     this.appContainerId = config.appContainerId;
     this.sectionList = config.sectionList;
+    this.onNarrationChangedFunction = config.onNarrationChangedFunction || noop;
 
     /** state to handle advancing to previous/next narration and time tracking */
     this.sectionNamesArray = Object.keys(this.sectionList);
@@ -194,6 +195,12 @@ export default class ScrollyTeller {
 
     this.currentSectionId = sectionIdentifier;
     this.currentNarrationIndex = index;
+    this.onNarrationChangedFunction({
+      sectionIdentifier: this.currentSectionId,
+      narrationIndex: this.currentNarrationIndex,
+      narrationId: get(sectionConfig, ['narration', index, 'narrationId']),
+      narrationClass: get(sectionConfig, ['narration', index, 'narrationClass']),
+    });
 
     const graphId = names.graphId(sectionIdentifier);
     const graphContainerId = names.graphContainerId(sectionIdentifier);
@@ -252,6 +259,20 @@ export default class ScrollyTeller {
     ) {
       const graphContainerId = `#${names.graphContainerId(sectionIdentifier)}`;
       select(graphContainerId).classed('active', false);
+
+      /** check for scrolling out of the story and set current id and section to null */
+      const sectionIndex = this._sectionIndexFromSectionIdentifier(sectionIdentifier);
+      if ((sectionIndex === 0 && direction === 'up')
+        || (sectionIndex === this.sectionNamesArray.length - 1 && direction === 'down')) {
+        this.currentNarrationIndex = null;
+        this.currentSectionId = null;
+        this.onNarrationChangedFunction({
+          sectionIdentifier: null,
+          narrationIndex: null,
+          narrationId: null,
+          narrationClass: null,
+        });
+      }
     }
   }
 
