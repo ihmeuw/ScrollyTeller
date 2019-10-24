@@ -541,6 +541,11 @@ export default class ScrollyTeller {
       `div.${cssNames.narrationContentClass()}`,
     ).node();
 
+    // can't find element, return
+    if (isNil(scrollToContentElement)) {
+      return;
+    }
+
     // Get the page position, so we can determine which direction we've scrolled.
     const startingYOffset = window.pageYOffset;
 
@@ -565,7 +570,8 @@ export default class ScrollyTeller {
         element: narrationBlockElement,
         index,
         scrollProgressElement: scrollToContentElement,
-      });
+      },
+    );
   }
 
   /**
