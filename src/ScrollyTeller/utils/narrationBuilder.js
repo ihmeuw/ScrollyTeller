@@ -13,6 +13,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   narrationBlocksArray.forEach((block) => {
     const {
       narrationId,
+      narrationClass = '',
       marginTopVh: spaceAbove,
       marginBottomVh: spaceBelow,
       minHeightVh: minHeight,
@@ -29,6 +30,7 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .datum(block)
       .attr('class', css.narrationBlock)
       .attr('id', narrationBlockId)
+      .classed(narrationClass, true)
       .style('margin-top', vhToPx(spaceAbove))
       .style('margin-bottom', vhToPx(spaceBelow))
       .style('min-height', vhToPx(minHeight || (Number(spaceAbove) + Number(spaceBelow))));
