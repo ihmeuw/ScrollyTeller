@@ -128,7 +128,7 @@ const myScrollyTellerInstance = new ScrollyTeller(storyConfiguration);
 myScrollyTellerInstance.render();
 ```
 
-##### See ```demo_app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```demo_app/exampleSection0/exampleSection0.js``` and ```demo_app/99_example_section_chart/exampleSection1.js```.
+##### See ```demo_app/app.js``` for fully implemented examples that handle scrolling and narration actions. Section configurations are created in ```demo_app/00_introduction/scrollyTellerConfig.js``` and ```demo_app/01_wealthAndHealthOfNations/scrollyTellerConfig.js```.
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
