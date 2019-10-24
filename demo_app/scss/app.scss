@@ -1,6 +1,10 @@
 @import 'variables';
 
-/*  ------------- TITLE -------------  */
+#scrolly-teller-app {
+  max-width: 2000px;
+  margin: 0 auto;
+}
+
 #app {
   width: 98%;
   margin: 0 1%;
@@ -13,6 +17,7 @@
   background-color: $background-color;
 }
 
+/*  ------------- TITLE/NAVBAR -------------  */
 .title-area,
 .navbar {
   width: 98%;

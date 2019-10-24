@@ -53,6 +53,10 @@ html {-webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
           padding: 0.5rem 5% 0.5rem 5%;
           text-align: justify;
         }
+        
+        a {
+          padding: 0;
+        }
       }
 
       .narration.active {
