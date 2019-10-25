@@ -8,7 +8,7 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
 
-.flex_vertical_column_all_centered, .scroll .section .graph_container, .scroll .section .graph_container .graph_default {
+.flex_vertical_column_all_centered, .graph_container, .graph_default {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -27,127 +27,85 @@ html {
 /*  ------------- SCROLL -------------  */
 .scroll {
   width: 100%;
-  grid-area: scroll;
-  /*  ------------- SECTION -------------  */ }
-  .scroll .section {
-    display: -ms-grid;
-    display: grid;
-    -ms-grid-columns: 1fr;
-    grid-template-columns: 1fr;
-    -ms-grid-rows: auto auto;
-    grid-template-rows: auto auto;
-        grid-template-areas: "graphArea" "narrationArea";
-    /*  ------------- NARRATION LIST -------------  */
-    /*  ------------- GRAPHS -------------  */ }
-    .scroll .section .narration_list {
-      -ms-grid-row: 2;
-      -ms-grid-column: 1;
-      grid-area: narrationArea;
-      -webkit-box-pack: center;
-          -ms-flex-pack: center;
-              justify-content: center;
-      padding: 0;
-      margin: 0;
-      /*  ------------- NARRATION (block) -------------  */ }
-      .scroll .section .narration_list .narration {
-        text-align: left;
-        opacity: 0.3;
-        margin: 5%; }
-        .scroll .section .narration_list .narration h2 {
-          padding: 0.5rem 25% 0.5rem 5%; }
-        .scroll .section .narration_list .narration p {
-          padding: 0.5rem 5% 0.5rem 5%;
-          text-align: justify; }
-        .scroll .section .narration_list .narration .link {
-          padding: 0.5rem 5% 0.5rem 5%;
-          text-align: justify; }
-        .scroll .section .narration_list .narration a {
-          padding: 0; }
-      .scroll .section .narration_list .narration.active {
-        margin: 5%;
-        opacity: 1; }
-    .scroll .section .graph_container {
-      -ms-grid-row: 1;
-      -ms-grid-column: 1;
-      grid-area: graphArea;
-      position: fixed;
-      position: -webkit-sticky;
-      position: sticky;
-      padding: 0;
-      margin: 0;
-      top: 0;
-      height: 50vh;
-      opacity: 0; }
-      .scroll .section .graph_container .graph_title {
-        font-size: 1.5rem; }
-      .scroll .section .graph_container .graph_caption {
-        font-size: 1rem; }
-      .scroll .section .graph_container .graph_default {
-        opacity: 1;
-        background-color: gray;
-        width: 100%;
-        height: 100%; }
-    .scroll .section .graph_container.active {
-      top: 0;
-      height: 50vh;
-      position: -webkit-sticky;
-      position: sticky;
-      padding: 0;
-      margin: 0; }
+  padding: 1%; }
 
-/* override for medium screens (tablet sized)
- * 35em is also 560px (if basefont is 16px) */
-@media only screen and (min-width: 35em) {
-  /*  ------------- SCROLL -------------  */
-  .scroll {
-    /*  ------------- SECTION -------------  */ }
-    .scroll .section {
-      display: -ms-grid;
-      display: grid;
-      -ms-grid-columns: 1fr 1fr;
-      grid-template-columns: 1fr 1fr;
-          grid-template-areas: "narrationArea graphArea";
-      /*  ------------- NARRATION LIST -------------  */
-      /*  ------------- GRAPHS -------------  */ }
-      .scroll .section .narration_list {
-        padding: 2.5%;
-        margin: 2.5%;
-        /*  ------------- NARRATION (block) -------------  */ }
-      .scroll .section .graph_container {
-        top: 10vh;
-        height: 80vh;
-        padding: 0;
-        margin: 0; }
-      .scroll .section .graph_container.active {
-        top: 10vh;
-        height: 80vh;
-        padding: 0;
-        margin: 0; }
-    .scroll .section .narration_list {
-    -ms-grid-row: 1;
-    -ms-grid-column: 1; }
-    .scroll .section .graph_container {
-    -ms-grid-row: 1;
-    -ms-grid-column: 2; } }
+/*  ------------- SECTION -------------  */
+.section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse; }
 
-/* override for large screens (full monitor sizes)
- * 64em is also 1028px (if basefont is 16px) */
-@media only screen and (min-width: 64em) {
-  /*  ------------- SCROLL -------------  */
-  .scroll {
-    /*  ------------- SECTION -------------  */ }
-    .scroll .section {
-      -ms-grid-columns: 1fr 1fr;
-      grid-template-columns: 1fr 1fr;
-          grid-template-areas: "narrationArea graphArea";
-      /*  ------------- NARRATION LIST -------------  */
-      /*  ------------- GRAPHS -------------  */ }
-      .scroll .section .narration_list {
-        /*  ------------- NARRATION (block) -------------  */ }
-    .scroll .section .narration_list {
-    -ms-grid-row: 1;
-    -ms-grid-column: 1; }
-    .scroll .section .graph_container {
-    -ms-grid-row: 1;
-    -ms-grid-column: 2; } }
+/*  ------------- NARRATION LIST -------------  */
+.narration_list {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0;
+  padding: 2.5%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  min-width: 50%;
+  max-width: 30rem; }
+
+/*  ------------- GRAPHS -------------  */
+.graph_container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  position: fixed;
+  position: -webkit-sticky;
+  position: sticky;
+  opacity: 0;
+  top: 15vh;
+  height: 80vh;
+  padding: 0;
+  margin: 0;
+  min-width: 50%; }
+
+.graph_container.active {
+  position: -webkit-sticky;
+  position: sticky; }
+
+.graph_title {
+  font-size: 1.5rem;
+  max-width: 70%; }
+
+.graph_caption {
+  font-size: 1rem;
+  max-width: 70%; }
+
+.graph_default {
+  opacity: 1;
+  background-color: transparent;
+  width: 100%;
+  height: 100%; }
+
+/*  ------------- NARRATION (block) -------------  */
+.narration,
+.narration.active {
+  text-align: left;
+  opacity: 0.3;
+  margin: 0 1%; }
+
+.narration.active {
+  opacity: 1; }
+
+.narration h2 {
+  padding: 0.5rem 25% 0.5rem 5%; }
+
+.narration p {
+  padding: 0.5rem 5% 0.5rem 5%;
+  text-align: justify; }
+
+.narration .link {
+  padding: 0.5rem 5% 0.5rem 5%;
+  text-align: justify; }
+
+.narration a {
+  padding: 0; }
 
