@@ -7,10 +7,10 @@ export default {
     const storyConfig = {
       appContainerId: 'app', // div id="app"
       
-      sectionList: {
+      sectionList: [ 
         intro, // section configuration
         wealthAndHealth, // section configuration
-      },
+      ],
     };
 
     const storyInstance = new ScrollyTeller(storyConfig);

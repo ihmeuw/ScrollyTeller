@@ -13,15 +13,13 @@ export default class App {
     const storyConfiguration = {
       /** The id of the <div> that will contain all of the page content */
       appContainerId: 'app',
-      /** build a list of story sections, keyed by sectionIdentifier.
-       * Each section object should be a valid section configuration with
-       * the properties defined in the next section */
-      sectionList: {
-        /** [key = sectionIdentifier]: value = { section config object } */
-        [intro.sectionIdentifier]: intro,
-        [wealthAndHealthConfig.sectionIdentifier]: wealthAndHealthConfig,
-        [builtInTriggers.sectionIdentifier]: builtInTriggers,
-      },
+      /** build an array of story sections
+       * Each section object should be a valid ScrollyTeller section configuration */
+      sectionList: [
+        intro,
+        wealthAndHealthConfig,
+        builtInTriggers,
+      ],
       /** optional function to receive the current sectionIdentifier,
        * narrationIndex, narrationId, and narrationClass
        * when narration blocks are entered */

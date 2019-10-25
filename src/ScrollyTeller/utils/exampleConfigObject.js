@@ -5,12 +5,12 @@ export default {
   appContainerId: 'myAppId',
   /** can override the defaults in this class to customize CSS */
   cssNames: new CSSNames(),
-  /** build a list of story sections, keyed by sectionIdentifier.
+  /** build an array of story sections.
    * Each section constructor should return a valid configuration,
    * or create a new section "object" outside, and add a .config() function
    * that returns a valid configuration object */
-  sectionList: {
-    exampleSectionIdentifier: {
+  sectionList: [
+    {
       /** The id of the <div> that will hold this and all other sections */
       appContainerId: 'myAppId',
 
@@ -106,7 +106,7 @@ export default {
        */
       onActivateNarrationFunction({ index, progress, trigger, direction, graphId, sectionConfig }) {},
     },
-  },
+  ],
   /** another section object like the one above can be added here... */
 };
 

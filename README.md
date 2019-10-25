@@ -28,19 +28,22 @@ const myAppId = 'myAppId';
 const storyConfiguration = {
   /** The id of the <div> that will hold this and all other sections */
   appContainerId: myAppId,
-  /** build a list of story sections, keyed by sectionIdentifier.
+  /** build an array of story sections.
    * Each section object should be a valid section configuration with
    * the properties defined in the next section */
-  sectionList: {
-    myExampleSection0: {
+  sectionList: [ 
+    {
+      sectionIdentifier: 'myExampleSection0',
       /** ... section properties described below */
     },
-    myExampleSection1: {
+    {
+      sectionIdentifier: 'myExampleSection1',
       /** ... section properties described below */
     },
-    myExampleSection2: {
+    {
+      sectionIdentifier: 'myExampleSection3',
       /** ... section properties described below */
-    },
+    ],
     /** optional function to receive the current sectionIdentifier,
      * narrationIndex, narrationId, and narrationClass
      * when narration blocks are entered */
@@ -60,7 +63,7 @@ const myScrollyTellerInstance = new ScrollyTeller(storyConfiguration);
 myScrollyTellerInstance.render();
 ```
 
-##### Each section in the ```{ sectionList }``` object should have a key value that is its ```sectionIdentifier```, and a value object with the properties listed in the table below
+##### Each section in the ```sectionList``` array must have a unique property ```sectionIdentifier``` as well as the properties listed in the table below
 
 * The section properties tell ScrollyTeller where to fetch any narration and data from.  The section configuration is also where the user can implement functions that will process the data, build a graph/chart instance for the section, and respond to scrolling and narration actions when each narration block is activated.  A summary of each of the properties is described in the table below.
 
@@ -112,10 +115,10 @@ const myExampleSection0 = {
 /** Now add the section configuration to the overall ScrollyTeller config */
 const storyConfiguration = {
   appContainerId: myAppId,
-  sectionList: {
-    [myExampleSection0Name]: myExampleSection0,
+  sectionList: [ 
+    myExampleSection0,
     /** add another section here... */
-  },
+  ],
 };
 ```
 
@@ -202,7 +205,7 @@ ScrollyTeller *requires that the `ga()` function from google's `analytics.js` be
 const myScrollyTellerConfig = {
   appContainerId: 'myAppId',
   /** section list */
-  sectionList: { /** ... see above for section list properties */ },
+  sectionList: [ /** ... see above for section list properties */ ],
   
   /** optional google analytics properties */
   sendSectionAnalytics: true, // send analytics events when a section is entered or exited

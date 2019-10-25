@@ -7,6 +7,7 @@ import {
   isNumber,
   isString,
   isUndefined,
+  keyBy,
   noop,
 } from 'lodash-es';
 import elementResizeDetectorMaker from 'element-resize-detector';
@@ -30,11 +31,11 @@ export default class ScrollyTeller {
     utils.validateScrollyTellerConfig(config);
 
     this.appContainerId = config.appContainerId;
-    this.sectionList = config.sectionList;
+    this.sectionList = keyBy(config.sectionList, 'sectionIdentifier');
     this.onNarrationChangedFunction = config.onNarrationChangedFunction || noop;
 
     /** state to handle advancing to previous/next narration and time tracking */
-    this.sectionNamesArray = Object.keys(this.sectionList);
+    this.sectionNamesArray = config.sectionList.map(({ sectionIdentifier }) => (sectionIdentifier));
     this.currentSectionId = null;
     this.currentNarrationIndex = null;
 

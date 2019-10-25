@@ -1,6 +1,7 @@
 import {
   forEach,
   findIndex,
+  isArray,
   isEmpty,
   isFunction,
   isObject,
@@ -103,7 +104,7 @@ export function validateScrollyTellerConfig(state) {
   }
 
   /** need a valid array of sections */
-  if (isEmpty(sectionList) || !isObject(sectionList)) {
+  if (isEmpty(sectionList) || !isArray(sectionList)) {
     throw Error('ScrollyTeller.validateScrollyTellerConfig() sectionList is empty.');
   } else {
     validateCSSNames(state);
