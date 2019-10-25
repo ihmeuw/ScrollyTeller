@@ -27,7 +27,7 @@ builtInTriggersStart,builtInTriggers,40,40,80,Built in Triggers,This section out
 }",,This is a title,This is a caption,
 ,builtInTriggers,40,40,80,Triggers,"Remember the JSON triggers that we used to change the year values? Similarly, triggers can be used to style the graph and graph elements.",,,"{ ""containerClass"": null }",,This is a title,This is a caption,
 ,builtInTriggers,40,40,80,Styling with Triggers,"ScrollyTeller has some built in triggers that can be used to change styles of the the graph_container and its contents.<br><br><pre class=""trigger"">{
-	""containerStyle"": {
+	""graphStyle"": {
 		""background-color"": ""purple""
         }
 }</pre>",,,"{
