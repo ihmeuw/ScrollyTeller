@@ -1,18 +1,26 @@
 @import '../../scss/variables';
 
 /* override defaults for a graph (for sizing, also override _medium.scss and _large.css) */
-.scroll {
-  .section {
-    .graph_container {
-      .graph_title,
-      .graph_caption {
-        margin: 2%;
-      }
-      .graph_default.graph_builtInTriggers,
-      .graph_default.graph_builtInTriggers.active {
-        width: 80%;
-        height: 80%;
-      }
-    }
-  }
+.graph_default.graph_builtInTriggers,
+.graph_default.graph_builtInTriggers.active {
+  width: 80%;
+  height: 80%;
 }
+
+.graph_default.graph_builtInTriggers .graph_title,
+.graph_default.graph_builtInTriggers .graph_caption {
+  margin: 20%;
+}
+
+
+#graph_builtInTriggers_container .graph_title,
+#graph_builtInTriggers_container .graph_caption {
+  margin: 2%;
+}
+
+#graph_builtInTriggers_container .graph_default.graph_builtInTriggers,
+#graph_builtInTriggers_container .graph_default.graph_builtInTriggers.active {
+  width: 80%;
+  height: 80%;
+}
+

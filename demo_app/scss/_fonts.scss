@@ -42,7 +42,7 @@ p {
 
 a {
   @extend p;
-  display: block;
+  display: inline;
   color: $primary-color;
 }
 
