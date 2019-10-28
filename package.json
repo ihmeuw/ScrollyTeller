@@ -70,11 +70,11 @@
     "d3-selection-multi": "^1.0.1",
     "d3-svg-legend": "^2.25.6",
     "element-resize-detector": "^1.1.14",
-    "intersection-observer": "^0.5.0",
+    "intersection-observer": "^0.7.0",
     "intersection-observer-polyfill": "^0.1.0",
     "lodash-es": "^4.17.15",
     "scroll-into-view": "^1.12.2",
-    "scrollama": "^1.4.4",
+    "scrollama": "^2.1.2",
     "whatwg-fetch": "^3.0.0"
   }
 }
