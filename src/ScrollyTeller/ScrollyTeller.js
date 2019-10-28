@@ -10,6 +10,7 @@ import {
   keyBy,
   noop,
 } from 'lodash-es';
+import isTouchDevice from './utils/isTouchDevice';
 import elementResizeDetectorMaker from 'element-resize-detector';
 import { select } from 'd3-selection';
 import * as utils from './utils';
@@ -33,6 +34,9 @@ export default class ScrollyTeller {
     this.appContainerId = config.appContainerId;
     this.sectionList = keyBy(config.sectionList, 'sectionIdentifier');
     this.onNarrationChangedFunction = config.onNarrationChangedFunction || noop;
+    /** multiply minHeightVh, marginTopVh, and marginBottomVh by this factor on mobile to
+     * pad scrolling */
+    this.mobileScrollHeightMultiplier = config.mobileScrollHeightMultiplier || 1;
 
     /** state to handle advancing to previous/next narration and time tracking */
     this.sectionNamesArray = config.sectionList.map(({ sectionIdentifier }) => (sectionIdentifier));
@@ -435,7 +439,13 @@ export default class ScrollyTeller {
       .append('div')
       .attr('class', this.cssNames.scrollContainer());
 
-    forEach(this.sectionList, utils.buildSectionWithNarration);
+    const mobileScrollHeightMultiplier = isTouchDevice()
+      ? this.mobileScrollHeightMultiplier
+      : 1;
+    forEach(
+      this.sectionList,
+      config => (utils.buildSectionWithNarration(config, mobileScrollHeightMultiplier)),
+    );
   }
 
   _sectionIndexFromSectionIdentifier(sectionIdentifier) {
@@ -461,11 +471,28 @@ export default class ScrollyTeller {
     this._buildResizeListeners();
     this._buildKeyboardListeners();
 
-    window.addEventListener('resize', () => {
-      forEach(this.sectionList, (config) => {
-        utils.resizeNarrationBlocks(config);
-        config.scroller.resize();
+    if (isTouchDevice()) {
+      window.addEventListener('orientationchange', () => {
+        const afterOrientationChange = () => {
+          this._handleResizeEvent();
+          window.removeEventListener('resize', afterOrientationChange);
+        };
+        window.addEventListener('resize', afterOrientationChange);
       });
+    } else {
+      window.addEventListener('resize', () => {
+        this._handleResizeEvent();
+      });
+    }
+  }
+
+  _handleResizeEvent() {
+    const mobileScrollHeightMultiplier = isTouchDevice()
+      ? this.mobileScrollHeightMultiplier
+      : 1;
+    forEach(this.sectionList, (config) => {
+      utils.resizeNarrationBlocks(config, mobileScrollHeightMultiplier);
+      config.scroller.resize();
     });
   }
 

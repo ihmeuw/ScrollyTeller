@@ -53,6 +53,9 @@ const storyConfiguration = {
       narrationId,
       narrationClass,
     }) { console.log('in ', sectionIdentifier, narrationIndex); },
+    /** optional parameter to scale scroll elements on mobile devices
+        to create slower scrolling */
+    mobileScrollHeightMultiplier: 1.5,
   },
 };
 

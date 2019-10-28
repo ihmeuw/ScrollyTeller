@@ -1,3 +1,5 @@
+/* global window document */
+/* eslint-disable require-jsdoc */
 import {
   get,
   isEmpty,
@@ -5,7 +7,37 @@ import {
 import { select, selectAll } from 'd3-selection';
 import { vhToPx } from './vhToPxFunctions';
 
-function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
+function scaleMarginTop(mobileScrollHeightMultiplier = 1) {
+  return function ({ marginTopVh }) {
+    return vhToPx(marginTopVh * mobileScrollHeightMultiplier);
+  };
+}
+
+function scaleMarginBottom(mobileScrollHeightMultiplier = 1) {
+  return function ({ marginBottomVh }) {
+    return vhToPx(marginBottomVh * mobileScrollHeightMultiplier);
+  };
+}
+
+function scaleMinHeight(mobileScrollHeightMultiplier = 1) {
+  return function ({ minHeightVh, marginTopVh, marginBottomVh }) {
+    const scaledHeight = minHeightVh * mobileScrollHeightMultiplier;
+    const scaledMarginTop = marginTopVh * mobileScrollHeightMultiplier;
+    const scaledMarginBottom = marginBottomVh * mobileScrollHeightMultiplier;
+
+    return vhToPx(
+      scaledHeight || (Number(scaledMarginTop) + Number(scaledMarginBottom)),
+    );
+  };
+}
+
+
+function buildNarrationBlocks(
+  narrationDiv,
+  narrationBlocksArray,
+  config,
+  mobileScrollHeightMultiplier = 1,
+) {
   /** build the narration as an html string */
   const names = config.cssNames;
   const css = get(config, ['cssNames', 'css']);
@@ -14,9 +46,6 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
     const {
       narrationId,
       narrationClass = '',
-      marginTopVh: spaceAbove,
-      marginBottomVh: spaceBelow,
-      minHeightVh: minHeight,
       h2Text,
       paragraphText,
       hRefText,
@@ -31,9 +60,9 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
       .attr('class', css.narrationBlock)
       .attr('id', narrationBlockId)
       .classed(narrationClass, true)
-      .style('margin-top', vhToPx(spaceAbove))
-      .style('margin-bottom', vhToPx(spaceBelow))
-      .style('min-height', vhToPx(minHeight || (Number(spaceAbove) + Number(spaceBelow))));
+      .style('margin-top', scaleMarginTop(mobileScrollHeightMultiplier))
+      .style('margin-bottom', scaleMarginBottom(mobileScrollHeightMultiplier))
+      .style('min-height', scaleMinHeight(mobileScrollHeightMultiplier));
 
     const blockContent = blockContainer.append('div')
       .datum(block)
@@ -58,19 +87,19 @@ function buildNarrationBlocks(narrationDiv, narrationBlocksArray, config) {
   });
 }
 
-export function resizeNarrationBlocks(config) {
+export function resizeNarrationBlocks(config, mobileScrollHeightMultiplier) {
   const { sectionIdentifier, cssNames: names } = config;
 
   const css = get(names, ['css']);
   const sectionId = names.sectionId(sectionIdentifier);
 
   selectAll(`#${sectionId} .${css.narrationBlock}`)
-    .style('margin-top', ({ marginTopVh: spaceAbove }) => vhToPx(spaceAbove))
-    .style('margin-bottom', ({ marginBottomVh: spaceBelow }) => vhToPx(spaceBelow))
-    .style('min-height', ({ minHeightVh: minHeight }) => vhToPx(minHeight));
+    .style('margin-top', scaleMarginTop(mobileScrollHeightMultiplier))
+    .style('margin-bottom', scaleMarginBottom(mobileScrollHeightMultiplier))
+    .style('min-height', scaleMinHeight(mobileScrollHeightMultiplier));
 }
 
-export function buildSectionWithNarration(config) {
+export function buildSectionWithNarration(config, mobileScrollHeightMultiplier) {
   const { sectionIdentifier, cssNames: names, narration } = config;
 
   const sectionDiv = select(`.${names.scrollContainer()}`)
@@ -92,5 +121,5 @@ export function buildSectionWithNarration(config) {
 
   /** select the appropriate section by id, and append a properly formatted html string
    * containing the contents of each narration block (row in the narration.csv file) */
-  buildNarrationBlocks(narrationDiv, narration, config);
+  buildNarrationBlocks(narrationDiv, narration, config, mobileScrollHeightMultiplier);
 }
