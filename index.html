@@ -12,12 +12,16 @@
                 <div class="title left">ScrollyTeller</div>
                 <h3 class="intro left">ScrollyTeller is a JavaScript library that builds the HTML for a scrolling
                     data story from csv files, and provides a flexible framework for triggering chart actions when
-                    text "narration" scrolls into view.</h3>
+                    text "narration" scrolls into view. For an introduction to the mechanics of scrollytelling, see the
+                    excellent <a href="https://github.com/russellgoldenberg/scrollama"
+                      target="_blank">Scrollama</a> library, which
+                    ScrollyTeller relies on for detecting scroll events
+                    and progress.</h3>
                 <p class="intro left"><strong>Scroll down</strong> to learn how to create a data story using
                     ScrollyTeller. The <strong>spacebar</strong> and <strong>arrow keys</strong> also advance the
                     story.</p>
                 <p class="intro left">Use the <span class="navbar" style="display: inline; padding: 0; margin: 0;">
-                    <span class="navButton" style="padding: 5px;">buttons</span></span> jump to different parts of the
+                    <span class="navButton" style="padding: 5px;">buttons</span></span> to jump to different parts of the
                     story.</p>
             </div>
             <nav class="navbar">
@@ -47,8 +51,7 @@
                   data-narrationtarget="builtInTriggersStart"
                   class="navButton builtInTriggers"><h3>Built-in Triggers</h3></div>
             </nav>
-            <div id="app">
-            </div>
+            <div id="app"></div>
         </div>
         <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
         <script type="text/javascript" src="dist/bundle.js"></script>

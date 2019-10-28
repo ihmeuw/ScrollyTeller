@@ -279,30 +279,30 @@ export default {
   <tr>
     <td>19</td>
     <td>Narration 0</td>
-    <td><pre><code>{ "year": 1950 }</pre></code></td>
+    <td><pre><code>{ "year": 1950 }</code></pre></td>
     <td>...</td>
-    <td><pre><code>{ "year": 1950 }</pre></code></td>
+    <td><pre><code>{ "year": 1950 }</code></pre></td>
   </tr>
   <tr>
     <td>20</td>
     <td>Narration 1</td>
-    <td><pre><code>{ "year": 2008 }</pre></code></td>
+    <td><pre><code>{ "year": 2008 }</code></pre></td>
     <td>...</td>
-    <td><pre><code>{ "year": 2008 }</pre></code></td>
+    <td><pre><code>{ "year": 2008 }</code></pre></td>
   </tr>
   <tr>
     <td>21</td>
     <td>Narration 2</td>
-    <td><pre><code>{ "foo": "bar" }</pre></code></td>
+    <td><pre><code>{ "foo": "bar" }</code></pre></td>
     <td>...</td>
-    <td><pre><code>{ "year": 2008, "foo": "bar" }</pre></code></td>
+    <td><pre><code>{ "year": 2008, "foo": "bar" }</code></pre></td>
   </tr>
   <tr>
     <td>22</td>
     <td>Narration 3</td>
-    <td><pre><code>{ "year": null foo": null }</pre></code></td>
+    <td><pre><code>{ "year": null, foo": null }</code></pre></td>
     <td>...</td>
-    <td><pre><code>{ "year": null, "foo": null }</pre></code></td>
+    <td><pre><code>{ "year": null, "foo": null }</code></pre></td>
   </tr>
 </tbody>
 </table>

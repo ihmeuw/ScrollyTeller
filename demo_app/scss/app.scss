@@ -32,7 +32,8 @@
 
 .left {
   margin: 0;
-  text-align: left
+  text-align: left;
+  width: 70%;
 }
 
 /*  ------------- NAVIGATION -------------  */
@@ -79,6 +80,11 @@
   border-width: medium;
 }
 
+.narration .link {
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+}
+
 // to differentiate trigger JSON from other code
 .narration-content p pre.trigger {
   text-align: left;
@@ -90,6 +96,16 @@
   border-radius: 10px;
   word-wrap: break-word;
   white-space: pre-wrap;
+}
+
+.centered-narration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  width: 80vw;
+  height: 100vh;
 }
 
 

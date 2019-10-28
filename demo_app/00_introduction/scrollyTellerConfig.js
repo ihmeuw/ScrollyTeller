@@ -68,7 +68,9 @@ export default {
      * functions such as buildGraphFunction(), onActivateNarrationFunction(), onScrollFunction()  */
     select(`#${graphId}`)
       .append('div')
-      .classed('imageDiv', true);
+      .classed('imageDiv', true)
+    updateSvgImage(graphId, { svgFileName: 'slide1' }, sectionState.svgFileName);
+    sectionState.svgFileName = 'slide1';
     return undefined;
   },
 

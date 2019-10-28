@@ -69,7 +69,7 @@ builtInTriggersStart,builtInTriggers,40,40,80,Built in Triggers,This section out
   	""graphStyle"": {
 		""background-color"": ""transparent""
 	}
-}</pre><br><br>(Note that ALL styles that have previously been set up to a given point in the narration will be applied in sequence up to this narration block, so when we scroll back up, the graph turns back to blue, which was applied in a trigger that was narration blocks above the previous one).",,,"{
+}</pre><br><br>(Note that ALL styles that have previously been set up to a given point in the narration will be applied in sequence up to this narration block, so when we scroll back up, the graph turns back to purple, which was applied in a trigger that was narration blocks above the previous one).",,,"{
 	""titleStyle"": {
 		""font-size"": null,
 		""color"": null
@@ -129,8 +129,16 @@ builtInTriggersStart,builtInTriggers,40,40,80,Built in Triggers,This section out
 		""opacity"": ""calc(1 - $progress)""
 	}
 }",,,,
-,builtInTriggers,40,0,80,The End,Good luck with your data story!,,,"{
+,builtInTriggers,40,40,50,The End,Good luck with your data story!,,,"{
 	""containerStyle"": {
 		""opacity"": 0
 	}
 }",,,,
+,centered-narration,50,0,50,,"Illustrations in this story were modified from <a href=""https://undraw.co/illustrations""
+                  target=""_blank"">unDraw.co</a>. The Wealth and Health of Nations chart was modified from
+                    <a href=""https://robisateam.github.io/courses/d3-course/"" target=""_blank"">this
+                        tutorial</a>. ScrollyTeller was created at the
+                    <a href=""http://www.healthdata.org/results/data-visualizations"">Institute for
+                        Health Metrics and Evaluation</a> and has been used to tell visual stories about
+                    <a href=""https://vizhub.healthdata.org/child-mortality"">Child Mortality</a> and
+                    Tobacco Control (coming soon).",,,,,,,
