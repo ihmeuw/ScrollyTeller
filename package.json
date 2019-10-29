@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "name": "ScrollyTeller",
   "description": "Scrolling story builder for IHME",
   "main": "dist/lib.js",
@@ -20,8 +20,8 @@
     "Evan Laurie <evanl5@wu.edu>",
     "Aaron Keel <akeel@uw.edu>"
   ],
-  "browserslist": "last 2 versions",
   "license": "BSD-3-Clause",
+  "browserslist": ["last 2 versions"],
   "devDependencies": {
     "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
