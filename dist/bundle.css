@@ -1,0 +1,74 @@
+@import url(https://fonts.googleapis.com/css?family=Fredericka+the+Great|Nunito:400,700,800&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Fredericka+the+Great|Nunito:400,700,800&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Fredericka+the+Great|Nunito:400,700,800&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Inconsolata&display=swap);
+
+/* hack to remove decimals from ordered lists */
+ol {
+  counter-reset: list;
+  list-style: none;
+}
+li {
+  counter-increment: list;
+  position: relative;
+}
+li:before {
+  content: counter(list);
+  margin-right: 5px;
+  position: absolute;
+  right: 100%;
+}
+
+/* desert scheme ported from vim to google prettify */
+pre.prettyprint {
+  display: block;
+  background-color: #333;
+  border-radius: 10px;
+  margin: auto;
+  padding: 3% 3% 3% 6% !important; /* these important flags override the prettyprint.css that gets reloaded on every snippet render */
+  width: 100%;
+  overflow-x: auto;
+}
+pre .nocode { background-color: none; color: #000 }
+pre .str { color: #ffa0a0 } /* string  - pink */
+pre .kwd { color: #f0e68c; font-weight: bold }
+pre .com { color: #87ceeb } /* comment - skyblue */
+pre .typ { color: #98fb98 } /* type    - lightgreen */
+pre .lit { color: #cd5c5c } /* literal - darkred */
+pre .pun { color: #fff }    /* punctuation */
+pre .pln { color: #fff }    /* plaintext */
+pre .tag { color: #f0e68c; font-weight: bold } /* html/xml tag    - lightyellow */
+pre .atn { color: #bdb76b; font-weight: bold } /* attribute name  - khaki */
+pre .atv { color: #ffa0a0 } /* attribute value - pink */
+pre .dec { color: #98fb98 } /* decimal         - lightgreen */
+
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums { margin-top: 0; margin-bottom: 0; color: #8e8e8e; background: #353535 !important; } /* IE indents via margin-left */
+li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { /*list-style-type: none */}
+/* Alternate shading for lines */
+li.L1,li.L3,li.L5,li.L7,li.L9 { background: #353535 !important; }
+
+@media print {
+  pre.prettyprint { background-color: none }
+  pre .str, code .str { color: #060 }
+  pre .kwd, code .kwd { color: #006; font-weight: bold }
+  pre .com, code .com { color: #600; font-style: italic }
+  pre .typ, code .typ { color: #404; font-weight: bold }
+  pre .lit, code .lit { color: #044 }
+  pre .pun, code .pun { color: #440 }
+  pre .pln, code .pln { color: #000 }
+  pre .tag, code .tag { color: #006; font-weight: bold }
+  pre .atn, code .atn { color: #404 }
+  pre .atv, code .atv { color: #060 }
+}
+
+html,body,div,span,applet,object,iframe,h1,.title,h2,h3,h4,h5,h6,p,a,a:hover,.prettyprint,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}html{font-size:11px}body{font-family:"Nunito",sans-serif;font-size:5rem;font-weight:400;background-color:#fff}h1,.title{color:#3F3D56;font-family:"Fredericka the Great",serif;font-size:3rem;font-weight:700;letter-spacing:-0.1rem}h2{font-size:2.2rem;line-height:2.6rem;font-family:"Nunito",sans-serif;color:#3F3D56}h3{font-family:"Nunito",sans-serif;font-size:1.5rem;line-height:1.9rem;color:#3F3D56}p,a,a:hover,.prettyprint{color:#50413c;font-family:"Nunito",sans-serif;font-weight:400;font-size:1.2rem;line-height:1.7rem}a{display:inline;color:#3F3D56;font-size:inherit;line-height:inherit}a:hover{font-size:inherit;line-height:inherit;color:#50413c;text-decoration:blink}strong,b{font-weight:700}em{font-style:italic}.prettyprint{font-family:"Inconsolata",monospace;font-size:1.2rem;line-height:1.3rem}@media only screen and (min-width: 35em){html{font-size:14px}h1,.title{font-size:4rem}}@media only screen and (min-width: 64em){html{font-size:16px}h1,.title{font-size:4rem}}#scrolly-teller-app{max-width:2000px;margin:0 auto}#app{width:98%;margin:0 1%;background-color:#fff}.title-area,.navbar{width:98%;margin:1%}.title{margin:0.5rem;padding:0.5rem}.intro{margin:0.5rem;padding:0.5rem}.left{margin:0;text-align:left;width:70%}.navbar{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-webkit-box-pack:space-evenly;-ms-flex-pack:space-evenly;justify-content:space-evenly;-ms-flex-flow:wrap;flex-flow:wrap;position:-webkit-sticky;position:sticky;top:0;background-color:white;z-index:1;padding:0.5%;height:100%;max-height:170px}.navButton{background-color:#8078ff36;border-radius:10px;padding:0.5% 1%;margin:0.25%}.navButton h3{pointer-events:none;text-align:center;font-size:1.3rem;line-height:1.4rem;margin:3% 0}.navButton.active{background-color:rgba(128,120,255,0.82)}.navButton:hover{-webkit-box-shadow:#6C63FF 0 0 4px;box-shadow:#6C63FF 0 0 4px}.dashed{border:black;border-style:dashed;border-width:medium}.narration .link{font-size:1.2rem;line-height:1.3rem}.narration-content p pre.trigger,.narration-content a pre.trigger,.narration-content .prettyprint pre.trigger{text-align:left;padding:2%;border:darkgray;background:#e4effd;border-width:thin;border-style:solid;border-radius:10px;word-wrap:break-word;white-space:pre-wrap}.centered-narration{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;justify-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:80vw;height:100vh}.centered-narration .narration-content{z-index:1000}svg{overflow:hidden}.axis text{fill:#3F3D56;stroke:none;font-family:"Fredericka the Great",serif}.axis .tick{fill:none;stroke:#3F3D56}.axis path{fill:none;stroke:#3F3D56}.inner-axis text{fill:none;stroke:none}.inner-axis .tick{fill:none;stroke:#50413c;stroke-opacity:.1}.inner-axis path{fill:none;stroke:none}.y-title,.x-title{color:#50413c;font-size:0.2em;font-weight:200;line-height:20px;letter-spacing:-1px;margin-bottom:5%}.line{fill:none;stroke:blue;stroke-width:2px}.dashed{fill:none;stroke:#50413c;stroke-width:4px;stroke-dasharray:4 4}html{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}*{-webkit-box-sizing:border-box;box-sizing:border-box}.flex_vertical_column_all_centered,.graph_container,.graph_default{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;-webkit-box-align:center;-ms-flex-align:center;align-items:center;justify-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.scroll{width:100%;padding:1%}.section{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse}.narration_list{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;margin:0;padding:2.5%;-webkit-box-flex:1;-ms-flex:1;flex:1;min-width:50%;max-width:30rem}.graph_container{-webkit-box-flex:1;-ms-flex:1;flex:1;position:fixed;position:-webkit-sticky;position:sticky;opacity:0;top:15vh;height:80vh;padding:0;margin:0;min-width:50%}.graph_container.active{position:-webkit-sticky;position:sticky}.graph_title{font-size:1.5rem;max-width:70%}.graph_caption{font-size:1rem;max-width:70%}.graph_default{opacity:1;background-color:rgba(0,0,0,0);width:100%;height:100%}.narration,.narration.active{text-align:left;opacity:0.3;margin:0 1%}.narration.active{opacity:1}.narration h2{padding:0.5rem 25% 0.5rem 5%}.narration p,.narration a,.narration .prettyprint{padding:0.5rem 5% 0.5rem 5%;text-align:justify}.narration .link{padding:0.5rem 5% 0.5rem 5%;text-align:justify}.narration a{padding:0}
+
+#graph_introduction_container{opacity:1}#graph_introduction{background-color:transparent;width:100%;height:100%}#graph_introduction img{width:90%;height:90%}
+
+#graph_wealthAndHealth{background-color:transparent}#codeSnippet,#graph_wealthAndHealth svg,#codeSnippet img{width:90%;position:absolute;top:auto;left:auto}#codeSnippet{overflow-x:auto}#graph_wealthAndHealth svg,#codeSnippet img{pointer-events:none}#graph_wealthAndHealth .imageDiv{position:absolute;top:auto;left:auto;width:100%;height:100%}#graph_wealthAndHealth .imageDiv img{width:90%;height:90%}#narration_outline .narration-content{border:#30231d;border-width:medium;border-style:dashed;padding:10px}#narration_outline .narration-content h2{padding:3px;margin:5px;border:#3F3D56;border-width:medium;border-style:dashed}#narration_outline .narration-content p{padding:3px;margin:5px;border:#50413c;border-width:medium;border-style:dashed}#narration_outline .narration-content div.link{padding:3px;margin:5px;border:#3F3D56;border-width:medium;border-style:dashed}#narration_outline .narration-content div.link p{border:none}input{border:none;width:80px;font-size:14px;padding:2px}input:hover{background-color:#eee}input:focus{background-color:#ccf}input:not(:focus){text-align:right}table{border-collapse:collapse;table-layout:auto;font-size:1.1rem;line-height:1.2rem}td{border:1px solid #999;padding:0.2rem;text-align:center;vertical-align:middle}tr:first-child td,td:first-child{background-color:#ccc;padding:1px 3px;font-weight:bold;text-align:center}
+
+.graph_default.graph_builtInTriggers,.graph_default.graph_builtInTriggers.active{width:80%;height:80%}.graph_default.graph_builtInTriggers .graph_title,.graph_default.graph_builtInTriggers .graph_caption{margin:20%}#graph_builtInTriggers_container .graph_title,#graph_builtInTriggers_container .graph_caption{margin:2%}#graph_builtInTriggers_container .graph_default.graph_builtInTriggers,#graph_builtInTriggers_container .graph_default.graph_builtInTriggers.active{width:80%;height:80%}
+
