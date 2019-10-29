@@ -1,5 +1,5 @@
 # ScrollyTeller
-----------------------------------------------------------------------------------------------------------------------------------
+
 ### ScrollyTeller is a JavaScript library that dynamically builds the HTML for a scrolling data story from a .csv file, and provides functionality for linking stateful JSON ***triggers*** to events dispatched when each scrolling text 'narration' comes into view.
 
 <img src="https://github.com/ihmeuw/ScrollyTeller/blob/master/dist/images/slide5.svg" width="700" alt="ScrollyTeller image"/>
@@ -19,7 +19,7 @@
 * [Following the Money: exploring country-to-country donations](https://ryshackleton.github.io/swd-aid-data/index.html)
 
 ## Documentation
-----------------------------------------------------------------------------------------------------------------------------------
+
 ### Terminology
 | Term | Description |
 | :---: | :---: |
