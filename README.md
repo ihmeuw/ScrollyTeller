@@ -1,13 +1,24 @@
 # ScrollyTeller
 ----------------------------------------------------------------------------------------------------------------------------------
-### Using ScrollyTeller to dynamically build story narration
-##### ScrollyTeller is a JavaScript library that dynamically builds the HTML/CSS for the ***narration*** part of a scrolling based data story from a .csv file, and provides functionality for linking named 'triggers' to actions dispatched when each narration comes into view.
+### ScrollyTeller is a JavaScript library that dynamically builds the HTML for a scrolling data story from a .csv file, and provides functionality for linking stateful JSON ***triggers*** to events dispatched when each scrolling text 'narration' comes into view.
+
+<img src="https://github.com/ihmeuw/ScrollyTeller/blob/master/dist/images/slide5.svg" width="700" alt="ScrollyTeller image"/>
+
+
+<h3>Check out the <a href="https://ihmeuw.github.io/ScrollyTeller/" target="_blank">ScrollyTeller tutorial</a>, then come back for code examples and the full documentation on this page.</h3>
+
 ----------------------------------------------------------------------------------------------------------------------------------
 #### Use cases and functionality
 * Separation of stories into multiple sections with different graphs and narrations.
 * Separation of story sections allows multiple developers to work on different sections of a data story without interfering with one another.
 * Customizing story narration to an audience: user-specific narration.csv files can tell a story differently based on audience, using the same rendering code, with different actions based on a user's area of interest or expertise.
 * Changing the spacing between narration text, or the 'pacing' of a data story.
+
+#### Data stories that have used ScrollyTeller
+* [How can mapping can save children's lives?](https://vizhub.healthdata.org/child-mortality)
+* [Following the Money: exploring country-to-country donations](https://ryshackleton.github.io/swd-aid-data/index.html)
+
+## Documentation
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Terminology
 | Term | Description |
@@ -18,7 +29,7 @@
 | **Section** | A group of narration blocks with a corresponding **graph** element. A story can be one or multiple sections. |
 | **Graph Container** | A ```<div>``` element to hold a title, caption, and a graph, chart, or any other graphic to be triggered. |
 | **Graph** | A ```<div>``` element to hold a user defined graph, chart, or any other graphic to be triggered.  The graph is entirely user controlled. |
-| **Scrollama** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. |
+| **[Scrollama](https://github.com/russellgoldenberg/scrollama)** | The underlying JavaScript library used to control the triggering of actions when each narration block comes into view. |
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Building a scrolling data story using ScrollyTeller
@@ -139,6 +150,9 @@ myScrollyTellerInstance.render();
 
 ----------------------------------------------------------------------------------------------------------------------------------
 ### Narration file/object format
+
+<h4>See <a href="https://docs.google.com/spreadsheets/d/1yoShwSc7yruaveFeWAhHFUc3kqW8lelmMFQu7qc75aA/edit?usp=sharing" target="_blank">this google spreadsheet</a> for a sample configuration file, which is the same file as: demo_app/00_introduction/data/narration.csv</h4>
+
 ##### If you are using a csv or tsv file, format your narration file as follows, keeping the header column names EXACTLY alike (they can be in any order).  If narration objects are json, each narration block should have a property named in the same manner as the Column Headers below.  Each **row** represents a unique **narration block**.
 
 | narrationId | narrationClass | marginTopVh | marginBottomVh | minHeightVh | h2Text | paragraphText | hRef | hRefText | trigger | graphTitle | graphCaption |
