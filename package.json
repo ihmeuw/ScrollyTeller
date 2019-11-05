@@ -1,7 +1,7 @@
 {
   "version": "1.0.1",
-  "name": "ScrollyTeller",
-  "description": "Scrolling story builder for IHME",
+  "name": "@ihmeuw/scrollyteller",
+  "description": "A JavaScript library to build scrollytelling visualizations from tabular data",
   "main": "dist/lib.js",
   "scripts": {
     "prepare": "npm run build:umd",
@@ -14,6 +14,11 @@
     "type": "git",
     "url": "https://github.com/ihmeuw/ScrollyTeller"
   },
+  "keywords": [
+    "scrollytelling",
+    "scroll",
+    "story"
+  ],
   "author": "Ryan Shackleton <ryshack@uw.edu>",
   "contributors": [
     "Kat Beame <kbeame@uw.edu>",
@@ -21,7 +26,18 @@
     "Aaron Keel <akeel@uw.edu>"
   ],
   "license": "BSD-3-Clause",
-  "browserslist": ["last 2 versions"],
+  "homepage": "https://ihmeuw.github.io/ScrollyTeller/",
+  "bugs": {
+    "url": "https://github.com/ihmeuw/ScrollyTeller/issues"
+  },
+  "files": [
+    "dist/*",
+    "!dist/images",
+    "src/"
+  ],
+  "browserslist": [
+    "last 2 versions"
+  ],
   "devDependencies": {
     "@babel/cli": "^7.7.0",
     "@babel/core": "^7.7.0",
