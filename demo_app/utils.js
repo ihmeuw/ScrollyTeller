@@ -1,5 +1,5 @@
 import { isNil } from 'lodash-es';
-import { select } from 'd3';
+import { select } from 'd3-selection';
 
 export const highlightLines = (baseSelection, linesArray, highlightColor) => {
   if (linesArray instanceof Array) {

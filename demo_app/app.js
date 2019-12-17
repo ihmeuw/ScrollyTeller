@@ -1,5 +1,5 @@
 /* global document window */
-import { select, selectAll } from 'd3';
+import { select, selectAll } from 'd3-selection';
 import { get } from 'lodash-es';
 import './scss/style.scss';
 import ScrollyTeller from '../src/ScrollyTeller/ScrollyTeller.js';
