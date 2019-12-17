@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2-candidate0",
+  "version": "1.0.2",
   "name": "@ihmeuw/scrollyteller",
   "description": "A JavaScript library to build scrollytelling visualizations from tabular data",
   "main": "dist/lib.js",
