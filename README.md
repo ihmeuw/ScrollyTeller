@@ -16,6 +16,7 @@
 
 #### Data stories that have used ScrollyTeller
 * [How can mapping can save children's lives?](https://vizhub.healthdata.org/child-mortality)
+* [Assessment of tobacco control measures in Mexico](https://vizhub.healthdata.org/tobacco-control/)
 * [Following the Money: exploring country-to-country donations](https://ryshackleton.github.io/swd-aid-data/index.html)
 
 ## Documentation
