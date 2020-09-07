@@ -239,7 +239,7 @@ export default {
       //    the return value of buildGraphFunction()
       sectionConfig: { graph },
       
-      // -> sectionConfig.state = JSON.parse(trigger)
+      // -> state = JSON.parse(trigger)
       state: { year },
     }) {
       if (graph && year) {
